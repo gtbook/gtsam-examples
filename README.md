@@ -1,1 +1,1 @@
-# gtsam
+# GTSAM Examples book
