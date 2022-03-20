@@ -1,0 +1,1568 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>5. Structure from Motion &#8212; GTSAM by Example</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="6. SFM with BAL Files" href="SFMExample_bal.html" />
+    <link rel="prev" title="4. Planar SLAM" href="PlanarSLAMExample.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">GTSAM by Example</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   GTSAM by Example
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Pose2SLAMExample.html">
+   1. Pose2 SLAM
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+   2. Pose2 SLAM with g2o Files
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Pose2ISAM2Example.html">
+   3. Pose2 iSAM
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="PlanarSLAMExample.html">
+   4. Planar SLAM
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   5. Structure from Motion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="SFMExample_bal.html">
+   6. SFM with BAL Files
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/SFMExample.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/gtbook/gtsam-examples"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/gtbook/gtsam-examples/issues/new?title=Issue%20on%20page%20%2FSFMExample.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gtbook/gtsam-examples/main?urlpath=tree/SFMExample.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Structure from Motion</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="structure-from-motion">
+<h1><span class="section-number">5. </span>Structure from Motion<a class="headerlink" href="#structure-from-motion" title="Permalink to this headline">¶</a></h1>
+<p>Structure from Motion (SFM or SfM) is very similar to SLAM, except we are trying to estimate the pose of several cameras observing a set of unknown 3D landmarks.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> - q install gtsam == 4.2a5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ERROR: unknown command &quot;-&quot;
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gtsam</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">gtsam</span> <span class="kn">import</span> <span class="n">symbol_shorthand</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">symbol_shorthand</span><span class="o">.</span><span class="n">L</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">symbol_shorthand</span><span class="o">.</span><span class="n">X</span>
+
+<span class="kn">from</span> <span class="nn">gtsam.examples</span> <span class="kn">import</span> <span class="n">SFMdata</span>
+<span class="kn">from</span> <span class="nn">gtsam</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Cal3_S2</span><span class="p">,</span> <span class="n">DoglegOptimizer</span><span class="p">,</span>
+                         <span class="n">GenericProjectionFactorCal3_S2</span><span class="p">,</span> <span class="n">Marginals</span><span class="p">,</span>
+                         <span class="n">NonlinearFactorGraph</span><span class="p">,</span> <span class="n">PinholeCameraCal3_S2</span><span class="p">,</span> <span class="n">Point3</span><span class="p">,</span>
+                         <span class="n">Pose3</span><span class="p">,</span> <span class="n">PriorFactorPoint3</span><span class="p">,</span> <span class="n">PriorFactorPose3</span><span class="p">,</span> <span class="n">Rot3</span><span class="p">,</span> <span class="n">Values</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">gtsam.utils</span> <span class="kn">import</span> <span class="n">plot</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+<p>Camera observations of landmarks (i.e. pixel coordinates) will be stored as Point2 (x, y).</p>
+<p>Each variable in the system (poses and landmarks) must be identified with a unique key.
+We can either use simple integer keys (1, 2, 3, …) or symbols (X1, X2, L1).
+Here we will use Symbols</p>
+<p>In GTSAM, measurement functions are represented as ‘factors’. Several common factors
+have been provided with the library for solving robotics/SLAM/Bundle Adjustment problems.
+Here we will use Projection factors to model the camera’s landmark observations.
+Also, we will initialize the robot at some location using a Prior factor.</p>
+<p>When the factors are created, we will add them to a Factor Graph. As the factors we are using
+are nonlinear factors, we will need a Nonlinear Factor Graph.</p>
+<p>Finally, once all of the factors have been added to our factor graph, we will want to
+solve/optimize to graph to find the best (Maximum A Posteriori) set of variable values.
+GTSAM includes several nonlinear optimizers to perform this step. Here we will use a
+trust-region method known as Powell’s Degleg</p>
+<p>The nonlinear solvers within GTSAM are iterative solvers, meaning they linearize the
+nonlinear functions around an initial linearization point, then solve the linear system
+to update the linearization point. This happens repeatedly until the solver converges
+to a consistent set of variable values. This requires us to specify an initial guess
+for each variable, held in a Values container.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the camera calibration parameters</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">Cal3_S2</span><span class="p">(</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">)</span>
+
+<span class="c1"># Define the camera observation noise model</span>
+<span class="n">measurement_noise</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">noiseModel</span><span class="o">.</span><span class="n">Isotropic</span><span class="o">.</span><span class="n">Sigma</span><span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># one pixel in u and v</span>
+
+<span class="c1"># Create the set of ground-truth landmarks</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">SFMdata</span><span class="o">.</span><span class="n">createPoints</span><span class="p">()</span>
+
+<span class="c1"># Create the set of ground-truth poses</span>
+<span class="n">poses</span> <span class="o">=</span> <span class="n">SFMdata</span><span class="o">.</span><span class="n">createPoses</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a factor graph</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">NonlinearFactorGraph</span><span class="p">()</span>
+
+<span class="c1"># Add a prior on pose x1. This indirectly specifies where the origin is.</span>
+<span class="c1"># 0.3 rad std on roll,pitch,yaw and 0.1m on x,y,z</span>
+<span class="n">pose_noise</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">noiseModel</span><span class="o">.</span><span class="n">Diagonal</span><span class="o">.</span><span class="n">Sigmas</span><span class="p">(</span>
+     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]))</span>
+<span class="n">factor</span> <span class="o">=</span> <span class="n">PriorFactorPose3</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">poses</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pose_noise</span><span class="p">)</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+
+<span class="c1"># Simulated measurements from each camera pose, adding them to the factor graph</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pose</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">poses</span><span class="p">):</span>
+    <span class="n">camera</span> <span class="o">=</span> <span class="n">PinholeCameraCal3_S2</span><span class="p">(</span><span class="n">pose</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+        <span class="n">measurement</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="n">GenericProjectionFactorCal3_S2</span><span class="p">(</span>
+            <span class="n">measurement</span><span class="p">,</span> <span class="n">measurement_noise</span><span class="p">,</span> <span class="n">X</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">L</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="n">K</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because the structure-from-motion problem has a scale ambiguity, the problem is still under-constrained
+Here we add a prior on the position of the first landmark. This fixes the scale by indicating the distance
+between the first camera and the first landmark. All other landmark positions are interpreted using this scale.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_noise</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">noiseModel</span><span class="o">.</span><span class="n">Isotropic</span><span class="o">.</span><span class="n">Sigma</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">factor</span> <span class="o">=</span> <span class="n">PriorFactorPoint3</span><span class="p">(</span><span class="n">L</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">point_noise</span><span class="p">)</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Factor Graph:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor Graph:
+size: 66
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 0: PriorFactor on x0
+  prior mean:  R: [
+	0, 0.242536, -0.970143;
+	1, -0, 0;
+	-0, -0.970143, -0.242536
+]
+t: 40  0 10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: diagonal sigmas[0.3; 0.3; 0.3; 0.1; 0.1; 0.1];
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 1: GenericProjectionFactor, z = [
+	67.1796068;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x0 l0 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 2: GenericProjectionFactor, z = [
+	60.3077641;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x0 l1 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 3: GenericProjectionFactor, z = [
+	39.6922359;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x0 l2 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 4: GenericProjectionFactor, z = [
+	32.8203932;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x0 l3 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 5: GenericProjectionFactor, z = [
+	64.7253772;
+	67.8571429
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x0 l4 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 6: GenericProjectionFactor, z = [
+	59.3706946;
+	56.8181818
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x0 l5 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 7: GenericProjectionFactor, z = [
+	40.6293054;
+	56.8181818
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x0 l6 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 8: GenericProjectionFactor, z = [
+	35.2746228;
+	67.8571429
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x0 l7 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 9: GenericProjectionFactor, z = [
+	50;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x1 l0 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 10: GenericProjectionFactor, z = [
+	68.2217247;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x1 l1 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 11: GenericProjectionFactor, z = [
+	50;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x1 l2 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 12: GenericProjectionFactor, z = [
+	31.7782753;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x1 l3 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 13: GenericProjectionFactor, z = [
+	50;
+	71.9320653
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x1 l4 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 14: GenericProjectionFactor, z = [
+	66.1970886;
+	61.1111111
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x1 l5 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 15: GenericProjectionFactor, z = [
+	50;
+	55.465195
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x1 l6 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 16: GenericProjectionFactor, z = [
+	33.8029114;
+	61.1111111
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x1 l7 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 17: GenericProjectionFactor, z = [
+	32.8203932;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x2 l0 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 18: GenericProjectionFactor, z = [
+	67.1796068;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x2 l1 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 19: GenericProjectionFactor, z = [
+	60.3077641;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x2 l2 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 20: GenericProjectionFactor, z = [
+	39.6922359;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x2 l3 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 21: GenericProjectionFactor, z = [
+	35.2746228;
+	67.8571429
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x2 l4 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 22: GenericProjectionFactor, z = [
+	64.7253772;
+	67.8571429
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x2 l5 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 23: GenericProjectionFactor, z = [
+	59.3706946;
+	56.8181818
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x2 l6 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 24: GenericProjectionFactor, z = [
+	40.6293054;
+	56.8181818
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x2 l7 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 25: GenericProjectionFactor, z = [
+	31.7782753;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x3 l0 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 26: GenericProjectionFactor, z = [
+	50;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x3 l1 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 27: GenericProjectionFactor, z = [
+	68.2217247;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x3 l2 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 28: GenericProjectionFactor, z = [
+	50;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x3 l3 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 29: GenericProjectionFactor, z = [
+	33.8029114;
+	61.1111111
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x3 l4 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 30: GenericProjectionFactor, z = [
+	50;
+	71.9320653
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x3 l5 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 31: GenericProjectionFactor, z = [
+	66.1970886;
+	61.1111111
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x3 l6 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 32: GenericProjectionFactor, z = [
+	50;
+	55.465195
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x3 l7 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 33: GenericProjectionFactor, z = [
+	39.6922359;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x4 l0 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 34: GenericProjectionFactor, z = [
+	32.8203932;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x4 l1 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 35: GenericProjectionFactor, z = [
+	67.1796068;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x4 l2 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 36: GenericProjectionFactor, z = [
+	60.3077641;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x4 l3 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 37: GenericProjectionFactor, z = [
+	40.6293054;
+	56.8181818
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x4 l4 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 38: GenericProjectionFactor, z = [
+	35.2746228;
+	67.8571429
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x4 l5 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 39: GenericProjectionFactor, z = [
+	64.7253772;
+	67.8571429
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x4 l6 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 40: GenericProjectionFactor, z = [
+	59.3706946;
+	56.8181818
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x4 l7 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 41: GenericProjectionFactor, z = [
+	50;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x5 l0 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 42: GenericProjectionFactor, z = [
+	31.7782753;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x5 l1 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 43: GenericProjectionFactor, z = [
+	50;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x5 l2 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 44: GenericProjectionFactor, z = [
+	68.2217247;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x5 l3 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 45: GenericProjectionFactor, z = [
+	50;
+	55.465195
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x5 l4 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 46: GenericProjectionFactor, z = [
+	33.8029114;
+	61.1111111
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x5 l5 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 47: GenericProjectionFactor, z = [
+	50;
+	71.9320653
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x5 l6 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 48: GenericProjectionFactor, z = [
+	66.1970886;
+	61.1111111
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x5 l7 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 49: GenericProjectionFactor, z = [
+	60.3077641;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x6 l0 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 50: GenericProjectionFactor, z = [
+	39.6922359;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x6 l1 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 51: GenericProjectionFactor, z = [
+	32.8203932;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x6 l2 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 52: GenericProjectionFactor, z = [
+	67.1796068;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x6 l3 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 53: GenericProjectionFactor, z = [
+	59.3706946;
+	56.8181818
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x6 l4 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 54: GenericProjectionFactor, z = [
+	40.6293054;
+	56.8181818
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x6 l5 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 55: GenericProjectionFactor, z = [
+	35.2746228;
+	67.8571429
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x6 l6 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 56: GenericProjectionFactor, z = [
+	64.7253772;
+	67.8571429
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x6 l7 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 57: GenericProjectionFactor, z = [
+	68.2217247;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x7 l0 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 58: GenericProjectionFactor, z = [
+	50;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x7 l1 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 59: GenericProjectionFactor, z = [
+	31.7782753;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x7 l2 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 60: GenericProjectionFactor, z = [
+	50;
+	37.5
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x7 l3 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 61: GenericProjectionFactor, z = [
+	66.1970886;
+	61.1111111
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x7 l4 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 62: GenericProjectionFactor, z = [
+	50;
+	55.465195
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x7 l5 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 63: GenericProjectionFactor, z = [
+	33.8029114;
+	61.1111111
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x7 l6 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 64: GenericProjectionFactor, z = [
+	50;
+	71.9320653
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { x7 l7 }
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  noise model: unit (2) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Factor 65: PriorFactor on l0
+  prior mean: [
+	10;
+	10;
+	10
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>isotropic dim=3 sigma=0.1
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create the data structure to hold the initial estimate to the solution
+Intentionally initialize the variables off from the ground truth</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">initial_estimate</span> <span class="o">=</span> <span class="n">Values</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pose</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">poses</span><span class="p">):</span>
+    <span class="n">transformed_pose</span> <span class="o">=</span> <span class="n">pose</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">initial_estimate</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">transformed_pose</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="n">transformed_point</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">initial_estimate</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">L</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="n">transformed_point</span><span class="p">)</span>
+<span class="n">initial_estimate</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Initial Estimates:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initial Estimates:
+
+Values with 16 values:
+Value l0: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	10.0439752;
+	10.0035101;
+	10.1366374
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l1: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	-10.1893891;
+	10.0211016;
+	10.0047999
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l2: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	-10.0424113;
+	-10.2174415;
+	9.88082492
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l3: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	9.96945419;
+	-9.94969299;
+	10.1580714
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l4: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	10.0500539;
+	10.0780054;
+	-9.88716022
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l5: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	-10.0182471;
+	9.96867653;
+	-9.99776426
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l6: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	-10.0025354;
+	-9.83717257;
+	-9.91491279
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l7: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	9.89389253;
+	-9.93934394;
+	-10.0298928
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x0: (gtsam::Pose3)
+R: [
+	0.0920189258, 0.303495344, -0.948379193;
+	0.993624752, 0.0343125032, 0.1073895;
+	0.0651334773, -0.952214907, -0.298403086
+]
+t:    39.9357378 -0.0228666975    9.92821367
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x1: (gtsam::Pose3)
+R: [
+	-0.77138787, 0.162647632, -0.615228821;
+	0.632500341, 0.302350776, -0.71311102;
+	0.0700290928, -0.93921763, -0.336104404
+]
+t: 28.4387989 28.2924197 10.0909147
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x2: (gtsam::Pose3)
+R: [
+	-0.998992662, -0.0433981529, 0.0114131945;
+	-0.0275838473, 0.393271016, -0.919008726;
+	0.0353948026, -0.918397794, -0.394071948
+]
+t: -0.200836306   40.0374265   10.0607916
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x3: (gtsam::Pose3)
+R: [
+	-0.65820916, -0.140367384, 0.739633489;
+	-0.752132061, 0.165059138, -0.638006931;
+	-0.032527902, -0.976244067, -0.214218246
+]
+t: -28.1958822  28.3767724  9.91956273
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x4: (gtsam::Pose3)
+R: [
+	0.15201915, -0.208565996, 0.966121319;
+	-0.985725819, 0.0395614659, 0.163644435;
+	-0.0723518402, -0.977207816, -0.199574787
+]
+t:  -40.0611714 -0.107232828   9.83413676
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x5: (gtsam::Pose3)
+R: [
+	0.66472718, -0.20017785, 0.719768438;
+	-0.745087603, -0.248058034, 0.619121697;
+	0.0546098932, -0.94783756, -0.314040952
+]
+t: -28.2140255 -28.3852781  9.93822092
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x6: (gtsam::Pose3)
+R: [
+	0.987893123, -0.0369020534, -0.150683163;
+	0.141154414, -0.189162646, 0.971747356;
+	-0.0643630986, -0.981252125, -0.181663589
+]
+t: 0.171188333 -39.9746625  10.0110671
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x7: (gtsam::Pose3)
+R: [
+	0.855823346, 0.314219374, -0.410892426;
+	0.501641298, -0.310395661, 0.807471697;
+	0.126184026, -0.897173739, -0.423269268
+]
+t:  28.3278899 -28.3734425    9.818727
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Optimize the graph and print results</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">DoglegParams</span><span class="p">()</span>
+<span class="n">params</span><span class="o">.</span><span class="n">setVerbosity</span><span class="p">(</span><span class="s1">&#39;TERMINATION&#39;</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">DoglegOptimizer</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">initial_estimate</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Optimizing:&#39;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+<span class="n">result</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Final results:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;initial error = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">initial_estimate</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;final error = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimizing:
+converged
+errorThreshold: 1.00135642e-18 &lt;? 0
+absoluteDecrease: 3.62129921557e-08 &lt;? 1e-05
+relativeDecrease: 0.999999999972 &lt;? 1e-05
+iterations: 4 &gt;? 100
+Final results:
+
+Values with 16 values:
+Value l0: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	10;
+	10;
+	10
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l1: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	-10;
+	10;
+	9.99999999999
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l2: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	-10;
+	-10;
+	9.99999999999
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l3: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	9.99999999996;
+	-10;
+	9.99999999999
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l4: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	9.99999999999;
+	10;
+	-10
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l5: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	-10;
+	10;
+	-10
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l6: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	-10;
+	-10;
+	-10
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l7: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+[
+	9.99999999996;
+	-10;
+	-10
+]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x0: (gtsam::Pose3)
+R: [
+	2.33808671625e-13, 0.242535625037, -0.970142500145;
+	1, -1.22660395549e-13, 2.10378395023e-13;
+	-6.79253719655e-14, -0.970142500145, -0.242535625037
+]
+t:                40 7.79523683584e-16                10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x1: (gtsam::Pose3)
+R: [
+	-0.707106781192, 0.171498585141, -0.685994340565;
+	0.707106781181, 0.171498585139, -0.685994340576;
+	-3.22683778494e-12, -0.970142500146, -0.242535625033
+]
+t: 28.2842712466 28.2842712474 9.99999999964
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x2: (gtsam::Pose3)
+R: [
+	-1, -3.07973262939e-14, -8.84876194416e-13;
+	8.50988976227e-13, 0.242535625036, -0.970142500145;
+	2.44494439715e-13, -0.970142500145, -0.242535625036
+]
+t: 1.28586060739e-11                40     9.99999999999
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x3: (gtsam::Pose3)
+R: [
+	-0.707106781187, -0.171498585143, 0.68599434057;
+	-0.707106781186, 0.171498585143, -0.68599434057;
+	1.76322326764e-13, -0.970142500145, -0.242535625036
+]
+t: -28.2842712475  28.2842712475             10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x4: (gtsam::Pose3)
+R: [
+	-7.01811131514e-14, -0.242535625036, 0.970142500145;
+	-1, -6.69828939246e-14, -8.90671197562e-14;
+	8.66010440908e-14, -0.970142500145, -0.242535625036
+]
+t:    -40.0000000001 5.30041195168e-12     9.99999999999
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x5: (gtsam::Pose3)
+R: [
+	0.707106781186, -0.171498585143, 0.68599434057;
+	-0.707106781187, -0.171498585143, 0.68599434057;
+	-3.47046099531e-14, -0.970142500145, -0.242535625036
+]
+t: -28.2842712475 -28.2842712475  9.99999999999
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x6: (gtsam::Pose3)
+R: [
+	1, -3.72034714776e-13, 1.15176771948e-12;
+	-1.20769163349e-12, -0.242535625036, 0.970142500145;
+	-8.15514537355e-14, -0.970142500145, -0.242535625036
+]
+t: -7.88400877794e-11                -40      9.99999999999
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x7: (gtsam::Pose3)
+R: [
+	0.707106781187, 0.171498585142, -0.685994340569;
+	0.707106781186, -0.171498585143, 0.685994340571;
+	-1.4662371066e-13, -0.970142500145, -0.242535625036
+]
+t:  28.2842712474 -28.2842712475             10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial error = 3127.3701538181053
+final error = 1.0013564222995816e-18
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">marginals</span> <span class="o">=</span> <span class="n">Marginals</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">plot_3d_points</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">marginals</span><span class="o">=</span><span class="n">marginals</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">plot_trajectory</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">marginals</span><span class="o">=</span><span class="n">marginals</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/SFMExample_12_0.png" src="_images/SFMExample_12_0.png" />
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="PlanarSLAMExample.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">4. </span>Planar SLAM</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="SFMExample_bal.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>SFM with BAL Files</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Frank Dellaert and the GTSAM Community<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
