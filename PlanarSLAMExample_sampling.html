@@ -57,7 +57,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Gaussian Variational Inference" href="PlanarSLAMExample_gvi.html" />
+    <link rel="next" title="6. Variational Bayes Inference" href="PlanarSLAMExample_gvi.html" />
     <link rel="prev" title="4. Planar SLAM" href="PlanarSLAMExample.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -130,7 +130,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="PlanarSLAMExample_gvi.html">
-   6. Gaussian Variational Inference
+   6. Variational Bayes Inference
   </a>
  </li>
  <li class="toctree-l1">
@@ -326,7 +326,8 @@
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="sampling-from-the-posterior">
+  <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/PlanarSLAMExample_sampling.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="sampling-from-the-posterior">
 <h1><span class="section-number">5. </span>Sampling from the posterior<a class="headerlink" href="#sampling-from-the-posterior" title="Permalink to this headline">¶</a></h1>
 <p>In this example we re-re-create the planar SLAM example, and then explore three techniques to obtain samples from the posterior:</p>
 <ul class="simple">
@@ -409,7 +410,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_sampling_4_0.svg" src="_images/PlanarSLAMExample_sampling_4_0.svg" /></div>
+<img alt="_images/PlanarSLAMExample_sampling_5_0.svg" src="_images/PlanarSLAMExample_sampling_5_0.svg" /></div>
 </div>
 <p>As always, we can calculate and plot covariance ellipses which show the Laplace approximation graphically.</p>
 <div class="cell docutils container">
@@ -433,7 +434,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_sampling_6_0.png" src="_images/PlanarSLAMExample_sampling_6_0.png" />
+<img alt="_images/PlanarSLAMExample_sampling_7_0.png" src="_images/PlanarSLAMExample_sampling_7_0.png" />
 </div>
 </div>
 </div>
@@ -448,7 +449,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_sampling_8_0.svg" src="_images/PlanarSLAMExample_sampling_8_0.svg" /></div>
+<img alt="_images/PlanarSLAMExample_sampling_9_0.svg" src="_images/PlanarSLAMExample_sampling_9_0.svg" /></div>
 </div>
 <p>The following function implements ancestral sampling in an arbitrary Gaussian Bayes net. This is not yet implemented inside GTSAM for the fully general case, but will be soon.   It returns a dictionary of samples in the <em>tangent space</em> of each variable manifold, at the ground truth values.</p>
 <div class="cell docutils container">
@@ -513,7 +514,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_sampling_14_0.png" src="_images/PlanarSLAMExample_sampling_14_0.png" />
+<img alt="_images/PlanarSLAMExample_sampling_15_0.png" src="_images/PlanarSLAMExample_sampling_15_0.png" />
 </div>
 </div>
 </div>
@@ -551,7 +552,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_sampling_16_0.png" src="_images/PlanarSLAMExample_sampling_16_0.png" />
+<img alt="_images/PlanarSLAMExample_sampling_17_0.png" src="_images/PlanarSLAMExample_sampling_17_0.png" />
 </div>
 </div>
 <p>Note how the landmark densities are now definitely non-Gaussian: landmark <span class="math notranslate nohighlight">\(l_1\)</span> is bearing only, and there is a “cone-like” extension of the density towards the top of the figure. Landmark <span class="math notranslate nohighlight">\(l_2\)</span> is shaped like an arc, because of the uncertain bearing measurement coupled with a fairly good range measurement.</p>
@@ -611,7 +612,7 @@ You can actually <em>see</em> this in the plot, as there are a few high weight s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_sampling_19_0.png" src="_images/PlanarSLAMExample_sampling_19_0.png" />
+<img alt="_images/PlanarSLAMExample_sampling_20_0.png" src="_images/PlanarSLAMExample_sampling_20_0.png" />
 </div>
 </div>
 <p>It is clear that MCMC is able to capture the shape of the posterior very nicely.
@@ -669,10 +670,10 @@ The downside is that the samples were generated from a Markov chain and are <em>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MAP estimate for d12 = 2.0
-MCMC estimate for d12 = 2.5417144341581452
+MCMC estimate for d12 = 1.9805140322656392
 </pre></div>
 </div>
-<img alt="_images/PlanarSLAMExample_sampling_22_1.png" src="_images/PlanarSLAMExample_sampling_22_1.png" />
+<img alt="_images/PlanarSLAMExample_sampling_23_1.png" src="_images/PlanarSLAMExample_sampling_23_1.png" />
 </div>
 </div>
 <p>We see that the Monte Carlo expectations for <span class="math notranslate nohighlight">\(l_1\)</span> and <span class="math notranslate nohighlight">\(l_2\)</span> do <em>not</em> agree with a MAP estimate, which is completely expected: the mean and mode of a density typically do not coincide. In addition, the Monte Carlo for their distance also does not agree. We plot the histogram of distance samples below, which is clearly non-Gaussian:</p>
@@ -684,10 +685,10 @@ MCMC estimate for d12 = 2.5417144341581452
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Histogram for 1513 |l2-l1| samples
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Histogram for 1211 |l2-l1| samples
 </pre></div>
 </div>
-<img alt="_images/PlanarSLAMExample_sampling_24_1.png" src="_images/PlanarSLAMExample_sampling_24_1.png" />
+<img alt="_images/PlanarSLAMExample_sampling_25_1.png" src="_images/PlanarSLAMExample_sampling_25_1.png" />
 </div>
 </div>
 <p>Finally, note that the correct MC expectation differs from taking the distance between the MCMC estimates, as distance is nonlinear:</p>
@@ -698,7 +699,7 @@ MCMC estimate for d12 = 2.5417144341581452
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Incorrect estimate for d12 = 2.0405511374328777
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Incorrect estimate for d12 = 1.749972682366372
 </pre></div>
 </div>
 </div>
@@ -742,7 +743,7 @@ MCMC estimate for d12 = 2.5417144341581452
     <a class='right-next' id="next-link" href="PlanarSLAMExample_gvi.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">6. </span>Gaussian Variational Inference</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>Variational Bayes Inference</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

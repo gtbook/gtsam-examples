@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6. Gaussian Variational Inference &#8212; GTSAM by Example</title>
+    <title>6. Variational Bayes Inference &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -130,7 +130,7 @@
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   6. Gaussian Variational Inference
+   6. Variational Bayes Inference
   </a>
  </li>
  <li class="toctree-l1">
@@ -272,7 +272,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Gaussian Variational Inference</h1>
+                <h1>Variational Bayes Inference</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -306,9 +306,10 @@
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="gaussian-variational-inference">
-<h1><span class="section-number">6. </span>Gaussian Variational Inference<a class="headerlink" href="#gaussian-variational-inference" title="Permalink to this headline">¶</a></h1>
-<p>GTSAm does maximum a posteriori (MAP) estimation, and with the <code class="docutils literal notranslate"><span class="pre">gtsam.Marginals</span></code> object we can get the Laplace approximation to the posterior density. As shown in 2020 paper by Barfoot, variational Bayes not only optimizes for the mean <span class="math notranslate nohighlight">\(\mu\)</span> but also for the covariance <span class="math notranslate nohighlight">\(\Sigma\)</span> of an approximation</p>
+  <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/PlanarSLAMExample_gvi.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="variational-bayes-inference">
+<h1><span class="section-number">6. </span>Variational Bayes Inference<a class="headerlink" href="#variational-bayes-inference" title="Permalink to this headline">¶</a></h1>
+<p>GTSAM is most-often used for posteriori (MAP) estimation, and with the <code class="docutils literal notranslate"><span class="pre">gtsam.Marginals</span></code> object we can get the Laplace approximation to the posterior density. As shown in a <a class="reference external" href="https://journals.sagepub.com/doi/abs/10.1177/0278364920937608">2020 IJRR paper by Tim Barfoot et al</a>, variational Bayes not only optimizes for the mean <span class="math notranslate nohighlight">\(\mu\)</span> but also for the covariance <span class="math notranslate nohighlight">\(\Sigma\)</span> of an approximation</p>
 <div class="math notranslate nohighlight">
 \[
 q(x) \sim \mathcal{N}(x;\mu, \Sigma).
@@ -324,7 +325,7 @@ q(x) \sim \mathcal{N}(x;\mu, \Sigma).
 </ul>
 </li>
 </ul>
-<p>Note that we sample from <span class="math notranslate nohighlight">\(q\)</span>, not the true posterior, which would be much harder.</p>
+<p>Note that we sample from <span class="math notranslate nohighlight">\(q\)</span>, not the true posterior, which would be much harder. In the version below, which uses ancestral sampling to create the expectations, we do not need the marginals of Q explicitly, even though we do compute them in various places to draw covariance ellipses for visualization purposes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook # also installs latest gtsam pre-release
@@ -393,7 +394,7 @@ q(x) \sim \mathcal{N}(x;\mu, \Sigma).
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_gvi_4_0.svg" src="_images/PlanarSLAMExample_gvi_4_0.svg" /></div>
+<img alt="_images/PlanarSLAMExample_gvi_5_0.svg" src="_images/PlanarSLAMExample_gvi_5_0.svg" /></div>
 </div>
 <p>As always, we can calculate and plot covariance ellipses which show the Laplace approximation graphically.</p>
 <div class="cell docutils container">
@@ -417,7 +418,7 @@ q(x) \sim \mathcal{N}(x;\mu, \Sigma).
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_gvi_6_0.png" src="_images/PlanarSLAMExample_gvi_6_0.png" />
+<img alt="_images/PlanarSLAMExample_gvi_7_0.png" src="_images/PlanarSLAMExample_gvi_7_0.png" />
 </div>
 </div>
 </div>
@@ -499,20 +500,24 @@ q(x) \sim \mathcal{N}(x;\mu, \Sigma).
 
     <span class="c1"># update non-linear estimate</span>
     <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">]:</span>
+        <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_pose2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">values</span><span class="o">.</span><span class="n">atPose2</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">]:</span>
+        <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">values</span><span class="o">.</span><span class="n">atPoint2</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">)</span>
 
 <span class="c1"># show new covariances</span>
 <span class="n">new_marginals</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Marginals</span><span class="p">(</span><span class="n">big_graph</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">]:</span>
     <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_pose2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">values</span><span class="o">.</span><span class="n">atPose2</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">,</span>
-                        <span class="n">N</span><span class="o">*</span><span class="n">new_marginals</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+                          <span class="n">N</span><span class="o">*</span><span class="n">new_marginals</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">]:</span>
     <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">values</span><span class="o">.</span><span class="n">atPoint2</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">,</span>
-                        <span class="n">N</span><span class="o">*</span><span class="n">new_marginals</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+                           <span class="n">N</span><span class="o">*</span><span class="n">new_marginals</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_gvi_12_0.png" src="_images/PlanarSLAMExample_gvi_12_0.png" />
+<img alt="_images/PlanarSLAMExample_gvi_13_0.png" src="_images/PlanarSLAMExample_gvi_13_0.png" />
 </div>
 </div>
 <p>Comparing this with the MCMC result, it seems to evolve in the right direction, although the approximation on <span class="math notranslate nohighlight">\(l_1\)</span> seems off and overconfident.</p>
