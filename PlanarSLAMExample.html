@@ -37,9 +37,12 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
@@ -52,8 +55,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="5. Structure from Motion" href="SFMExample.html" />
-    <link rel="prev" title="3. Pose2 iSAM" href="Pose2ISAM2Example.html" />
+    <link rel="next" title="5. Sampling from the posterior" href="PlanarSLAMExample_sampling.html" />
+    <link rel="prev" title="3. Pose2 SLAM with g2o Files" href="Pose2SLAMExample_g2o.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -104,13 +107,13 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
-   2. Pose2 SLAM with g2o Files
+  <a class="reference internal" href="Pose2ISAM2Example.html">
+   2. Pose2 iSAM
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="Pose2ISAM2Example.html">
-   3. Pose2 iSAM
+  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+   3. Pose2 SLAM with g2o Files
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -119,13 +122,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+   5. Sampling from the posterior
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+   6. Gaussian Variational Inference
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="SFMExample.html">
-   5. Structure from Motion
+   7. Structure from Motion
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="SFMExample_bal.html">
-   6. SFM with BAL Files
+   8. SFM with BAL Files
   </a>
  </li>
 </ul>
@@ -255,6 +268,11 @@
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">ERROR: pip&#39;s dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.</span>
+<span class=" -Color -Color-Red">gtbook 0.0.26 requires gtsam==4.2a6, but you have gtsam 4.2a5 which is incompatible.</span>
+
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
 </pre></div>
 </div>
@@ -499,17 +517,17 @@ L2 covariance:
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="Pose2ISAM2Example.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="Pose2SLAMExample_g2o.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">3. </span>Pose2 iSAM</p>
+            <p class="prev-next-title"><span class="section-number">3. </span>Pose2 SLAM with g2o Files</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="SFMExample.html" title="next page">
+    <a class='right-next' id="next-link" href="PlanarSLAMExample_sampling.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">5. </span>Structure from Motion</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Sampling from the posterior</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

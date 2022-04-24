@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6. SFM with BAL Files &#8212; GTSAM by Example</title>
+    <title>8. SFM with BAL Files &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -37,9 +37,12 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
@@ -52,7 +55,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="5. Structure from Motion" href="SFMExample.html" />
+    <link rel="prev" title="7. Structure from Motion" href="SFMExample.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -103,13 +106,13 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
-   2. Pose2 SLAM with g2o Files
+  <a class="reference internal" href="Pose2ISAM2Example.html">
+   2. Pose2 iSAM
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="Pose2ISAM2Example.html">
-   3. Pose2 iSAM
+  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+   3. Pose2 SLAM with g2o Files
   </a>
  </li>
  <li class="toctree-l1">
@@ -118,13 +121,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+   5. Sampling from the posterior
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+   6. Gaussian Variational Inference
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="SFMExample.html">
-   5. Structure from Motion
+   7. Structure from Motion
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   6. SFM with BAL Files
+   8. SFM with BAL Files
   </a>
  </li>
 </ul>
@@ -245,7 +258,7 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="sfm-with-bal-files">
-<h1><span class="section-number">6. </span>SFM with BAL Files<a class="headerlink" href="#sfm-with-bal-files" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">8. </span>SFM with BAL Files<a class="headerlink" href="#sfm-with-bal-files" title="Permalink to this headline">¶</a></h1>
 <p>This is an SFM Example that reads from a BAL (Bundle Adjustment in the Large) file.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -430,7 +443,7 @@
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">5. </span>Structure from Motion</p>
+            <p class="prev-next-title"><span class="section-number">7. </span>Structure from Motion</p>
         </div>
     </a>
 </div>

@@ -1,0 +1,582 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>6. Gaussian Variational Inference &#8212; GTSAM by Example</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="7. Structure from Motion" href="SFMExample.html" />
+    <link rel="prev" title="5. Sampling from the posterior" href="PlanarSLAMExample_sampling.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">GTSAM by Example</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   GTSAM by Example
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Pose2SLAMExample.html">
+   1. Pose2 SLAM
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Pose2ISAM2Example.html">
+   2. Pose2 iSAM
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+   3. Pose2 SLAM with g2o Files
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="PlanarSLAMExample.html">
+   4. Planar SLAM
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+   5. Sampling from the posterior
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   6. Gaussian Variational Inference
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="SFMExample.html">
+   7. Structure from Motion
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="SFMExample_bal.html">
+   8. SFM with BAL Files
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/PlanarSLAMExample_gvi.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/gtbook/gtsam-examples"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/gtbook/gtsam-examples/issues/new?title=Issue%20on%20page%20%2FPlanarSLAMExample_gvi.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gtbook/gtsam-examples/main?urlpath=tree/PlanarSLAMExample_gvi.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setting-up-a-non-linear-slam-example">
+   6.1. Setting up a non-linear SLAM Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ancestral-sampling">
+   6.2. Ancestral Sampling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#variational-bayes">
+   6.3. Variational Bayes
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Gaussian Variational Inference</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setting-up-a-non-linear-slam-example">
+   6.1. Setting up a non-linear SLAM Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ancestral-sampling">
+   6.2. Ancestral Sampling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#variational-bayes">
+   6.3. Variational Bayes
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="gaussian-variational-inference">
+<h1><span class="section-number">6. </span>Gaussian Variational Inference<a class="headerlink" href="#gaussian-variational-inference" title="Permalink to this headline">¶</a></h1>
+<p>GTSAm does maximum a posteriori (MAP) estimation, and with the <code class="docutils literal notranslate"><span class="pre">gtsam.Marginals</span></code> object we can get the Laplace approximation to the posterior density. As shown in 2020 paper by Barfoot, variational Bayes not only optimizes for the mean <span class="math notranslate nohighlight">\(\mu\)</span> but also for the covariance <span class="math notranslate nohighlight">\(\Sigma\)</span> of an approximation</p>
+<div class="math notranslate nohighlight">
+\[
+q(x) \sim \mathcal{N}(x;\mu, \Sigma).
+\]</div>
+<p>The key is that we need to take expectations of the factor log-likelihoods with respect to <span class="math notranslate nohighlight">\(q(x)\)</span>, and a simple way to do this is to <em>sample</em> from <span class="math notranslate nohighlight">\(q\)</span>. The recipe we follow below is then:</p>
+<ul class="simple">
+<li><p>initialize <span class="math notranslate nohighlight">\(q(x)\)</span> with MAP and Laplace approximation.</p></li>
+<li><p>for a few times:</p>
+<ul>
+<li><p>sample from q</p></li>
+<li><p>create linearized factors using the q samples</p></li>
+<li><p>optimize this graph</p></li>
+</ul>
+</li>
+</ul>
+<p>Note that we sample from <span class="math notranslate nohighlight">\(q\)</span>, not the true posterior, which would be much harder.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook # also installs latest gtsam pre-release
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">gtsam</span>
+<span class="kn">import</span> <span class="nn">gtsam.utils.plot</span> <span class="k">as</span> <span class="nn">gtsam_plot</span>
+<span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="kn">from</span> <span class="nn">gtsam</span> <span class="kn">import</span> <span class="n">Point2</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">,</span> <span class="n">Rot2</span><span class="p">,</span> <span class="n">noiseModel</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="setting-up-a-non-linear-slam-example">
+<h2><span class="section-number">6.1. </span>Setting up a non-linear SLAM Example<a class="headerlink" href="#setting-up-a-non-linear-slam-example" title="Permalink to this headline">¶</a></h2>
+<p>Below we re-create a similar factor graph as in <code class="docutils literal notranslate"><span class="pre">PlanarSLAMExample</span></code>, but with highly nonlinear measurements on the landmarks. Take a look at the sampling example to appreciate how non-Gaussian the posteriors are in this example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">x3</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">NonlinearFactorGraph</span><span class="p">()</span>
+<span class="n">priorMean</span> <span class="o">=</span> <span class="n">Pose2</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># prior at origin</span>
+<span class="n">priorNoise</span> <span class="o">=</span> <span class="n">noiseModel</span><span class="o">.</span><span class="n">Diagonal</span><span class="o">.</span><span class="n">Sigmas</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">PriorFactorPose2</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">priorMean</span><span class="p">,</span> <span class="n">priorNoise</span><span class="p">))</span>  <span class="c1"># add directly to graph</span>
+<span class="n">odometry</span> <span class="o">=</span> <span class="n">Pose2</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">odometryNoise</span> <span class="o">=</span> <span class="n">noiseModel</span><span class="o">.</span><span class="n">Diagonal</span><span class="o">.</span><span class="n">Sigmas</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">2</span><span class="p">)])</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">BetweenFactorPose2</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">odometry</span><span class="p">,</span> <span class="n">odometryNoise</span><span class="p">))</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">BetweenFactorPose2</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">odometry</span><span class="p">,</span> <span class="n">odometryNoise</span><span class="p">))</span>
+
+<span class="c1"># Except, we use bearing only measurements for l1</span>
+<span class="n">l1</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">l2</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">bearingModel</span> <span class="o">=</span> <span class="n">noiseModel</span><span class="o">.</span><span class="n">Diagonal</span><span class="o">.</span><span class="n">Sigmas</span><span class="p">([</span><span class="mf">0.1</span><span class="p">])</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">BearingFactor2D</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">Rot2</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">45</span><span class="p">)),</span> <span class="n">bearingModel</span><span class="p">))</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">BearingFactor2D</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">Rot2</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">90</span><span class="p">)),</span> <span class="n">bearingModel</span><span class="p">))</span>
+
+<span class="n">brNoise</span> <span class="o">=</span> <span class="n">noiseModel</span><span class="o">.</span><span class="n">Diagonal</span><span class="o">.</span><span class="n">Sigmas</span><span class="p">([</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span> <span class="mf">0.1</span><span class="p">])</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">BearingRangeFactor2D</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">Rot2</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">90</span><span class="p">)),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">brNoise</span><span class="p">))</span>
+
+<span class="c1"># Values with ground truth</span>
+<span class="n">truth</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">()</span>
+<span class="n">truth</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">truth</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">truth</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">truth</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">Point2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">truth</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span> <span class="n">Point2</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="n">show</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/PlanarSLAMExample_gvi_4_0.svg" src="_images/PlanarSLAMExample_gvi_4_0.svg" /></div>
+</div>
+<p>As always, we can calculate and plot covariance ellipses which show the Laplace approximation graphically.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">marginals</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Marginals</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">truth</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">make_figure</span><span class="p">():</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">]:</span>
+        <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_pose2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">truth</span><span class="o">.</span><span class="n">atPose2</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">,</span>
+                            <span class="n">marginals</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">]:</span>
+        <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">truth</span><span class="o">.</span><span class="n">atPoint2</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">,</span>
+                            <span class="n">marginals</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
+<span class="n">make_figure</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/PlanarSLAMExample_gvi_6_0.png" src="_images/PlanarSLAMExample_gvi_6_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="ancestral-sampling">
+<h2><span class="section-number">6.2. </span>Ancestral Sampling<a class="headerlink" href="#ancestral-sampling" title="Permalink to this headline">¶</a></h2>
+<p>To form the expectations for variational Bayes, we set up an efficient ancestral sampler for a Bayes net below.  This is not yet implemented inside GTSAM for the fully general case, but will be soon.   It returns a dictionary of samples in the <em>tangent space</em> of each variable manifold, at the ground truth values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sample_gaussian</span><span class="p">(</span><span class="n">bn</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; High performance ancestral sampling.</span>
+<span class="sd">        TODO: move to GTSAM, yet yield dict of samples as below</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">bn</span><span class="o">.</span><span class="n">size</span><span class="p">())):</span>
+        <span class="c1"># every node ~ exp(0.5*|R x + S p - d|^2)</span>
+        <span class="c1"># calculate mean as inv(R)*(d - S p)</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">bn</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">d</span><span class="p">()</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">parents</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">rhs</span> <span class="o">=</span> <span class="n">rhs</span> <span class="o">-</span> <span class="n">node</span><span class="o">.</span><span class="n">S</span><span class="p">()</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">sample</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">])</span>
+        <span class="c1"># sample from conditional Gaussian</span>
+        <span class="n">invR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">R</span><span class="p">())</span>
+        <span class="n">sample</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">invR</span> <span class="o">@</span> <span class="p">(</span><span class="n">rhs</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">N</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">sample</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The above creates samples in the <em>tangent space</em>, which we then need to upgrade to the non-linear manifold:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">perturb</span><span class="p">(</span><span class="n">tangent_samples</span><span class="p">:</span><span class="nb">dict</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span><span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span><span class="nb">int</span><span class="p">):</span>
+    <span class="n">vv</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tangent_samples</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">vv</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">tangent_samples</span><span class="p">[</span><span class="n">key</span><span class="p">][:,</span> <span class="n">s</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">values</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span>  <span class="c1"># all variables updated</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="variational-bayes">
+<h2><span class="section-number">6.3. </span>Variational Bayes<a class="headerlink" href="#variational-bayes" title="Permalink to this headline">¶</a></h2>
+<p>The code below then uses this sampler to create samples on the product manifold, each sample yielding linearized factors at the sample, yielding a new Gaussian factor graph which has <span class="math notranslate nohighlight">\(N\)</span> times as many factors. We then optimize that graph and iterate:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Start with ground truth</span>
+<span class="n">values</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">()</span>
+<span class="n">values</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">values</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">values</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">values</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">Point2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">values</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span> <span class="n">Point2</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="n">big_graph</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">linearize</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>  <span class="c1"># first time it&#39;s small!</span>
+<span class="n">bayes_net</span> <span class="o">=</span> <span class="n">big_graph</span><span class="o">.</span><span class="n">eliminateSequential</span><span class="p">()</span>
+
+<span class="n">make_figure</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="c1"># Use the Bayes net to sample from q:</span>
+    <span class="n">tangent_samples</span> <span class="o">=</span> <span class="n">sample_gaussian</span><span class="p">(</span><span class="n">bayes_net</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">manifold_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">perturb</span><span class="p">(</span><span class="n">tangent_samples</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+
+    <span class="c1"># Add new linearized factors for every sample:</span>
+    <span class="n">big_graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">manifold_sample</span> <span class="ow">in</span> <span class="n">manifold_samples</span><span class="p">:</span>
+        <span class="n">sample_graph</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">linearize</span><span class="p">(</span><span class="n">manifold_sample</span><span class="p">)</span>
+        <span class="n">big_graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">sample_graph</span><span class="p">)</span>
+
+    <span class="c1"># Solve by calculating Bayes net and solving:</span>
+    <span class="n">bayes_net</span> <span class="o">=</span> <span class="n">big_graph</span><span class="o">.</span><span class="n">eliminateSequential</span><span class="p">()</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">bayes_net</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+
+    <span class="c1"># update non-linear estimate</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+
+<span class="c1"># show new covariances</span>
+<span class="n">new_marginals</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Marginals</span><span class="p">(</span><span class="n">big_graph</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">]:</span>
+    <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_pose2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">values</span><span class="o">.</span><span class="n">atPose2</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">,</span>
+                        <span class="n">N</span><span class="o">*</span><span class="n">new_marginals</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">]:</span>
+    <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">values</span><span class="o">.</span><span class="n">atPoint2</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">,</span>
+                        <span class="n">N</span><span class="o">*</span><span class="n">new_marginals</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/PlanarSLAMExample_gvi_12_0.png" src="_images/PlanarSLAMExample_gvi_12_0.png" />
+</div>
+</div>
+<p>Comparing this with the MCMC result, it seems to evolve in the right direction, although the approximation on <span class="math notranslate nohighlight">\(l_1\)</span> seems off and overconfident.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="PlanarSLAMExample_sampling.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">5. </span>Sampling from the posterior</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="SFMExample.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Structure from Motion</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Frank Dellaert and the GTSAM Community<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2. Pose2 SLAM with g2o Files &#8212; GTSAM by Example</title>
+    <title>3. Pose2 SLAM with g2o Files &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -37,9 +37,12 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
@@ -52,8 +55,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3. Pose2 iSAM" href="Pose2ISAM2Example.html" />
-    <link rel="prev" title="1. Pose2 SLAM" href="Pose2SLAMExample.html" />
+    <link rel="next" title="4. Planar SLAM" href="PlanarSLAMExample.html" />
+    <link rel="prev" title="2. Pose2 iSAM" href="Pose2ISAM2Example.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -103,14 +106,14 @@
    1. Pose2 SLAM
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   2. Pose2 SLAM with g2o Files
-  </a>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="Pose2ISAM2Example.html">
-   3. Pose2 iSAM
+   2. Pose2 iSAM
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   3. Pose2 SLAM with g2o Files
   </a>
  </li>
  <li class="toctree-l1">
@@ -119,13 +122,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+   5. Sampling from the posterior
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+   6. Gaussian Variational Inference
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="SFMExample.html">
-   5. Structure from Motion
+   7. Structure from Motion
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="SFMExample_bal.html">
-   6. SFM with BAL Files
+   8. SFM with BAL Files
   </a>
  </li>
 </ul>
@@ -246,7 +259,7 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="pose2-slam-with-g2o-files">
-<h1><span class="section-number">2. </span>Pose2 SLAM with g2o Files<a class="headerlink" href="#pose2-slam-with-g2o-files" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3. </span>Pose2 SLAM with g2o Files<a class="headerlink" href="#pose2-slam-with-g2o-files" title="Permalink to this headline">¶</a></h1>
 <p>The example below is a Pose SLAM example that reads from “g2o” files:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -317,12 +330,12 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization complete
 initial error =  0.3916375099488787
-final error = Warning:  stopping nonlinear iterations because error increased
+final error =  0.06850346649982364
+Warning:  stopping nonlinear iterations because error increased
 errorThreshold: 0.0685035 &lt;? 0
 absoluteDecrease: -2.28853697639e-05 &lt;? 1e-05
 relativeDecrease: -0.000334187727181 &lt;? 1e-05
 iterations: 3 &gt;? 100
- 0.06850346649982364
 </pre></div>
 </div>
 </div>
@@ -437,17 +450,17 @@ Value 3: (gtsam::Pose2)
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="Pose2SLAMExample.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="Pose2ISAM2Example.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">1. </span>Pose2 SLAM</p>
+            <p class="prev-next-title"><span class="section-number">2. </span>Pose2 iSAM</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="Pose2ISAM2Example.html" title="next page">
+    <a class='right-next' id="next-link" href="PlanarSLAMExample.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3. </span>Pose2 iSAM</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Planar SLAM</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
