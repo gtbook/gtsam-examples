@@ -141,6 +141,11 @@
    8. SFM with BAL Files
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="StereoVOExample_large.html">
+   9. Stereo Visual Odometry
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -258,12 +263,13 @@
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="pose2-slam-with-g2o-files">
+  <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/Pose2SLAMExample_g2o.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="pose2-slam-with-g2o-files">
 <h1><span class="section-number">3. </span>Pose2 SLAM with g2o Files<a class="headerlink" href="#pose2-slam-with-g2o-files" title="Permalink to this headline">¶</a></h1>
 <p>The example below is a Pose SLAM example that reads from “g2o” files:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtsam==4.2a5
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook # also installs latest gtsam pre-release
 </pre></div>
 </div>
 </div>
@@ -332,9 +338,7 @@
 initial error =  0.3916375099488787
 final error =  0.06850346649982364
 Warning:  stopping nonlinear iterations because error increased
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>errorThreshold: 0.0685035 &lt;? 0
+errorThreshold: 0.0685035 &lt;? 0
 absoluteDecrease: -2.28853697639e-05 &lt;? 1e-05
 relativeDecrease: -0.000334187727181 &lt;? 1e-05
 iterations: 3 &gt;? 100
@@ -376,7 +380,7 @@ Factor 4: BetweenFactor(0,3)
 
 Factor 5: PriorFactor on 0
   prior mean:  (0, 0, 0)
-  noise model: diagonal sigmas[0.001; 0.001; 0.0001];
+  noise model: diagonal sigmas [0.001; 0.001; 0.0001];
 
 
 
@@ -422,7 +426,7 @@ Value 3: (gtsam::Pose2)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/Pose2SLAMExample_g2o_12_0.png" src="_images/Pose2SLAMExample_g2o_12_0.png" />
+<img alt="_images/Pose2SLAMExample_g2o_13_0.png" src="_images/Pose2SLAMExample_g2o_13_0.png" />
 </div>
 </div>
 </div>

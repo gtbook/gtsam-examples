@@ -141,6 +141,11 @@
    8. SFM with BAL Files
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="StereoVOExample_large.html">
+   9. Stereo Visual Odometry
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -258,21 +263,17 @@
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="planar-slam">
+  <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/PlanarSLAMExample.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="planar-slam">
 <h1><span class="section-number">4. </span>Planar SLAM<a class="headerlink" href="#planar-slam" title="Permalink to this headline">¶</a></h1>
 <p>“True” Simultaneous Localization and Mapping optimizes for both the unknown robot trajectory and unknown <em>landmarks</em>. The simple example below sketches out how this would work with GTSAM, in the 2D (<code class="docutils literal notranslate"><span class="pre">Pose2</span></code>) case.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtsam==4.2a5
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook # also installs latest gtsam pre-release
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">ERROR: pip&#39;s dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.</span>
-<span class=" -Color -Color-Red">gtbook 0.0.26 requires gtsam==4.2a6, but you have gtsam 4.2a5 which is incompatible.</span>
-
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
 </pre></div>
 </div>
@@ -336,31 +337,31 @@ NonlinearFactorGraph: size: 6
 
 Factor 0: PriorFactor on x1
   prior mean:  (0, 0, 0)
-  noise model: diagonal sigmas[0.3; 0.3; 0.1];
+  noise model: diagonal sigmas [0.3; 0.3; 0.1];
 
 Factor 1: BetweenFactor(x1,x2)
   measured:  (2, 0, 0)
-  noise model: diagonal sigmas[0.2; 0.2; 0.1];
+  noise model: diagonal sigmas [0.2; 0.2; 0.1];
 
 Factor 2: BetweenFactor(x2,x3)
   measured:  (2, 0, 0)
-  noise model: diagonal sigmas[0.2; 0.2; 0.1];
+  noise model: diagonal sigmas [0.2; 0.2; 0.1];
 
 Factor 3: BearingRangeFactor
 Factor 3:   keys = { x1 l1 }
-  noise model: diagonal sigmas[0.1; 0.2];
+  noise model: diagonal sigmas [0.1; 0.2];
 ExpressionFactor with measurement: bearing : 0.785398163
 range  2.82842712
 
 Factor 4: BearingRangeFactor
 Factor 4:   keys = { x2 l1 }
-  noise model: diagonal sigmas[0.1; 0.2];
+  noise model: diagonal sigmas [0.1; 0.2];
 ExpressionFactor with measurement: bearing : 1.57079633
 range  2
 
 Factor 5: BearingRangeFactor
 Factor 5:   keys = { x3 l2 }
-  noise model: diagonal sigmas[0.1; 0.2];
+  noise model: diagonal sigmas [0.1; 0.2];
 ExpressionFactor with measurement: bearing : 1.57079633
 range  2
 </pre></div>

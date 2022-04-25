@@ -143,6 +143,11 @@
    8. SFM with BAL Files
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="StereoVOExample_large.html">
+   9. Stereo Visual Odometry
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -331,11 +336,11 @@
 <h1><span class="section-number">5. </span>Sampling from the posterior<a class="headerlink" href="#sampling-from-the-posterior" title="Permalink to this headline">¶</a></h1>
 <p>In this example we re-re-create the planar SLAM example, and then explore three techniques to obtain samples from the posterior:</p>
 <ul class="simple">
-<li><p>sampling from the Gaussian <strong>Laplace-approximation</strong> provided by <code class="docutils literal notranslate"><span class="pre">Marginals</span></code>;</p></li>
+<li><p>sampling from the Gaussian <strong>Laplace-approximation</strong> provided by <a class="reference external" href="https://gtsam.org/doxygen/a04396.html">Marginals</a>;</p></li>
 <li><p>using the Gaussian as a proposal density for <strong>importance sampling</strong>;</p></li>
 <li><p><strong>Metropolis sampling</strong> with the tangent-space Gaussian as proposal density.</p></li>
 </ul>
-<p>The Laplace approximation is simply taking the inverse of the Hessian at convergence as the covariance matrix of a Gaussian density around the MAP estimate. THe <code class="docutils literal notranslate"><span class="pre">Marginals</span></code> class provides efficient methods to calculate any joint marginal of this density. However, especially when using nonlinear measurements such as bearing or bearing-range measurements it is important to realize just how much of an approximation this is, as will be illustrated below.</p>
+<p>The Laplace approximation is simply taking the inverse of the Hessian at convergence as the covariance matrix of a Gaussian density around the MAP estimate. The <a class="reference external" href="https://gtsam.org/doxygen/a04396.html">Marginals</a> class provides efficient methods to calculate any joint marginal of this density. However, especially when using nonlinear measurements such as bearing or bearing-range measurements it is important to realize just how much of an approximation this is, as will be illustrated below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook  # also installs latest gtsam pre-release
@@ -670,7 +675,7 @@ The downside is that the samples were generated from a Markov chain and are <em>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MAP estimate for d12 = 2.0
-MCMC estimate for d12 = 2.2386904808048804
+MCMC estimate for d12 = 2.128376072093934
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_sampling_23_1.png" src="_images/PlanarSLAMExample_sampling_23_1.png" />
@@ -685,7 +690,7 @@ MCMC estimate for d12 = 2.2386904808048804
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Histogram for 1357 |l2-l1| samples
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Histogram for 1433 |l2-l1| samples
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_sampling_25_1.png" src="_images/PlanarSLAMExample_sampling_25_1.png" />
@@ -699,7 +704,7 @@ MCMC estimate for d12 = 2.2386904808048804
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Incorrect estimate for d12 = 2.0169519330330514
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Incorrect estimate for d12 = 1.988398803490601
 </pre></div>
 </div>
 </div>

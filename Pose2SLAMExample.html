@@ -141,6 +141,11 @@
    8. SFM with BAL Files
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="StereoVOExample_large.html">
+   9. Stereo Visual Odometry
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -258,12 +263,13 @@
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="pose2-slam">
+  <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/Pose2SLAMExample.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="pose2-slam">
 <h1><span class="section-number">1. </span>Pose2 SLAM<a class="headerlink" href="#pose2-slam" title="Permalink to this headline">¶</a></h1>
 <p>A simple way to do Simultaneous Localization and Mapping is to just fuse <strong>relative pose measurements</strong> between successive robot poses. This landmark-less SLAM variant is often called “Pose SLAM”</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtsam==4.2a5
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook # also installs latest gtsam pre-release
 </pre></div>
 </div>
 </div>
@@ -341,27 +347,27 @@ NonlinearFactorGraph: size: 6
 
 Factor 0: PriorFactor on 1
   prior mean:  (0, 0, 0)
-  noise model: diagonal sigmas[0.3; 0.3; 0.1];
+  noise model: diagonal sigmas [0.3; 0.3; 0.1];
 
 Factor 1: BetweenFactor(1,2)
   measured:  (2, 0, 0)
-  noise model: diagonal sigmas[0.2; 0.2; 0.1];
+  noise model: diagonal sigmas [0.2; 0.2; 0.1];
 
 Factor 2: BetweenFactor(2,3)
   measured:  (2, 0, 1.57079633)
-  noise model: diagonal sigmas[0.2; 0.2; 0.1];
+  noise model: diagonal sigmas [0.2; 0.2; 0.1];
 
 Factor 3: BetweenFactor(3,4)
   measured:  (2, 0, 1.57079633)
-  noise model: diagonal sigmas[0.2; 0.2; 0.1];
+  noise model: diagonal sigmas [0.2; 0.2; 0.1];
 
 Factor 4: BetweenFactor(4,5)
   measured:  (2, 0, 1.57079633)
-  noise model: diagonal sigmas[0.2; 0.2; 0.1];
+  noise model: diagonal sigmas [0.2; 0.2; 0.1];
 
 Factor 5: BetweenFactor(5,2)
   measured:  (2, 0, 1.57079633)
-  noise model: diagonal sigmas[0.2; 0.2; 0.1];
+  noise model: diagonal sigmas [0.2; 0.2; 0.1];
 </pre></div>
 </div>
 </div>
@@ -522,7 +528,7 @@ X5 covariance:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/Pose2SLAMExample_26_0.png" src="_images/Pose2SLAMExample_26_0.png" />
+<img alt="_images/Pose2SLAMExample_27_0.png" src="_images/Pose2SLAMExample_27_0.png" />
 </div>
 </div>
 </div>
