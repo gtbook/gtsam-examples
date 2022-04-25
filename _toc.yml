@@ -12,6 +12,7 @@ chapters:
 - file: PlanarSLAMExample_gvi.ipynb
 - file: SFMExample.ipynb
 - file: SFMExample_bal.ipynb
+- file: StereoVOExample_large.ipynb
 # - file: slam.md
 #   sections:
 # - file: Pose2SLAMExample.ipynb
