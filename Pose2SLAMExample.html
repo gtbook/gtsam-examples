@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1. Pose2 SLAM &#8212; GTSAM by Example</title>
+    <title>2. Pose2 SLAM &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -55,8 +55,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="2. Pose2 iSAM" href="Pose2ISAM2Example.html" />
-    <link rel="prev" title="GTSAM by Example" href="intro.html" />
+    <link rel="next" title="3. Pose2 iSAM" href="Pose2ISAM2Example.html" />
+    <link rel="prev" title="1. Kalman Smoother" href="KalmanSmootherExample.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -101,49 +101,54 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="KalmanSmootherExample.html">
+   1. Kalman Smoother
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   1. Pose2 SLAM
+   2. Pose2 SLAM
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="Pose2ISAM2Example.html">
-   2. Pose2 iSAM
+   3. Pose2 iSAM
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="Pose2SLAMExample_g2o.html">
-   3. Pose2 SLAM with g2o Files
+   4. Pose2 SLAM with g2o Files
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="PlanarSLAMExample.html">
-   4. Planar SLAM
+   5. Planar SLAM
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="PlanarSLAMExample_sampling.html">
-   5. Sampling from the posterior
+   6. Sampling from the posterior
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="PlanarSLAMExample_gvi.html">
-   6. Variational Bayes Inference
+   7. Variational Bayes Inference
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="SFMExample.html">
-   7. Structure from Motion
+   8. Structure from Motion
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="SFMExample_bal.html">
-   8. SFM with BAL Files
+   9. SFM with BAL Files
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="StereoVOExample_large.html">
-   9. Stereo Visual Odometry
+   10. Stereo Visual Odometry
   </a>
  </li>
 </ul>
@@ -265,7 +270,7 @@
                 
   <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/Pose2SLAMExample.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <div class="tex2jax_ignore mathjax_ignore section" id="pose2-slam">
-<h1><span class="section-number">1. </span>Pose2 SLAM<a class="headerlink" href="#pose2-slam" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">2. </span>Pose2 SLAM<a class="headerlink" href="#pose2-slam" title="Permalink to this headline">¶</a></h1>
 <p>A simple way to do Simultaneous Localization and Mapping is to just fuse <strong>relative pose measurements</strong> between successive robot poses. This landmark-less SLAM variant is often called “Pose SLAM”</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -558,17 +563,17 @@ X5 covariance:
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="KalmanSmootherExample.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">GTSAM by Example</p>
+            <p class="prev-next-title"><span class="section-number">1. </span>Kalman Smoother</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="Pose2ISAM2Example.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">2. </span>Pose2 iSAM</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Pose2 iSAM</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
