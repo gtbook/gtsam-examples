@@ -278,8 +278,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sampling">
+   1.5. Sampling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conclusion">
-   1.5. Conclusion
+   1.6. Conclusion
   </a>
  </li>
 </ul>
@@ -323,8 +328,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sampling">
+   1.5. Sampling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conclusion">
-   1.5. Conclusion
+   1.6. Conclusion
   </a>
  </li>
 </ul>
@@ -361,6 +371,7 @@
 <span class="kn">import</span> <span class="nn">gtsam</span>
 <span class="kn">import</span> <span class="nn">gtsam.utils.plot</span> <span class="k">as</span> <span class="nn">gtsam_plot</span>
 <span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="kn">from</span> <span class="nn">gtbook.gaussian</span> <span class="kn">import</span> <span class="n">sample_bayes_net</span>
 <span class="kn">from</span> <span class="nn">gtsam</span> <span class="kn">import</span> <span class="n">Point2</span><span class="p">,</span> <span class="n">noiseModel</span>
 
 <span class="c1"># Some keys we use below:</span>
@@ -537,8 +548,71 @@ x3:
 </div>
 </div>
 </div>
+<div class="section" id="sampling">
+<h2><span class="section-number">1.5. </span>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">¶</a></h2>
+<p>Bayes nets support efficient ancestral sampling, which produces samples from the <em>joint</em> as a dictionary:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">sample_bayes_net</span><span class="p">(</span><span class="n">gbn</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">sample</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x3:
+[[ 3.78134426  3.96743198  3.71867392  3.73590406  3.69189367]
+ [ 0.23215039 -0.18671453  0.04801321 -0.35165372  0.04208107]]
+x2:
+[[ 1.86750878  2.04113392  1.65907877  1.7264668   1.6405222 ]
+ [-0.46078035 -0.18303956 -0.06252305 -0.15355662  0.07365482]]
+x1:
+[[-0.20430536  0.19934856 -0.4707504  -0.03936567 -0.30743681]
+ [-0.60594823 -0.17696246  0.02378782  0.39782201  0.05537294]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is fast, as sampling is done batch-wise, e.g., for batch-size <span class="math notranslate nohighlight">\(N=1000\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">samples</span> <span class="o">=</span> <span class="n">sample_bayes_net</span><span class="p">(</span><span class="n">gbn</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>304 µs ± 9.45 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gaussian_figure</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">]):</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;k.&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">Input In [13],</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">gaussian_figure</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">]):</span>
+<span class="ne">----&gt; </span><span class="mi">3</span>     <span class="n">points</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;k.&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;samples&#39; is not defined
+</pre></div>
+</div>
+<img alt="_images/KalmanSmootherExample_25_1.png" src="_images/KalmanSmootherExample_25_1.png" />
+</div>
+</div>
+</div>
 <div class="section" id="conclusion">
-<h2><span class="section-number">1.5. </span>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.6. </span>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
 <p>Kalman smoothers are easy. Kalman filters are actually harder to implement, but we also did that for you, in <code class="docutils literal notranslate"><span class="pre">gtsam.KalmanFilter</span></code> and <code class="docutils literal notranslate"><span class="pre">gtsam.ExtendedKalmanFilter</span></code>.</p>
 </div>
 </div>

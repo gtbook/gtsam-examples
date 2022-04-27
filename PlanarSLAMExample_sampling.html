@@ -384,6 +384,7 @@
 <span class="kn">import</span> <span class="nn">gtsam</span>
 <span class="kn">import</span> <span class="nn">gtsam.utils.plot</span> <span class="k">as</span> <span class="nn">gtsam_plot</span>
 <span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="kn">from</span> <span class="nn">gtbook.gaussian</span> <span class="kn">import</span> <span class="n">sample_bayes_net</span>
 <span class="kn">from</span> <span class="nn">gtsam</span> <span class="kn">import</span> <span class="n">Point2</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">,</span> <span class="n">Rot2</span><span class="p">,</span> <span class="n">noiseModel</span>
 </pre></div>
 </div>
@@ -471,38 +472,7 @@
 <div class="cell_output docutils container">
 <img alt="_images/PlanarSLAMExample_sampling_9_0.svg" src="_images/PlanarSLAMExample_sampling_9_0.svg" /></div>
 </div>
-<p>The following function implements ancestral sampling in an arbitrary Gaussian Bayes net. This is not yet implemented inside GTSAM for the fully general case, but will be soon.   It returns a dictionary of samples in the <em>tangent space</em> of each variable manifold, at the ground truth values.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sample_conditional</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianConditional</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">sample</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}):</span>
-    <span class="sd">&quot;&quot;&quot;Sample from conditional &quot;&quot;&quot;</span>
-    <span class="c1"># every node ~ exp(0.5*|R x + S p - d|^2)</span>
-    <span class="c1"># calculate mean as inv(R)*(d - S p)</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">d</span><span class="p">()</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-    <span class="n">rhs</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">rhs</span> <span class="o">=</span> <span class="n">rhs</span> <span class="o">-</span> <span class="n">node</span><span class="o">.</span><span class="n">S</span><span class="p">()</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">sample</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">])</span>
-    <span class="c1"># sample from conditional Gaussian</span>
-    <span class="n">invR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">R</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">invR</span> <span class="o">@</span> <span class="p">(</span><span class="n">rhs</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">N</span><span class="p">)))</span>
-
-
-<span class="k">def</span> <span class="nf">sample_gaussian</span><span class="p">(</span><span class="n">bn</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot; High performance ancestral sampling.</span>
-<span class="sd">        TODO: move to GTSAM, yield VectorValues</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sample</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">bn</span><span class="o">.</span><span class="n">size</span><span class="p">())):</span>
-        <span class="n">conditional</span> <span class="o">=</span> <span class="n">bn</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">parents</span> <span class="o">=</span> <span class="n">conditional</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-        <span class="n">sample</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_conditional</span><span class="p">(</span><span class="n">bn</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">N</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">sample</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The above creates samples in the <em>tangent space</em>, which we then need to upgrade to the non-linear manifold:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">gtbook.gaussian.sample_bayes_net</span></code>, which implements efficient ancestral sampling, yields samples in the <em>tangent space</em>, which we then need to upgrade to the non-linear manifold:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vector_values</span><span class="p">(</span><span class="n">tangent_samples</span><span class="p">:</span><span class="nb">dict</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span><span class="nb">int</span><span class="p">):</span>
@@ -522,7 +492,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">5000</span>
-<span class="n">tangent_samples</span> <span class="o">=</span> <span class="n">sample_gaussian</span><span class="p">(</span><span class="n">bayes_net</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">tangent_samples</span> <span class="o">=</span> <span class="n">sample_bayes_net</span><span class="p">(</span><span class="n">bayes_net</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
 <span class="n">manifold_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">perturb</span><span class="p">(</span><span class="n">tangent_samples</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
 </pre></div>
 </div>
@@ -549,7 +519,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_sampling_15_0.png" src="_images/PlanarSLAMExample_sampling_15_0.png" />
+<img alt="_images/PlanarSLAMExample_sampling_13_0.png" src="_images/PlanarSLAMExample_sampling_13_0.png" />
 </div>
 </div>
 </div>
@@ -581,7 +551,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_sampling_17_0.png" src="_images/PlanarSLAMExample_sampling_17_0.png" />
+<img alt="_images/PlanarSLAMExample_sampling_15_0.png" src="_images/PlanarSLAMExample_sampling_15_0.png" />
 </div>
 </div>
 <p>Note how the landmark densities are now definitely non-Gaussian: landmark <span class="math notranslate nohighlight">\(l_1\)</span> is bearing only, and there is a “cone-like” extension of the density towards the top of the figure. Landmark <span class="math notranslate nohighlight">\(l_2\)</span> is shaped like an arc, because of the uncertain bearing measurement coupled with a fairly good range measurement.</p>
@@ -607,7 +577,7 @@ You can actually <em>see</em> this in the plot, as there are a few high weight s
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">make_figure</span><span class="p">()</span>
 <span class="n">N</span> <span class="o">=</span> <span class="mi">20000</span>
 <span class="n">nr_accepted</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">tangent_proposals</span> <span class="o">=</span> <span class="n">sample_gaussian</span><span class="p">(</span><span class="n">bayes_net</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">tangent_proposals</span> <span class="o">=</span> <span class="n">sample_bayes_net</span><span class="p">(</span><span class="n">bayes_net</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="n">log_a</span><span class="p">):</span>
@@ -642,10 +612,10 @@ You can actually <em>see</em> this in the plot, as there are a few high weight s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=1459
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=1378
 </pre></div>
 </div>
-<img alt="_images/PlanarSLAMExample_sampling_20_1.png" src="_images/PlanarSLAMExample_sampling_20_1.png" />
+<img alt="_images/PlanarSLAMExample_sampling_18_1.png" src="_images/PlanarSLAMExample_sampling_18_1.png" />
 </div>
 </div>
 <p>It is clear that MCMC is able to capture the shape of the posterior very nicely.
@@ -715,10 +685,10 @@ l2: 1 factors
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=6016
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=5967
 </pre></div>
 </div>
-<img alt="_images/PlanarSLAMExample_sampling_25_1.png" src="_images/PlanarSLAMExample_sampling_25_1.png" />
+<img alt="_images/PlanarSLAMExample_sampling_23_1.png" src="_images/PlanarSLAMExample_sampling_23_1.png" />
 </div>
 </div>
 </div>
@@ -774,10 +744,10 @@ l2: 1 factors
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MAP estimate for d12 = 2.0
-MCMC estimate for d12 = 2.0242943699537017
+MCMC estimate for d12 = 2.0931161982081137
 </pre></div>
 </div>
-<img alt="_images/PlanarSLAMExample_sampling_27_1.png" src="_images/PlanarSLAMExample_sampling_27_1.png" />
+<img alt="_images/PlanarSLAMExample_sampling_25_1.png" src="_images/PlanarSLAMExample_sampling_25_1.png" />
 </div>
 </div>
 <p>We see that the Monte Carlo expectations for <span class="math notranslate nohighlight">\(l_1\)</span> and <span class="math notranslate nohighlight">\(l_2\)</span> do <em>not</em> agree with a MAP estimate, which is completely expected: the mean and mode of a density typically do not coincide. In addition, the Monte Carlo for their distance also does not agree. We plot the histogram of distance samples below, which is clearly non-Gaussian:</p>
@@ -789,10 +759,10 @@ MCMC estimate for d12 = 2.0242943699537017
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Histogram for 1483 |l2-l1| samples
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Histogram for 1383 |l2-l1| samples
 </pre></div>
 </div>
-<img alt="_images/PlanarSLAMExample_sampling_29_1.png" src="_images/PlanarSLAMExample_sampling_29_1.png" />
+<img alt="_images/PlanarSLAMExample_sampling_27_1.png" src="_images/PlanarSLAMExample_sampling_27_1.png" />
 </div>
 </div>
 <p>Finally, note that the correct MC expectation differs from taking the distance between the MCMC estimates, as distance is nonlinear:</p>
@@ -803,7 +773,7 @@ MCMC estimate for d12 = 2.0242943699537017
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Incorrect estimate for d12 = 1.8276486593000716
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Incorrect estimate for d12 = 1.9272495126460438
 </pre></div>
 </div>
 </div>

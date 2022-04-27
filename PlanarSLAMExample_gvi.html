@@ -258,8 +258,8 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ancestral-sampling">
-   7.1. Ancestral Sampling
+  <a class="reference internal nav-link" href="#sampling-on-the-manifold">
+   7.1. Sampling on the Manifold
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -303,8 +303,8 @@
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ancestral-sampling">
-   7.1. Ancestral Sampling
+  <a class="reference internal nav-link" href="#sampling-on-the-manifold">
+   7.1. Sampling on the Manifold
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -379,6 +379,7 @@ q(x) \sim \mathcal{N}(x;\mu, \Sigma).
 <span class="kn">import</span> <span class="nn">gtsam.utils.plot</span> <span class="k">as</span> <span class="nn">gtsam_plot</span>
 <span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">show</span>
 <span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">pretty</span>
+<span class="kn">from</span> <span class="nn">gtbook.gaussian</span> <span class="kn">import</span> <span class="n">sample_bayes_net</span>
 <span class="kn">from</span> <span class="nn">gtsam</span> <span class="kn">import</span> <span class="n">Point2</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">,</span> <span class="n">Rot2</span><span class="p">,</span> <span class="n">noiseModel</span>
 
 <span class="c1"># Some keys we use below:</span>
@@ -388,44 +389,16 @@ q(x) \sim \mathcal{N}(x;\mu, \Sigma).
 </div>
 </div>
 </div>
-<div class="section" id="ancestral-sampling">
-<h2><span class="section-number">7.1. </span>Ancestral Sampling<a class="headerlink" href="#ancestral-sampling" title="Permalink to this headline">¶</a></h2>
-<p>To form the expectations for variational Bayes, we set up an efficient ancestral sampler for a Bayes net below.  This is not yet implemented inside GTSAM for the fully general case, but will be soon.   It returns a dictionary of samples in the <em>tangent space</em> of each variable manifold, at the ground truth values.</p>
+<div class="section" id="sampling-on-the-manifold">
+<h2><span class="section-number">7.1. </span>Sampling on the Manifold<a class="headerlink" href="#sampling-on-the-manifold" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sample_bayes_net</span></code> creates samples in the <em>tangent space</em>, which we then need to upgrade to the non-linear manifold:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sample_gaussian</span><span class="p">(</span><span class="n">bn</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; High performance ancestral sampling.</span>
-<span class="sd">        TODO: move to GTSAM, yet yield dict of samples as below</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sample</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">bn</span><span class="o">.</span><span class="n">size</span><span class="p">())):</span>
-        <span class="c1"># every node ~ exp(0.5*|R x + S p - d|^2)</span>
-        <span class="c1"># calculate mean as inv(R)*(d - S p)</span>
-        <span class="n">node</span> <span class="o">=</span> <span class="n">bn</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">d</span><span class="p">()</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-        <span class="n">rhs</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">parents</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">rhs</span> <span class="o">=</span> <span class="n">rhs</span> <span class="o">-</span> <span class="n">node</span><span class="o">.</span><span class="n">S</span><span class="p">()</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">sample</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">])</span>
-        <span class="c1"># sample from conditional Gaussian</span>
-        <span class="n">invR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">R</span><span class="p">())</span>
-        <span class="n">sample</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">invR</span> <span class="o">@</span> <span class="p">(</span><span class="n">rhs</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">N</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="n">delta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">sample</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">delta</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">sample</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The above creates samples in the <em>tangent space</em>, which we then need to upgrade to the non-linear manifold:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">perturb</span><span class="p">(</span><span class="n">tangent_samples</span><span class="p">:</span><span class="nb">dict</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span><span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span><span class="nb">int</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">perturb</span><span class="p">(</span><span class="n">tangent_samples</span><span class="p">:</span><span class="nb">dict</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span><span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">vv</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tangent_samples</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">vv</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">tangent_samples</span><span class="p">[</span><span class="n">key</span><span class="p">][:,</span> <span class="n">s</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">values</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span>  <span class="c1"># all variables updated</span>
+    <span class="k">return</span> <span class="n">values</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span>  <span class="k">if</span> <span class="n">delta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">values</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">delta</span><span class="p">))</span> 
 </pre></div>
 </div>
 </div>
@@ -457,7 +430,7 @@ q(x) \sim \mathcal{N}(x;\mu, \Sigma).
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_gvi_9_0.svg" src="_images/PlanarSLAMExample_gvi_9_0.svg" /></div>
+<img alt="_images/PlanarSLAMExample_gvi_8_0.svg" src="_images/PlanarSLAMExample_gvi_8_0.svg" /></div>
 </div>
 <p>As always, we can calculate and plot covariance ellipses which show the Laplace approximation graphically.</p>
 <div class="cell docutils container">
@@ -476,7 +449,7 @@ q(x) \sim \mathcal{N}(x;\mu, \Sigma).
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_gvi_11_0.png" src="_images/PlanarSLAMExample_gvi_11_0.png" />
+<img alt="_images/PlanarSLAMExample_gvi_10_0.png" src="_images/PlanarSLAMExample_gvi_10_0.png" />
 </div>
 </div>
 <p>We can also inspect the actual information matrix and covariance matrix, to ascertain sparsity:</p>
@@ -553,8 +526,10 @@ P:
 <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="c1"># Use the Bayes net to sample from q:</span>
     <span class="c1"># KEY STEP: subtract delta from Gaussian samples as we moved to new tangent space</span>
-    <span class="n">tangent_samples</span> <span class="o">=</span> <span class="n">sample_gaussian</span><span class="p">(</span><span class="n">bayes_net</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">delta</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">manifold_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">perturb</span><span class="p">(</span><span class="n">tangent_samples</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+    <span class="n">tangent_samples</span> <span class="o">=</span> <span class="n">sample_bayes_net</span><span class="p">(</span><span class="n">bayes_net</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">mean_correction</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">manifold_samples</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">perturb</span><span class="p">(</span><span class="n">tangent_samples</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">mean_correction</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
 
     <span class="c1"># Add new linearized factors for every sample:</span>
     <span class="n">big_graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
@@ -586,14 +561,14 @@ P:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.0142
-it 2, norm of delta: 0.0119
-it 3, norm of delta: 0.0069
-it 4, norm of delta: 0.0038
-it 5, norm of delta: 0.0020
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.0124
+it 2, norm of delta: 0.0114
+it 3, norm of delta: 0.0015
+it 4, norm of delta: 0.0010
+it 5, norm of delta: 0.0010
 </pre></div>
 </div>
-<img alt="_images/PlanarSLAMExample_gvi_15_1.png" src="_images/PlanarSLAMExample_gvi_15_1.png" />
+<img alt="_images/PlanarSLAMExample_gvi_14_1.png" src="_images/PlanarSLAMExample_gvi_14_1.png" />
 </div>
 </div>
 <p>This is not converging.</p>
@@ -633,7 +608,7 @@ it 5, norm of delta: 0.0020
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_gvi_18_0.svg" src="_images/PlanarSLAMExample_gvi_18_0.svg" /></div>
+<img alt="_images/PlanarSLAMExample_gvi_17_0.svg" src="_images/PlanarSLAMExample_gvi_17_0.svg" /></div>
 </div>
 <p>As always, we can calculate and plot covariance ellipses which show the Laplace approximation graphically.</p>
 <div class="cell docutils container">
@@ -657,7 +632,7 @@ it 5, norm of delta: 0.0020
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/PlanarSLAMExample_gvi_20_0.png" src="_images/PlanarSLAMExample_gvi_20_0.png" />
+<img alt="_images/PlanarSLAMExample_gvi_19_0.png" src="_images/PlanarSLAMExample_gvi_19_0.png" />
 </div>
 </div>
 </div>
@@ -686,8 +661,9 @@ it 5, norm of delta: 0.0020
 
 <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="c1"># Use the Bayes net to sample from q:</span>
-    <span class="n">tangent_samples</span> <span class="o">=</span> <span class="n">sample_gaussian</span><span class="p">(</span><span class="n">bayes_net</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">delta</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">manifold_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">perturb</span><span class="p">(</span><span class="n">tangent_samples</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+    <span class="n">tangent_samples</span> <span class="o">=</span> <span class="n">sample_bayes_net</span><span class="p">(</span><span class="n">bayes_net</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">mean_correction</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">manifold_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">perturb</span><span class="p">(</span><span class="n">tangent_samples</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">mean_correction</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
 
     <span class="c1"># Add new linearized factors for every sample:</span>
     <span class="n">big_graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
@@ -744,21 +720,21 @@ it 5, norm of delta: 0.0020
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.1832
-it 2, norm of delta: 0.1494
-it 3, norm of delta: 0.1198
-it 4, norm of delta: 0.1125
-it 5, norm of delta: 0.0695
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.1793
+it 2, norm of delta: 0.1228
+it 3, norm of delta: 0.0299
+it 4, norm of delta: 0.0179
+it 5, norm of delta: 0.0123
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 6, norm of delta: 0.0980
-it 7, norm of delta: 0.0473
-it 8, norm of delta: 0.0146
-it 9, norm of delta: 0.0154
-it 10, norm of delta: 0.0112
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 6, norm of delta: 0.0087
+it 7, norm of delta: 0.0059
+it 8, norm of delta: 0.0043
+it 9, norm of delta: 0.0030
+it 10, norm of delta: 0.0021
 </pre></div>
 </div>
-<img alt="_images/PlanarSLAMExample_gvi_22_2.png" src="_images/PlanarSLAMExample_gvi_22_2.png" />
+<img alt="_images/PlanarSLAMExample_gvi_21_2.png" src="_images/PlanarSLAMExample_gvi_21_2.png" />
 </div>
 </div>
 </div>
