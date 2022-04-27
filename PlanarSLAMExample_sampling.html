@@ -427,6 +427,8 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
 <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">google.colab</span>
@@ -665,7 +667,7 @@ You can actually <em>see</em> this in the plot, as there are a few high weight s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=1421
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=1332
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_sampling_18_1.png" src="_images/PlanarSLAMExample_sampling_18_1.png" />
@@ -688,12 +690,11 @@ Unfortunately, calculating this conditional probability exactly is again a hard 
 First, we calculate all local factor graphs as a dict (TODO: gtsam.VariableIndex should behave as a dict):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-<span class="n">local_factors</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">NonlinearFactorGraph</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">local_factors</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">NonlinearFactorGraph</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">size</span><span class="p">()):</span>
     <span class="n">factor</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">factor</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">local_factors</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="n">local_factors</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">local</span> <span class="ow">in</span> <span class="n">local_factors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">local</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="si">}</span><span class="s2"> factors&quot;</span><span class="p">)</span>
 </pre></div>
@@ -721,7 +722,7 @@ l2: 1 factors
 <span class="n">x</span> <span class="o">=</span> <span class="n">truth</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="n">vv0</span><span class="p">)</span>  <span class="c1"># makes sure we don&#39;t touch truth</span>
 <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-    <span class="c1"># choose a variable to pertrub</span>
+    <span class="c1"># choose a variable to perturb</span>
     <span class="n">j</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
     <span class="n">vvj</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">()</span>
     <span class="n">vvj</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">tangent_proposals</span><span class="p">[</span><span class="n">j</span><span class="p">][:,</span> <span class="n">s</span><span class="p">])</span>
@@ -738,7 +739,7 @@ l2: 1 factors
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=6025
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=6070
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_sampling_23_1.png" src="_images/PlanarSLAMExample_sampling_23_1.png" />
@@ -797,7 +798,7 @@ l2: 1 factors
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MAP estimate for d12 = 2.0
-MCMC estimate for d12 = 2.0809498937400983
+MCMC estimate for d12 = 2.0302418487149185
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_sampling_25_1.png" src="_images/PlanarSLAMExample_sampling_25_1.png" />
@@ -812,7 +813,7 @@ MCMC estimate for d12 = 2.0809498937400983
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Histogram for 1462 |l2-l1| samples
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Histogram for 1357 |l2-l1| samples
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_sampling_27_1.png" src="_images/PlanarSLAMExample_sampling_27_1.png" />
@@ -826,7 +827,7 @@ MCMC estimate for d12 = 2.0809498937400983
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Incorrect estimate for d12 = 1.8920152339035479
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Incorrect estimate for d12 = 1.8994704868218804
 </pre></div>
 </div>
 </div>
