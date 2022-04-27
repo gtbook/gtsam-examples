@@ -4,16 +4,22 @@ options:
   numbered: true
 chapters:
 
-- file: KalmanSmootherExample.ipynb
-- file: Pose2SLAMExample.ipynb
-- file: Pose2ISAM2Example.ipynb
-- file: Pose2SLAMExample_g2o.ipynb
-- file: PlanarSLAMExample.ipynb
-- file: PlanarSLAMExample_sampling.ipynb
-- file: PlanarSLAMExample_gvi.ipynb
-- file: SFMExample.ipynb
-- file: SFMExample_bal.ipynb
-- file: StereoVOExample_large.ipynb
-# - file: slam.md
-#   sections:
-# - file: Pose2SLAMExample.ipynb
+- file: gaussian.md
+  sections:
+  - file: KalmanSmootherExample.ipynb
+  - file: KalmanSmootherExample2.ipynb
+- file: slam.md
+  sections:
+  - file: Pose2SLAMExample.ipynb
+  - file: Pose2ISAM2Example.ipynb
+  - file: Pose2SLAMExample_g2o.ipynb
+  - file: PlanarSLAMExample.ipynb
+- file: advanced.md
+  sections:
+  - file: PlanarSLAMExample_sampling.ipynb
+  - file: PlanarSLAMExample_gvi.ipynb
+- file: sfm.md
+  sections:
+  - file: SFMExample.ipynb
+  - file: SFMExample_bal.ipynb
+  - file: StereoVOExample_large.ipynb
