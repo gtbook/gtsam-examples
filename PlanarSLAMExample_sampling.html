@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6. Sampling from the posterior &#8212; GTSAM by Example</title>
+    <title>3.1. Sampling from the posterior &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -57,8 +57,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="7. Variational Bayes Inference" href="PlanarSLAMExample_gvi.html" />
-    <link rel="prev" title="5. Planar SLAM" href="PlanarSLAMExample.html" />
+    <link rel="next" title="3.2. Variational Bayes Inference" href="PlanarSLAMExample_gvi.html" />
+    <link rel="prev" title="3. Advanced Inference" href="advanced.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -103,55 +103,108 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="KalmanSmootherExample.html">
-   1. Kalman Smoother
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="gaussian.html">
+   1. Gaussian Inference
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample.html">
+     1.1. Kalman Smoother
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample2.html">
+     1.2. Advanced Kalman Smoothing
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample.html">
-   2. Pose2 SLAM
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="slam.html">
+   2. SLAM
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample.html">
+     2.1. Pose2 SLAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2ISAM2Example.html">
+     2.2. Pose2 iSAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+     2.3. Pose2 SLAM with g2o Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample.html">
+     2.4. Planar SLAM
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2ISAM2Example.html">
-   3. Pose2 iSAM
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="advanced.html">
+   3. Advanced Inference
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     3.1. Sampling from the posterior
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+     3.2. Variational Bayes Inference
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
-   4. Pose2 SLAM with g2o Files
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   4. Structure from Motion
   </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample.html">
-   5. Planar SLAM
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   6. Sampling from the posterior
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample_gvi.html">
-   7. Variational Bayes Inference
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SFMExample.html">
-   8. Structure from Motion
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SFMExample_bal.html">
-   9. SFM with BAL Files
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="StereoVOExample_large.html">
-   10. Stereo Visual Odometry
-  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample.html">
+     4.1. Structure from Motion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample_bal.html">
+     4.2. SFM with BAL Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="StereoVOExample_large.html">
+     4.3. Stereo Visual Odometry
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -259,32 +312,32 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#setting-up-a-non-linear-slam-example">
-   6.1. Setting up a non-linear SLAM Example
+   3.1.1. Setting up a non-linear SLAM Example
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-laplace-approximation-on-the-manifold">
-   6.2. The Laplace Approximation on the Manifold
+   3.1.2. The Laplace Approximation on the Manifold
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#importance-sampling">
-   6.3. Importance Sampling
+   3.1.3. Importance Sampling
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#metropolis-sampling">
-   6.4. Metropolis Sampling
+   3.1.4. Metropolis Sampling
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#local-mcmc-proposals">
-   6.5. Local MCMC Proposals
+   3.1.5. Local MCMC Proposals
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#computing-expectations">
-   6.6. Computing Expectations
+   3.1.6. Computing Expectations
   </a>
  </li>
 </ul>
@@ -309,32 +362,32 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#setting-up-a-non-linear-slam-example">
-   6.1. Setting up a non-linear SLAM Example
+   3.1.1. Setting up a non-linear SLAM Example
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-laplace-approximation-on-the-manifold">
-   6.2. The Laplace Approximation on the Manifold
+   3.1.2. The Laplace Approximation on the Manifold
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#importance-sampling">
-   6.3. Importance Sampling
+   3.1.3. Importance Sampling
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#metropolis-sampling">
-   6.4. Metropolis Sampling
+   3.1.4. Metropolis Sampling
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#local-mcmc-proposals">
-   6.5. Local MCMC Proposals
+   3.1.5. Local MCMC Proposals
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#computing-expectations">
-   6.6. Computing Expectations
+   3.1.6. Computing Expectations
   </a>
  </li>
 </ul>
@@ -348,7 +401,7 @@
                 
   <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/PlanarSLAMExample_sampling.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <div class="tex2jax_ignore mathjax_ignore section" id="sampling-from-the-posterior">
-<h1><span class="section-number">6. </span>Sampling from the posterior<a class="headerlink" href="#sampling-from-the-posterior" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.1. </span>Sampling from the posterior<a class="headerlink" href="#sampling-from-the-posterior" title="Permalink to this headline">¶</a></h1>
 <p>In this example we re-re-create the planar SLAM example, and then explore three techniques to obtain samples from the posterior:</p>
 <ul class="simple">
 <li><p>sampling from the Gaussian <strong>Laplace-approximation</strong> provided by <a class="reference external" href="https://gtsam.org/doxygen/a04396.html">Marginals</a>;</p></li>
@@ -391,7 +444,7 @@
 </div>
 </div>
 <div class="section" id="setting-up-a-non-linear-slam-example">
-<h2><span class="section-number">6.1. </span>Setting up a non-linear SLAM Example<a class="headerlink" href="#setting-up-a-non-linear-slam-example" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.1.1. </span>Setting up a non-linear SLAM Example<a class="headerlink" href="#setting-up-a-non-linear-slam-example" title="Permalink to this headline">¶</a></h2>
 <p>Below we re-create a similar factor graph as in <code class="docutils literal notranslate"><span class="pre">PlanarSLAMExample</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -460,7 +513,7 @@
 </div>
 </div>
 <div class="section" id="the-laplace-approximation-on-the-manifold">
-<h2><span class="section-number">6.2. </span>The Laplace Approximation on the Manifold<a class="headerlink" href="#the-laplace-approximation-on-the-manifold" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.1.2. </span>The Laplace Approximation on the Manifold<a class="headerlink" href="#the-laplace-approximation-on-the-manifold" title="Permalink to this headline">¶</a></h2>
 <p>To sample from the Laplace approximation we will use the corresponding Bayes Net, as it provides an efficient ancestral sampler. When we linearize at the ground truth and subsequently eliminate the resulting Gaussian factor graph, we obtain a Gaussian Bayes net, as shown below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -524,7 +577,7 @@
 </div>
 </div>
 <div class="section" id="importance-sampling">
-<h2><span class="section-number">6.3. </span>Importance Sampling<a class="headerlink" href="#importance-sampling" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.1.3. </span>Importance Sampling<a class="headerlink" href="#importance-sampling" title="Permalink to this headline">¶</a></h2>
 <p>Below we use the same samples, but now use them to calculate importance weights. We then plot the <em>same</em> samples as above but with an opacity proportional to the importance weight. This is unfortunately <em>slow</em> with matplotlib.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -559,7 +612,7 @@
 You can actually <em>see</em> this in the plot, as there are a few high weight samples that dominate. Any expectation derived from these weighted samples will be rather poor in quality.</p>
 </div>
 <div class="section" id="metropolis-sampling">
-<h2><span class="section-number">6.4. </span>Metropolis Sampling<a class="headerlink" href="#metropolis-sampling" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.1.4. </span>Metropolis Sampling<a class="headerlink" href="#metropolis-sampling" title="Permalink to this headline">¶</a></h2>
 <p>A better approach is to use Markov Chain Monte Carlo (MCMC) sampling. As it happens, we can easily use the Bayes net sampler we created above to set up a Metropolis sampler:</p>
 <ul class="simple">
 <li><p>Start with an initial estimate <span class="math notranslate nohighlight">\(x\)</span></p></li>
@@ -612,7 +665,7 @@ You can actually <em>see</em> this in the plot, as there are a few high weight s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=1489
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=1421
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_sampling_18_1.png" src="_images/PlanarSLAMExample_sampling_18_1.png" />
@@ -622,7 +675,7 @@ You can actually <em>see</em> this in the plot, as there are a few high weight s
 The downside is that the samples were generated from a Markov chain and are <em>correlated</em>, so you have to be careful when using it.</p>
 </div>
 <div class="section" id="local-mcmc-proposals">
-<h2><span class="section-number">6.5. </span>Local MCMC Proposals<a class="headerlink" href="#local-mcmc-proposals" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.1.5. </span>Local MCMC Proposals<a class="headerlink" href="#local-mcmc-proposals" title="Permalink to this headline">¶</a></h2>
 <p>Another MCMC variant that is conceptually simpler could work directly on the factor graph is Gibbs sampling.
 The algorithm iterates over all variables <span class="math notranslate nohighlight">\(x_j\)</span> in turn and generates a new sample <span class="math notranslate nohighlight">\(x\)</span>, automatically accepted, by sampling from <span class="math notranslate nohighlight">\(P(x_j|X_j)\)</span>, where <span class="math notranslate nohighlight">\(X_j\)</span> is the separator of variable <span class="math notranslate nohighlight">\(x_j\)</span>.
 Unfortunately, calculating this conditional probability exactly is again a hard problem, and sampling from it can be expensive as well.</p>
@@ -685,7 +738,7 @@ l2: 1 factors
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=6042
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=6025
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_sampling_23_1.png" src="_images/PlanarSLAMExample_sampling_23_1.png" />
@@ -693,7 +746,7 @@ l2: 1 factors
 </div>
 </div>
 <div class="section" id="computing-expectations">
-<h2><span class="section-number">6.6. </span>Computing Expectations<a class="headerlink" href="#computing-expectations" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.1.6. </span>Computing Expectations<a class="headerlink" href="#computing-expectations" title="Permalink to this headline">¶</a></h2>
 <p>One way to use the MCMC samples is to approximate expected values under the posterior. In the example code we calculate the Monte Carlo expectations of <span class="math notranslate nohighlight">\(l_1\)</span> and <span class="math notranslate nohighlight">\(l_2\)</span>, and they indeed agree with the MAP estimate. However, calculating the <em>distance</em> between those two landmarks is a nonlinear operation, and its Monte Carlo estimate deviates significantly from the estimate calculated at the ground truth solution. We also plot the histogram for the distance to show this more clearly.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -744,7 +797,7 @@ l2: 1 factors
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MAP estimate for d12 = 2.0
-MCMC estimate for d12 = 2.0927790821968397
+MCMC estimate for d12 = 2.0809498937400983
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_sampling_25_1.png" src="_images/PlanarSLAMExample_sampling_25_1.png" />
@@ -759,7 +812,7 @@ MCMC estimate for d12 = 2.0927790821968397
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Histogram for 1417 |l2-l1| samples
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Histogram for 1462 |l2-l1| samples
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_sampling_27_1.png" src="_images/PlanarSLAMExample_sampling_27_1.png" />
@@ -773,7 +826,7 @@ MCMC estimate for d12 = 2.0927790821968397
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Incorrect estimate for d12 = 1.9384059990516516
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Incorrect estimate for d12 = 1.8920152339035479
 </pre></div>
 </div>
 </div>
@@ -807,17 +860,17 @@ MCMC estimate for d12 = 2.0927790821968397
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="PlanarSLAMExample.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="advanced.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">5. </span>Planar SLAM</p>
+            <p class="prev-next-title"><span class="section-number">3. </span>Advanced Inference</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="PlanarSLAMExample_gvi.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">7. </span>Variational Bayes Inference</p>
+        <p class="prev-next-title"><span class="section-number">3.2. </span>Variational Bayes Inference</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

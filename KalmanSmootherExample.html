@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1. Kalman Smoother &#8212; GTSAM by Example</title>
+    <title>1.1. Kalman Smoother &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -57,8 +57,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="2. Pose2 SLAM" href="Pose2SLAMExample.html" />
-    <link rel="prev" title="GTSAM by Example" href="intro.html" />
+    <link rel="next" title="1.2. Advanced Kalman Smoothing" href="KalmanSmootherExample2.html" />
+    <link rel="prev" title="1. Gaussian Inference" href="gaussian.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -103,55 +103,108 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   1. Kalman Smoother
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="gaussian.html">
+   1. Gaussian Inference
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     1.1. Kalman Smoother
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample2.html">
+     1.2. Advanced Kalman Smoothing
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample.html">
-   2. Pose2 SLAM
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="slam.html">
+   2. SLAM
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample.html">
+     2.1. Pose2 SLAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2ISAM2Example.html">
+     2.2. Pose2 iSAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+     2.3. Pose2 SLAM with g2o Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample.html">
+     2.4. Planar SLAM
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2ISAM2Example.html">
-   3. Pose2 iSAM
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="advanced.html">
+   3. Advanced Inference
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+     3.1. Sampling from the posterior
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+     3.2. Variational Bayes Inference
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
-   4. Pose2 SLAM with g2o Files
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   4. Structure from Motion
   </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample.html">
-   5. Planar SLAM
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample_sampling.html">
-   6. Sampling from the posterior
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample_gvi.html">
-   7. Variational Bayes Inference
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SFMExample.html">
-   8. Structure from Motion
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SFMExample_bal.html">
-   9. SFM with BAL Files
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="StereoVOExample_large.html">
-   10. Stereo Visual Odometry
-  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample.html">
+     4.1. Structure from Motion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample_bal.html">
+     4.2. SFM with BAL Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="StereoVOExample_large.html">
+     4.3. Stereo Visual Odometry
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -259,32 +312,32 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-simple-kalman-smoother-example">
-   1.1. A Simple Kalman Smoother Example
+   1.1.1. A Simple Kalman Smoother Example
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-posterior-as-a-bayes-net">
-   1.2. The Posterior as a Bayes Net
+   1.1.2. The Posterior as a Bayes Net
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#marginals-the-hard-way">
-   1.3. Marginals, the Hard Way
+   1.1.3. Marginals, the Hard Way
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#efficient-marginals-using-the-bayes-tree">
-   1.4. Efficient Marginals using the Bayes Tree
+   1.1.4. Efficient Marginals using the Bayes Tree
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sampling">
-   1.5. Sampling
+   1.1.5. Sampling
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conclusion">
-   1.6. Conclusion
+   1.1.6. Conclusion
   </a>
  </li>
 </ul>
@@ -309,32 +362,32 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-simple-kalman-smoother-example">
-   1.1. A Simple Kalman Smoother Example
+   1.1.1. A Simple Kalman Smoother Example
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-posterior-as-a-bayes-net">
-   1.2. The Posterior as a Bayes Net
+   1.1.2. The Posterior as a Bayes Net
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#marginals-the-hard-way">
-   1.3. Marginals, the Hard Way
+   1.1.3. Marginals, the Hard Way
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#efficient-marginals-using-the-bayes-tree">
-   1.4. Efficient Marginals using the Bayes Tree
+   1.1.4. Efficient Marginals using the Bayes Tree
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sampling">
-   1.5. Sampling
+   1.1.5. Sampling
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conclusion">
-   1.6. Conclusion
+   1.1.6. Conclusion
   </a>
  </li>
 </ul>
@@ -348,7 +401,7 @@
                 
   <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/KalmanSmootherExample.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <div class="tex2jax_ignore mathjax_ignore section" id="kalman-smoother">
-<h1><span class="section-number">1. </span>Kalman Smoother<a class="headerlink" href="#kalman-smoother" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">1.1. </span>Kalman Smoother<a class="headerlink" href="#kalman-smoother" title="Permalink to this headline">¶</a></h1>
 <p>GTSAM is based on sparse factorization, which it implements by elimination of a Gaussian factor graph. A Kalman smoother is a simple <em>linear</em> Markov chain, with Gaussian measurements and Gaussian Motion models, and as a result GTSAM simply eats through it, like a knife through butter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -381,7 +434,7 @@
 </div>
 </div>
 <div class="section" id="a-simple-kalman-smoother-example">
-<h2><span class="section-number">1.1. </span>A Simple Kalman Smoother Example<a class="headerlink" href="#a-simple-kalman-smoother-example" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.1.1. </span>A Simple Kalman Smoother Example<a class="headerlink" href="#a-simple-kalman-smoother-example" title="Permalink to this headline">¶</a></h2>
 <p>We illustrate this with a simple 3-state Kalman smoother. It also shows how the solution the Kalman smoother is a Bayes net, which exactly captures the Gaussian posterior.</p>
 <p>We first set up a small <code class="docutils literal notranslate"><span class="pre">GaussianFactorGraph</span></code>. I like specifying factors in this case with a <code class="docutils literal notranslate"><span class="pre">gtsam.JacobianFactor</span></code>:</p>
 <div class="cell docutils container">
@@ -428,7 +481,7 @@
 </div>
 </div>
 <div class="section" id="the-posterior-as-a-bayes-net">
-<h2><span class="section-number">1.2. </span>The Posterior as a Bayes Net<a class="headerlink" href="#the-posterior-as-a-bayes-net" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.1.2. </span>The Posterior as a Bayes Net<a class="headerlink" href="#the-posterior-as-a-bayes-net" title="Permalink to this headline">¶</a></h2>
 <p>The way GTSAM solves this is by eliminating <span class="math notranslate nohighlight">\(x_1\)</span>, then <span class="math notranslate nohighlight">\(x_2\)</span>, and then <span class="math notranslate nohighlight">\(x_3\)</span>, yielding a Bayes net made up of Gaussian Conditionals. We can call <code class="docutils literal notranslate"><span class="pre">eliminateSequential</span></code> to obtain the Bayes net to visualize it:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -470,7 +523,7 @@ E_{gbn}(x; R, d) \doteq \frac{1}{2} \|Rx - d\|^2
 \]</div>
 </div>
 <div class="section" id="marginals-the-hard-way">
-<h2><span class="section-number">1.3. </span>Marginals, the Hard Way<a class="headerlink" href="#marginals-the-hard-way" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.1.3. </span>Marginals, the Hard Way<a class="headerlink" href="#marginals-the-hard-way" title="Permalink to this headline">¶</a></h2>
 <p>The mean of this Gaussian is <span class="math notranslate nohighlight">\(\mu=R^{-1}d\)</span> and its covariance <span class="math notranslate nohighlight">\(P=(R^TR)^{-1}\)</span>. The latter allows us to obtain and plot the marginals:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -493,7 +546,7 @@ E_{gbn}(x; R, d) \doteq \frac{1}{2} \|Rx - d\|^2
 </div>
 </div>
 <div class="section" id="efficient-marginals-using-the-bayes-tree">
-<h2><span class="section-number">1.4. </span>Efficient Marginals using the Bayes Tree<a class="headerlink" href="#efficient-marginals-using-the-bayes-tree" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.1.4. </span>Efficient Marginals using the Bayes Tree<a class="headerlink" href="#efficient-marginals-using-the-bayes-tree" title="Permalink to this headline">¶</a></h2>
 <p>The above approach to obtain the covariance <span class="math notranslate nohighlight">\(P\)</span> is very expensive if <span class="math notranslate nohighlight">\(x\)</span> is high dimensional.
 Note that there are better ways to obtain the marginals, and this is implemented by the Bayes tree, which we can obtain by <em>multi-frontal</em> elimination instead:</p>
 <div class="cell docutils container">
@@ -549,7 +602,7 @@ x3:
 </div>
 </div>
 <div class="section" id="sampling">
-<h2><span class="section-number">1.5. </span>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.1.5. </span>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">¶</a></h2>
 <p>Bayes nets support efficient ancestral sampling, which produces samples from the <em>joint</em> as a dictionary:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -560,14 +613,14 @@ x3:
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x3:
-[[ 4.52434226  4.08553974  3.55877112  3.97106864  4.10114744]
- [-0.43866295 -0.49313097  0.05030441 -0.4052518   0.01132415]]
+[[ 3.83576004  4.28858436  3.73062106  3.54983888  4.03262317]
+ [ 0.10859405 -0.20067377 -0.01470467 -0.55439146 -0.03549453]]
 x2:
-[[ 2.48886201  2.10482624  1.66987469  2.03543048  2.0706325 ]
- [-0.25575177  0.07547251  0.38300841 -0.38865597  0.21067528]]
+[[ 1.64067854  1.93442562  1.77992322  1.64029132  2.03272731]
+ [-0.10485059  0.00391343  0.58477206 -0.33404138 -0.1404482 ]]
 x1:
-[[ 0.47464605  0.12497935 -0.39207946 -0.06687555  0.02482191]
- [ 0.03538598  0.00978295  0.12485454 -0.66827384  0.07615981]]
+[[-0.34319477 -0.19921882 -0.08602587 -0.36924235  0.03717436]
+ [-0.20872282  0.22421877  0.27279519 -0.207987   -0.16126018]]
 </pre></div>
 </div>
 </div>
@@ -581,7 +634,7 @@ x1:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>300 µs ± 375 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>511 µs ± 11.1 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div>
 </div>
 </div>
@@ -600,7 +653,7 @@ x1:
 </div>
 </div>
 <div class="section" id="conclusion">
-<h2><span class="section-number">1.6. </span>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.1.6. </span>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
 <p>Kalman smoothers are easy. Kalman filters are actually harder to implement, but we also did that for you, in <code class="docutils literal notranslate"><span class="pre">gtsam.KalmanFilter</span></code> and <code class="docutils literal notranslate"><span class="pre">gtsam.ExtendedKalmanFilter</span></code>.</p>
 </div>
 </div>
@@ -630,17 +683,17 @@ x1:
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="gaussian.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">GTSAM by Example</p>
+            <p class="prev-next-title"><span class="section-number">1. </span>Gaussian Inference</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="Pose2SLAMExample.html" title="next page">
+    <a class='right-next' id="next-link" href="KalmanSmootherExample2.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">2. </span>Pose2 SLAM</p>
+        <p class="prev-next-title"><span class="section-number">1.2. </span>Advanced Kalman Smoothing</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>7. Variational Bayes Inference &#8212; GTSAM by Example</title>
+    <title>3.2. Variational Bayes Inference &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -57,8 +57,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="8. Structure from Motion" href="SFMExample.html" />
-    <link rel="prev" title="6. Sampling from the posterior" href="PlanarSLAMExample_sampling.html" />
+    <link rel="next" title="4. Structure from Motion" href="sfm.html" />
+    <link rel="prev" title="3.1. Sampling from the posterior" href="PlanarSLAMExample_sampling.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -103,55 +103,108 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="KalmanSmootherExample.html">
-   1. Kalman Smoother
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="gaussian.html">
+   1. Gaussian Inference
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample.html">
+     1.1. Kalman Smoother
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample2.html">
+     1.2. Advanced Kalman Smoothing
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample.html">
-   2. Pose2 SLAM
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="slam.html">
+   2. SLAM
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample.html">
+     2.1. Pose2 SLAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2ISAM2Example.html">
+     2.2. Pose2 iSAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+     2.3. Pose2 SLAM with g2o Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample.html">
+     2.4. Planar SLAM
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2ISAM2Example.html">
-   3. Pose2 iSAM
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="advanced.html">
+   3. Advanced Inference
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+     3.1. Sampling from the posterior
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     3.2. Variational Bayes Inference
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
-   4. Pose2 SLAM with g2o Files
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   4. Structure from Motion
   </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample.html">
-   5. Planar SLAM
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample_sampling.html">
-   6. Sampling from the posterior
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   7. Variational Bayes Inference
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SFMExample.html">
-   8. Structure from Motion
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SFMExample_bal.html">
-   9. SFM with BAL Files
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="StereoVOExample_large.html">
-   10. Stereo Visual Odometry
-  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample.html">
+     4.1. Structure from Motion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample_bal.html">
+     4.2. SFM with BAL Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="StereoVOExample_large.html">
+     4.3. Stereo Visual Odometry
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -259,27 +312,27 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sampling-on-the-manifold">
-   7.1. Sampling on the Manifold
+   3.2.1. Sampling on the Manifold
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-simple-nonlinear-smoother-example">
-   7.2. A Simple Nonlinear Smoother Example
+   3.2.2. A Simple Nonlinear Smoother Example
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#variational-bayes">
-   7.3. Variational Bayes
+   3.2.3. Variational Bayes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#setting-up-a-non-linear-slam-example">
-   7.4. Setting up a non-linear SLAM Example
+   3.2.4. Setting up a non-linear SLAM Example
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#id1">
-   7.5. Variational Bayes
+   3.2.5. Variational Bayes
   </a>
  </li>
 </ul>
@@ -304,27 +357,27 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sampling-on-the-manifold">
-   7.1. Sampling on the Manifold
+   3.2.1. Sampling on the Manifold
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-simple-nonlinear-smoother-example">
-   7.2. A Simple Nonlinear Smoother Example
+   3.2.2. A Simple Nonlinear Smoother Example
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#variational-bayes">
-   7.3. Variational Bayes
+   3.2.3. Variational Bayes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#setting-up-a-non-linear-slam-example">
-   7.4. Setting up a non-linear SLAM Example
+   3.2.4. Setting up a non-linear SLAM Example
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#id1">
-   7.5. Variational Bayes
+   3.2.5. Variational Bayes
   </a>
  </li>
 </ul>
@@ -338,7 +391,7 @@
                 
   <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/PlanarSLAMExample_gvi.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <div class="tex2jax_ignore mathjax_ignore section" id="variational-bayes-inference">
-<h1><span class="section-number">7. </span>Variational Bayes Inference<a class="headerlink" href="#variational-bayes-inference" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.2. </span>Variational Bayes Inference<a class="headerlink" href="#variational-bayes-inference" title="Permalink to this headline">¶</a></h1>
 <p>GTSAM is most-often used for posteriori (MAP) estimation, and with the <code class="docutils literal notranslate"><span class="pre">gtsam.Marginals</span></code> object we can get the Laplace approximation to the posterior density. As shown in a <a class="reference external" href="https://journals.sagepub.com/doi/abs/10.1177/0278364920937608">2020 IJRR paper by Tim Barfoot et al</a>, variational Bayes not only optimizes for the mean <span class="math notranslate nohighlight">\(\mu\)</span> but also for the covariance <span class="math notranslate nohighlight">\(\Sigma\)</span> of an approximation</p>
 <div class="math notranslate nohighlight">
 \[
@@ -390,7 +443,7 @@ q(x) \sim \mathcal{N}(x;\mu, \Sigma).
 </div>
 </div>
 <div class="section" id="sampling-on-the-manifold">
-<h2><span class="section-number">7.1. </span>Sampling on the Manifold<a class="headerlink" href="#sampling-on-the-manifold" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2.1. </span>Sampling on the Manifold<a class="headerlink" href="#sampling-on-the-manifold" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">sample_bayes_net</span></code> creates samples in the <em>tangent space</em>, which we then need to upgrade to the non-linear manifold:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -405,7 +458,7 @@ q(x) \sim \mathcal{N}(x;\mu, \Sigma).
 </div>
 </div>
 <div class="section" id="a-simple-nonlinear-smoother-example">
-<h2><span class="section-number">7.2. </span>A Simple Nonlinear Smoother Example<a class="headerlink" href="#a-simple-nonlinear-smoother-example" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2.2. </span>A Simple Nonlinear Smoother Example<a class="headerlink" href="#a-simple-nonlinear-smoother-example" title="Permalink to this headline">¶</a></h2>
 <p>With the preliminaries out of the way, let us illustrate/sanity-check the GVI scheme with a simple Nonlinear smoother, having only two between constraints on <code class="docutils literal notranslate"><span class="pre">Pose2</span></code> variables.</p>
 <p>We first create the <code class="docutils literal notranslate"><span class="pre">gtsam.NonlinearFactorGraph</span></code>:</p>
 <div class="cell docutils container">
@@ -491,7 +544,7 @@ q(x) \sim \mathcal{N}(x;\mu, \Sigma).
  [0 0 0 0 0 0 0 0 1]]
 P:
 [[ 0.01   0.     0.     0.01   0.     0.     0.01   0.     0.   ]
- [ 0.     0.01  -0.     0.     0.01  -0.     0.     0.01  -0.   ]
+ [ 0.     0.01  -0.     0.     0.01  -0.     0.     0.01   0.   ]
  [ 0.    -0.     0.     0.     0.001  0.     0.     0.001  0.   ]
  [ 0.01   0.     0.     0.26   0.     0.     0.26   0.     0.   ]
  [ 0.     0.01   0.001  0.     0.051  0.001  0.     0.052  0.001]
@@ -505,7 +558,7 @@ P:
 </div>
 </div>
 <div class="section" id="variational-bayes">
-<h2><span class="section-number">7.3. </span>Variational Bayes<a class="headerlink" href="#variational-bayes" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2.3. </span>Variational Bayes<a class="headerlink" href="#variational-bayes" title="Permalink to this headline">¶</a></h2>
 <p>The code below then uses this sampler to create samples on the product manifold, each sample yielding linearized factors at the sample, yielding a new Gaussian factor graph which has <span class="math notranslate nohighlight">\(N\)</span> times as many factors. We then optimize that graph and iterate:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -561,11 +614,11 @@ P:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.0220
-it 2, norm of delta: 0.0222
-it 3, norm of delta: 0.0010
-it 4, norm of delta: 0.0009
-it 5, norm of delta: 0.0009
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.0168
+it 2, norm of delta: 0.0163
+it 3, norm of delta: 0.0007
+it 4, norm of delta: 0.0011
+it 5, norm of delta: 0.0024
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_gvi_14_1.png" src="_images/PlanarSLAMExample_gvi_14_1.png" />
@@ -574,7 +627,7 @@ it 5, norm of delta: 0.0009
 <p>This is not converging.</p>
 </div>
 <div class="section" id="setting-up-a-non-linear-slam-example">
-<h2><span class="section-number">7.4. </span>Setting up a non-linear SLAM Example<a class="headerlink" href="#setting-up-a-non-linear-slam-example" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2.4. </span>Setting up a non-linear SLAM Example<a class="headerlink" href="#setting-up-a-non-linear-slam-example" title="Permalink to this headline">¶</a></h2>
 <p>Below we re-create a similar factor graph as in <code class="docutils literal notranslate"><span class="pre">PlanarSLAMExample</span></code>, but with highly nonlinear measurements on the landmarks. Take a look at the sampling example to appreciate how non-Gaussian the posteriors are in this example.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -637,7 +690,7 @@ it 5, norm of delta: 0.0009
 </div>
 </div>
 <div class="section" id="id1">
-<h2><span class="section-number">7.5. </span>Variational Bayes<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2.5. </span>Variational Bayes<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>The code below then uses this sampler to create samples on the product manifold, each sample yielding linearized factors at the sample, yielding a new Gaussian factor graph which has <span class="math notranslate nohighlight">\(N\)</span> times as many factors. We then optimize that graph and iterate:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -720,21 +773,23 @@ it 5, norm of delta: 0.0009
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.1766
-it 2, norm of delta: 0.1174
-it 3, norm of delta: 0.0299
-it 4, norm of delta: 0.0180
-it 5, norm of delta: 0.0124
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.1745
+it 2, norm of delta: 0.1228
+it 3, norm of delta: 0.0284
+it 4, norm of delta: 0.0168
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 6, norm of delta: 0.0089
-it 7, norm of delta: 0.0063
-it 8, norm of delta: 0.0046
-it 9, norm of delta: 0.0032
-it 10, norm of delta: 0.0024
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 5, norm of delta: 0.0116
+it 6, norm of delta: 0.0080
+it 7, norm of delta: 0.0057
 </pre></div>
 </div>
-<img alt="_images/PlanarSLAMExample_gvi_21_2.png" src="_images/PlanarSLAMExample_gvi_21_2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 8, norm of delta: 0.0041
+it 9, norm of delta: 0.0027
+it 10, norm of delta: 0.0019
+</pre></div>
+</div>
+<img alt="_images/PlanarSLAMExample_gvi_21_3.png" src="_images/PlanarSLAMExample_gvi_21_3.png" />
 </div>
 </div>
 </div>
@@ -769,13 +824,13 @@ it 10, norm of delta: 0.0024
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">6. </span>Sampling from the posterior</p>
+            <p class="prev-next-title"><span class="section-number">3.1. </span>Sampling from the posterior</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="SFMExample.html" title="next page">
+    <a class='right-next' id="next-link" href="sfm.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">8. </span>Structure from Motion</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Structure from Motion</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

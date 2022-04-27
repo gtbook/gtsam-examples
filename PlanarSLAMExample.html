@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>5. Planar SLAM &#8212; GTSAM by Example</title>
+    <title>2.4. Planar SLAM &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -55,8 +55,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Sampling from the posterior" href="PlanarSLAMExample_sampling.html" />
-    <link rel="prev" title="4. Pose2 SLAM with g2o Files" href="Pose2SLAMExample_g2o.html" />
+    <link rel="next" title="3. Advanced Inference" href="advanced.html" />
+    <link rel="prev" title="2.3. Pose2 SLAM with g2o Files" href="Pose2SLAMExample_g2o.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -101,55 +101,108 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="KalmanSmootherExample.html">
-   1. Kalman Smoother
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="gaussian.html">
+   1. Gaussian Inference
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample.html">
+     1.1. Kalman Smoother
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample2.html">
+     1.2. Advanced Kalman Smoothing
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample.html">
-   2. Pose2 SLAM
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="slam.html">
+   2. SLAM
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample.html">
+     2.1. Pose2 SLAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2ISAM2Example.html">
+     2.2. Pose2 iSAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+     2.3. Pose2 SLAM with g2o Files
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     2.4. Planar SLAM
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2ISAM2Example.html">
-   3. Pose2 iSAM
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="advanced.html">
+   3. Advanced Inference
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+     3.1. Sampling from the posterior
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+     3.2. Variational Bayes Inference
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
-   4. Pose2 SLAM with g2o Files
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   4. Structure from Motion
   </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   5. Planar SLAM
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample_sampling.html">
-   6. Sampling from the posterior
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample_gvi.html">
-   7. Variational Bayes Inference
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SFMExample.html">
-   8. Structure from Motion
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SFMExample_bal.html">
-   9. SFM with BAL Files
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="StereoVOExample_large.html">
-   10. Stereo Visual Odometry
-  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample.html">
+     4.1. Structure from Motion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample_bal.html">
+     4.2. SFM with BAL Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="StereoVOExample_large.html">
+     4.3. Stereo Visual Odometry
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -270,7 +323,7 @@
                 
   <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/PlanarSLAMExample.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <div class="tex2jax_ignore mathjax_ignore section" id="planar-slam">
-<h1><span class="section-number">5. </span>Planar SLAM<a class="headerlink" href="#planar-slam" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">2.4. </span>Planar SLAM<a class="headerlink" href="#planar-slam" title="Permalink to this headline">¶</a></h1>
 <p>“True” Simultaneous Localization and Mapping optimizes for both the unknown robot trajectory and unknown <em>landmarks</em>. The simple example below sketches out how this would work with GTSAM, in the 2D (<code class="docutils literal notranslate"><span class="pre">Pose2</span></code>) case.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -527,13 +580,13 @@ L2 covariance:
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">4. </span>Pose2 SLAM with g2o Files</p>
+            <p class="prev-next-title"><span class="section-number">2.3. </span>Pose2 SLAM with g2o Files</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="PlanarSLAMExample_sampling.html" title="next page">
+    <a class='right-next' id="next-link" href="advanced.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">6. </span>Sampling from the posterior</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Advanced Inference</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

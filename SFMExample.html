@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>8. Structure from Motion &#8212; GTSAM by Example</title>
+    <title>4.1. Structure from Motion &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -55,8 +55,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="9. SFM with BAL Files" href="SFMExample_bal.html" />
-    <link rel="prev" title="7. Variational Bayes Inference" href="PlanarSLAMExample_gvi.html" />
+    <link rel="next" title="4.2. SFM with BAL Files" href="SFMExample_bal.html" />
+    <link rel="prev" title="4. Structure from Motion" href="sfm.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -101,55 +101,108 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="KalmanSmootherExample.html">
-   1. Kalman Smoother
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="gaussian.html">
+   1. Gaussian Inference
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample.html">
+     1.1. Kalman Smoother
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample2.html">
+     1.2. Advanced Kalman Smoothing
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample.html">
-   2. Pose2 SLAM
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="slam.html">
+   2. SLAM
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample.html">
+     2.1. Pose2 SLAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2ISAM2Example.html">
+     2.2. Pose2 iSAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+     2.3. Pose2 SLAM with g2o Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample.html">
+     2.4. Planar SLAM
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2ISAM2Example.html">
-   3. Pose2 iSAM
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="advanced.html">
+   3. Advanced Inference
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+     3.1. Sampling from the posterior
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+     3.2. Variational Bayes Inference
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
-   4. Pose2 SLAM with g2o Files
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="sfm.html">
+   4. Structure from Motion
   </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample.html">
-   5. Planar SLAM
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample_sampling.html">
-   6. Sampling from the posterior
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample_gvi.html">
-   7. Variational Bayes Inference
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   8. Structure from Motion
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SFMExample_bal.html">
-   9. SFM with BAL Files
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="StereoVOExample_large.html">
-   10. Stereo Visual Odometry
-  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     4.1. Structure from Motion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample_bal.html">
+     4.2. SFM with BAL Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="StereoVOExample_large.html">
+     4.3. Stereo Visual Odometry
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -270,7 +323,7 @@
                 
   <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/SFMExample.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <div class="tex2jax_ignore mathjax_ignore section" id="structure-from-motion">
-<h1><span class="section-number">8. </span>Structure from Motion<a class="headerlink" href="#structure-from-motion" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.1. </span>Structure from Motion<a class="headerlink" href="#structure-from-motion" title="Permalink to this headline">¶</a></h1>
 <p>Structure from Motion (SFM or SfM) is very similar to SLAM, except we are trying to estimate the pose of several cameras observing a set of unknown 3D landmarks.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1202,138 +1255,138 @@ Intentionally initialize the variables off from the ground truth</p>
 Values with 16 values:
 Value l0: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	10.0543054;
-	10.0693219;
-	10.1465376
+	9.88222214;
+	10.0822145;
+	9.94177023
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l1: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-9.90711913;
-	10.0889971;
-	10.0467178
+	-10.1966245;
+	10.0884811;
+	9.74552039
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l2: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-9.84708613;
-	-10.0841928;
-	9.89867582
+	-10.0626864;
+	-9.86592968;
+	9.99694142
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l3: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	9.92964246;
-	-9.84132264;
-	9.99665693
+	9.95808564;
+	-10.0140183;
+	9.86624156
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l4: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	10.0746509;
-	9.99835864;
-	-10.0085734
+	10.0971028;
+	10.1116408;
+	-9.86904891
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l5: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-10.1005951;
-	9.87535087;
-	-10.0737536
+	-9.99068436;
+	9.8895784;
+	-10.0305922
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l6: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-9.8851755;
-	-10.0080423;
-	-10.1148666
+	-9.96002544;
+	-10.0313422;
+	-10.0049229
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l7: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	9.90362703;
-	-9.87713076;
-	-9.87345367
+	10.1210117;
+	-9.99283204;
+	-10.0179833
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x0: (gtsam::Pose3)
 R: [
-	0.0642609055, 0.483443144, -0.873013896;
-	0.993231579, 0.0538347137, 0.102921596;
-	0.0967551933, -0.873718805, -0.47671153
+	-0.256029296, 0.167978634, -0.951962278;
+	0.962451066, -0.0475993981, -0.267249403;
+	-0.090205021, -0.984640785, -0.149484375
 ]
-t:   40.0040006 -0.062617424   9.82856587
+t:  40.0385226 0.181965295  9.95126232
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x1: (gtsam::Pose3)
 R: [
-	-0.608958359, 0.113174864, -0.785086726;
-	0.793196847, 0.0905196951, -0.602200088;
-	0.00291189811, -0.989443093, -0.14489267
+	-0.753183367, 0.113941102, -0.647867457;
+	0.657785787, 0.13901437, -0.740265401;
+	0.00571623083, -0.983713592, -0.179652149
 ]
-t: 28.2625192 28.3464051  9.9931924
+t: 28.3395532 28.2540968 9.94511973
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x2: (gtsam::Pose3)
 R: [
-	-0.997894073, 0.000446180241, 0.0648630803;
-	-0.0645905076, 0.084998496, -0.994285332;
-	-0.00595689474, -0.99638098, -0.0847906764
+	-0.999816332, 0.00413918716, 0.0187128;
+	-0.0170183379, 0.257271488, -0.966189297;
+	-0.00881350821, -0.9663303, -0.257153793
 ]
-t: -0.0747584711     39.990306    9.99920743
+t: 0.00678119609    40.1135782     10.115512
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x3: (gtsam::Pose3)
 R: [
-	-0.74387454, -0.0922932689, 0.661915871;
-	-0.66742897, 0.0514847277, -0.742891575;
-	0.0344853335, -0.994399957, -0.0998973795
+	-0.599625362, -0.30316921, 0.740633415;
+	-0.798989342, 0.279345119, -0.532524493;
+	-0.0454472996, -0.911073397, -0.409731386
 ]
-t: -28.1665629  28.3232817  10.1333686
+t: -28.3312538  28.4005894  10.0782333
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x4: (gtsam::Pose3)
 R: [
-	0.0715139645, -0.326608835, 0.942450223;
-	-0.989199707, -0.144424399, 0.0250106663;
-	0.127944103, -0.934060096, -0.333409725
+	-0.110037666, -0.295174531, 0.949085722;
+	-0.989495649, 0.122605572, -0.0765913428;
+	-0.093755384, -0.947544126, -0.305565145
 ]
-t:  -40.0714588 0.0239055459   9.99538973
+t:    -40.039368 -0.0845965467    9.90512487
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x5: (gtsam::Pose3)
 R: [
-	0.767674356, -0.092055658, 0.63419385;
-	-0.640515936, -0.0787443987, 0.763897018;
-	-0.0203818293, -0.992635419, -0.119413172
+	0.810095706, -0.140992086, 0.569092417;
+	-0.586236638, -0.208794629, 0.782771619;
+	0.00845883642, -0.967742752, -0.251798359
 ]
-t: -28.0252763  -28.391968  9.84306862
+t: -28.0955758 -28.3117962  9.79969822
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x6: (gtsam::Pose3)
 R: [
-	0.997348749, -0.0650337217, -0.0326509923;
-	0.0160424756, -0.241153238, 0.970354448;
-	-0.0709796536, -0.968305598, -0.239470579
+	0.991577199, 0.0550459136, -0.117237392;
+	0.128759483, -0.321205356, 0.938215388;
+	0.0139876449, -0.945408413, -0.325587591
 ]
-t: 0.0642705879  -40.0119979   10.0556273
+t: -0.153197851  -39.8509412   10.0277531
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x7: (gtsam::Pose3)
 R: [
-	0.667717562, 0.240157125, -0.704611817;
-	0.744412646, -0.217641272, 0.631254378;
-	-0.00175237554, -0.946021581, -0.3240989
+	0.693981772, -0.00641898712, -0.719963955;
+	0.708500735, -0.171857774, 0.684464472;
+	-0.128124971, -0.985100859, -0.114718306
 ]
-t:  28.2511943 -28.3135794  10.0725153
+t:  28.1618735 -28.3511469  10.0818856
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -1357,6 +1410,13 @@ t:  28.2511943 -28.3135794  10.0725153
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimizing:
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>converged
+errorThreshold: 1.20704197e-15 &lt;? 0
+absoluteDecrease: 1.72231805154e-06 &lt;? 1e-05
+relativeDecrease: 0.999999999299 &lt;? 1e-05
+iterations: 4 &gt;? 100
 Final results:
 
 Values with 16 values:
@@ -1366,146 +1426,141 @@ Value l0: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 	10;
 	10
 ]
-converged
-errorThreshold: 2.38994545e-15 &lt;? 0
-absoluteDecrease: 1.85325162667e-06 &lt;? 1e-05
-relativeDecrease: 0.99999999871 &lt;? 1e-05
-iterations: 4 &gt;? 100
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l1: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-10.000000001;
-	10.0000000019;
+	-9.99999999986;
+	10.0000000009;
 	10.0000000002
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l2: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-10.0000000011;
-	-10.0000000008;
-	10
+	-9.99999999929;
+	-9.99999999933;
+	10.0000000003
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l3: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	9.99999999985;
-	-9.99999999933;
-	9.99999999995
+	10.0000000005;
+	-9.99999999936;
+	10.0000000004
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l4: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	10.0000000005;
-	10;
-	-9.99999999997
+	9.99999999998;
+	10.0000000001;
+	-9.99999999951
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l5: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-10.0000000004;
-	10.0000000005;
-	-10.0000000007
+	-9.99999999973;
+	10.0000000001;
+	-9.99999999936
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l6: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-10.0000000004;
-	-9.99999999962;
-	-10.0000000005
+	-9.9999999993;
+	-9.99999999899;
+	-9.99999999958
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l7: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	10.0000000003;
-	-9.99999999944;
-	-9.99999999993
+	10.000000001;
+	-9.99999999952;
+	-10
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x0: (gtsam::Pose3)
 R: [
-	1.05656204382e-11, 0.242535625039, -0.970142500145;
-	1, -3.48805477113e-12, 1.00188114483e-11;
-	-9.54001754089e-13, -0.970142500145, -0.242535625039
+	7.67424022113e-12, 0.242535625033, -0.970142500146;
+	1, -7.05588361889e-13, 7.73404250737e-12;
+	1.19124732355e-12, -0.970142500146, -0.242535625033
 ]
-t:                40 3.52189078589e-14                10
+t:                40 2.55808438109e-14                10
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x1: (gtsam::Pose3)
 R: [
-	-0.70710678116, 0.171498585156, -0.685994340594;
-	0.707106781213, 0.171498585126, -0.685994340547;
-	-1.26462435841e-11, -0.970142500146, -0.242535625035
+	-0.707106781189, 0.171498585139, -0.685994340568;
+	0.707106781184, 0.171498585137, -0.685994340574;
+	-2.05127021474e-12, -0.970142500147, -0.24253562503
 ]
-t: 28.2842712489 28.2842712476 10.0000000001
+t: 28.2842712476 28.2842712479            10
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x2: (gtsam::Pose3)
 R: [
-	-1, 2.45411648134e-11, 8.75682875537e-12;
-	-2.54327840066e-12, 0.242535625033, -0.970142500146;
-	-2.59322753925e-11, -0.970142500146, -0.242535625033
+	-1, -2.48386658578e-12, 3.47966080581e-11;
+	-3.43600937366e-11, 0.242535625034, -0.970142500146;
+	-6.02971433766e-12, -0.970142500146, -0.242535625034
 ]
-t: -7.57277613042e-10      40.0000000016      10.0000000001
+t: -1.18117624825e-09      39.9999999999      10.0000000001
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x3: (gtsam::Pose3)
 R: [
-	-0.707106781204, -0.171498585129, 0.685994340555;
-	-0.707106781169, 0.171498585145, -0.685994340587;
-	-5.93937187356e-12, -0.970142500147, -0.242535625028
+	-0.707106781183, -0.17149858515, 0.685994340572;
+	-0.70710678119, 0.17149858514, -0.685994340567;
+	6.08402310934e-12, -0.970142500144, -0.24253562504
 ]
-t: -28.2842712478  28.2842712492  9.99999999982
+t: -28.2842712465  28.2842712471  10.0000000003
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x4: (gtsam::Pose3)
 R: [
-	-8.64539547371e-11, -0.24253562476, 0.970142500214;
-	-1, 1.40127572173e-11, -8.56115135508e-11;
-	7.16949932498e-12, -0.970142500214, -0.24253562476
+	2.78985215732e-11, -0.242535624982, 0.970142500159;
+	-1, 6.43138598361e-12, 3.03649284805e-11;
+	-1.36039360091e-11, -0.970142500159, -0.242535624982
 ]
-t:    -39.9999999678 5.65528116816e-09     9.99999997308
+t:     -39.9999999806 -1.64709537529e-09      9.99999999213
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x5: (gtsam::Pose3)
 R: [
-	0.707106781194, -0.171498585124, 0.685994340567;
-	-0.707106781179, -0.171498585141, 0.685994340578;
-	9.77757327587e-12, -0.970142500149, -0.242535625023
+	0.707106781186, -0.171498585147, 0.685994340569;
+	-0.707106781187, -0.17149858515, 0.685994340568;
+	2.15372409991e-12, -0.970142500143, -0.242535625044
 ]
-t: -28.2842712483 -28.2842712479  9.99999999955
+t: -28.2842712469 -28.2842712467  10.0000000006
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x6: (gtsam::Pose3)
 R: [
-	1, 2.14302713731e-11, 2.06884979292e-11;
-	-1.48731854886e-11, -0.24253562503, 0.970142500147;
-	2.58080888737e-11, -0.970142500147, -0.24253562503
+	1, 2.93873409048e-12, -1.95111536859e-11;
+	1.96413259477e-11, -0.242535625046, 0.970142500143;
+	-1.88114972651e-12, -0.970142500143, -0.242535625046
 ]
-t: -1.20147527626e-09     -40.0000000007      9.99999999989
+t: 1.34391770463e-09    -39.9999999992     10.0000000007
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x7: (gtsam::Pose3)
 R: [
-	0.707106781173, 0.171498585152, -0.685994340581;
-	0.7071067812, -0.171498585131, 0.685994340559;
-	1.11809041038e-11, -0.970142500146, -0.242535625035
+	0.707106781025, 0.171498585137, -0.685994340738;
+	0.707106781348, -0.171498585118, 0.68599434041;
+	-4.32715173729e-11, -0.970142500151, -0.242535625015
 ]
-t:  28.2842712483 -28.2842712472             10
+t:  28.2842712447 -28.2842712224  9.99999999597
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial error = 2443.957695775268
-final error = 2.3899454512857795e-15
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial error = 2646.8409151018295
+final error = 1.2070419668129976e-15
 </pre></div>
 </div>
 </div>
@@ -1551,17 +1606,17 @@ final error = 2.3899454512857795e-15
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="PlanarSLAMExample_gvi.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="sfm.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">7. </span>Variational Bayes Inference</p>
+            <p class="prev-next-title"><span class="section-number">4. </span>Structure from Motion</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="SFMExample_bal.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">9. </span>SFM with BAL Files</p>
+        <p class="prev-next-title"><span class="section-number">4.2. </span>SFM with BAL Files</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

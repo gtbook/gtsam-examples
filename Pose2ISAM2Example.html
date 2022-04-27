@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3. Pose2 iSAM &#8212; GTSAM by Example</title>
+    <title>2.2. Pose2 iSAM &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -55,8 +55,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4. Pose2 SLAM with g2o Files" href="Pose2SLAMExample_g2o.html" />
-    <link rel="prev" title="2. Pose2 SLAM" href="Pose2SLAMExample.html" />
+    <link rel="next" title="2.3. Pose2 SLAM with g2o Files" href="Pose2SLAMExample_g2o.html" />
+    <link rel="prev" title="2.1. Pose2 SLAM" href="Pose2SLAMExample.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -101,55 +101,108 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="KalmanSmootherExample.html">
-   1. Kalman Smoother
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="gaussian.html">
+   1. Gaussian Inference
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample.html">
+     1.1. Kalman Smoother
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample2.html">
+     1.2. Advanced Kalman Smoothing
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample.html">
-   2. Pose2 SLAM
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="slam.html">
+   2. SLAM
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample.html">
+     2.1. Pose2 SLAM
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     2.2. Pose2 iSAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+     2.3. Pose2 SLAM with g2o Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample.html">
+     2.4. Planar SLAM
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   3. Pose2 iSAM
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="advanced.html">
+   3. Advanced Inference
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+     3.1. Sampling from the posterior
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+     3.2. Variational Bayes Inference
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Pose2SLAMExample_g2o.html">
-   4. Pose2 SLAM with g2o Files
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   4. Structure from Motion
   </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample.html">
-   5. Planar SLAM
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample_sampling.html">
-   6. Sampling from the posterior
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="PlanarSLAMExample_gvi.html">
-   7. Variational Bayes Inference
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SFMExample.html">
-   8. Structure from Motion
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SFMExample_bal.html">
-   9. SFM with BAL Files
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="StereoVOExample_large.html">
-   10. Stereo Visual Odometry
-  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample.html">
+     4.1. Structure from Motion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample_bal.html">
+     4.2. SFM with BAL Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="StereoVOExample_large.html">
+     4.3. Stereo Visual Odometry
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -270,7 +323,7 @@
                 
   <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/Pose2ISAM2Example.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <div class="tex2jax_ignore mathjax_ignore section" id="pose2-isam">
-<h1><span class="section-number">3. </span>Pose2 iSAM<a class="headerlink" href="#pose2-isam" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">2.2. </span>Pose2 iSAM<a class="headerlink" href="#pose2-isam" title="Permalink to this headline">¶</a></h1>
 <p>The previous “PoseSLAM” example optimized everything in batch. One of the key features of GTSAM is that we can do incremental inference using the iSAM algorithm, as illustrated below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -511,29 +564,29 @@ Inference after State 5:
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X1 covariance:
-[[ 9.00000000e-02 -8.27338198e-17 -4.62648398e-17]
- [-8.27338198e-17  9.00000000e-02 -5.84397976e-17]
- [-4.62648398e-17 -5.84397976e-17  7.61543549e-03]]
+[[ 9.00000000e-02 -7.19424520e-18  1.09574621e-17]
+ [-7.19424520e-18  9.00000000e-02 -5.84397976e-17]
+ [ 1.09574621e-17 -5.84397976e-17  7.61543549e-03]]
 
 X2 covariance:
-[[0.13022511 0.00237871 0.00130931]
- [0.00237871 0.15513577 0.01383545]
- [0.00130931 0.01383545 0.01523087]]
+[[ 0.13015897 -0.00243751 -0.00110028]
+ [-0.00243751  0.16737477  0.01687084]
+ [-0.00110028  0.01687084  0.01523087]]
 
 X3 covariance:
-[[0.29074769 0.00868826 0.04379258]
- [0.00868826 0.16236768 0.00194288]
- [0.04379258 0.00194288 0.02040777]]
+[[0.31729104 0.01276838 0.04727164]
+ [0.01276838 0.16270457 0.0018201 ]
+ [0.04727164 0.0018201  0.02038193]]
 
 X4 covariance:
-[[ 0.2449951  -0.08863903  0.0370518 ]
- [-0.08863903  0.30459715 -0.04813414]
- [ 0.0370518  -0.04813414  0.0217916 ]]
+[[ 0.24920571 -0.10880758  0.03790702]
+ [-0.10880758  0.34927854 -0.05514883]
+ [ 0.03790702 -0.05514883  0.02168514]]
 
 X5 covariance:
-[[ 0.18710678  0.0235065  -0.0128196 ]
- [ 0.0235065   0.2330005  -0.03815124]
- [-0.0128196  -0.03815124  0.02032207]]
+[[ 0.20933923  0.04020819 -0.02092484]
+ [ 0.04020819  0.23385704 -0.03837369]
+ [-0.02092484 -0.03837369  0.02033788]]
 </pre></div>
 </div>
 </div>
@@ -569,13 +622,13 @@ X5 covariance:
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">2. </span>Pose2 SLAM</p>
+            <p class="prev-next-title"><span class="section-number">2.1. </span>Pose2 SLAM</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="Pose2SLAMExample_g2o.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">4. </span>Pose2 SLAM with g2o Files</p>
+        <p class="prev-next-title"><span class="section-number">2.3. </span>Pose2 SLAM with g2o Files</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
