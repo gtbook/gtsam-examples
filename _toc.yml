@@ -4,6 +4,7 @@ options:
   numbered: true
 chapters:
 
+- file: KalmanSmootherExample.ipynb
 - file: Pose2SLAMExample.ipynb
 - file: Pose2ISAM2Example.ipynb
 - file: Pose2SLAMExample_g2o.ipynb
