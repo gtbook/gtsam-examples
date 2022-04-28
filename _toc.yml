@@ -17,6 +17,7 @@ chapters:
 - file: advanced.md
   sections:
   - file: PlanarSLAMExample_sampling.ipynb
+  - file: PlanarSLAMExample_lbp.ipynb
   - file: PlanarSLAMExample_gvi.ipynb
 - file: sfm.md
   sections:
