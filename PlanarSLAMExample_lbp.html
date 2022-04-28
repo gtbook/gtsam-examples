@@ -1,0 +1,865 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.2. Loopy Belief Propagation &#8212; GTSAM by Example</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3.3. Variational Bayes Inference" href="PlanarSLAMExample_gvi.html" />
+    <link rel="prev" title="3.1. Sampling from the posterior" href="PlanarSLAMExample_sampling.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">GTSAM by Example</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   GTSAM by Example
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="gaussian.html">
+   1. Gaussian Inference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample.html">
+     1.1. Kalman Smoother
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample2.html">
+     1.2. Advanced Kalman Smoothing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="slam.html">
+   2. SLAM
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample.html">
+     2.1. Pose2 SLAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2ISAM2Example.html">
+     2.2. Pose2 iSAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+     2.3. Pose2 SLAM with g2o Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample.html">
+     2.4. Planar SLAM
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="advanced.html">
+   3. Advanced Inference
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+     3.1. Sampling from the posterior
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     3.2. Loopy Belief Propagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+     3.3. Variational Bayes Inference
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   4. Structure from Motion
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample.html">
+     4.1. Structure from Motion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample_bal.html">
+     4.2. SFM with BAL Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="StereoVOExample_large.html">
+     4.3. Stereo Visual Odometry
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/PlanarSLAMExample_lbp.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/gtbook/gtsam-examples"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/gtbook/gtsam-examples/issues/new?title=Issue%20on%20page%20%2FPlanarSLAMExample_lbp.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gtbook/gtsam-examples/main?urlpath=tree/PlanarSLAMExample_lbp.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setting-up-a-non-linear-slam-example">
+   3.2.1. Setting up a non-linear SLAM Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   3.2.2. Loopy Belief Propagation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gibbs-sampling">
+   3.2.3. Gibbs Sampling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#corrected-gibbs-sampling">
+   3.2.4. Corrected Gibbs Sampling
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Loopy Belief Propagation</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setting-up-a-non-linear-slam-example">
+   3.2.1. Setting up a non-linear SLAM Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   3.2.2. Loopy Belief Propagation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gibbs-sampling">
+   3.2.3. Gibbs Sampling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#corrected-gibbs-sampling">
+   3.2.4. Corrected Gibbs Sampling
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/PlanarSLAMExample_lbp.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="loopy-belief-propagation">
+<h1><span class="section-number">3.2. </span>Loopy Belief Propagation<a class="headerlink" href="#loopy-belief-propagation" title="Permalink to this headline">¶</a></h1>
+<p>Recently, <strong>loopy belief propagation</strong> or LBP has become trendy again because it might a good fit for highly parallel, distributed processing in chips like GraphCore.</p>
+<p>In this example we re-create the planar SLAM example, and show how LBP can be viewed as repeated elimination in the factor graph, and how it can be seen as the “dual” of Gibbs sampling, which adopts dual elimination strategy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook  # also installs latest gtsam pre-release
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">google.colab</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+    <span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;png&quot;</span>
+
+<span class="kn">import</span> <span class="nn">gtsam</span>
+<span class="kn">import</span> <span class="nn">gtsam.utils.plot</span> <span class="k">as</span> <span class="nn">gtsam_plot</span>
+<span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="kn">from</span> <span class="nn">gtbook.gaussian</span> <span class="kn">import</span> <span class="n">sample_bayes_net</span><span class="p">,</span> <span class="n">sample_conditional</span>
+<span class="kn">from</span> <span class="nn">gtbook.driving</span> <span class="kn">import</span> <span class="n">planar_example</span><span class="p">,</span> <span class="n">marginals_figure</span>
+<span class="kn">from</span> <span class="nn">gtsam</span> <span class="kn">import</span> <span class="n">Point2</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">,</span> <span class="n">Rot2</span><span class="p">,</span> <span class="n">noiseModel</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="setting-up-a-non-linear-slam-example">
+<h2><span class="section-number">3.2.1. </span>Setting up a non-linear SLAM Example<a class="headerlink" href="#setting-up-a-non-linear-slam-example" title="Permalink to this headline">¶</a></h2>
+<p>Below we re-create a similar factor graph as in <code class="docutils literal notranslate"><span class="pre">PlanarSLAMExample</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">graph</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">keys</span> <span class="o">=</span> <span class="n">planar_example</span><span class="p">()</span>
+<span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span> <span class="o">=</span> <span class="n">keys</span>
+<span class="n">show</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/PlanarSLAMExample_lbp_5_0.svg" src="_images/PlanarSLAMExample_lbp_5_0.svg" /></div>
+</div>
+<p>As always, we can calculate and plot covariance ellipses which show the Laplace approximation graphically.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">marginals</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Marginals</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">truth</span><span class="p">)</span>
+<span class="n">marginals_figure</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">marginals</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/PlanarSLAMExample_lbp_7_0.png" src="_images/PlanarSLAMExample_lbp_7_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2><span class="section-number">3.2.2. </span>Loopy Belief Propagation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>We initialize a set of individual <em>Gaussian</em> factors <span class="math notranslate nohighlight">\(q(x_j)\)</span> or <em>beliefs</em>, one for each variable. LBP is a fixed point algorithm to minimize the KL <span class="math notranslate nohighlight">\(D_\text{KL}(p||q)\)</span> divergence between the true posterior <span class="math notranslate nohighlight">\(p(X|Z)\)</span> and the variational approximation</p>
+<div class="math notranslate nohighlight">
+\[
+q(X) = \prod_j q(x_j)
+\]</div>
+<p>We repeatedly:</p>
+<ul class="simple">
+<li><p>pick a variable <span class="math notranslate nohighlight">\(x_j\)</span> at random;</p></li>
+<li><p>consider the Markov blanket of <span class="math notranslate nohighlight">\(x_j\)</span>, the factor graph fragment <span class="math notranslate nohighlight">\(\phi(x_j, X_j)\)</span> where <span class="math notranslate nohighlight">\(X_j\)</span> is the separator;</p></li>
+<li><p>augment the factor graph fragment with beliefs on all <span class="math notranslate nohighlight">\(x_k\in X_j\)</span>, <em>except</em> <span class="math notranslate nohighlight">\(q(x_j)\)</span>;</p></li>
+<li><p>eliminate the separator <span class="math notranslate nohighlight">\(X_j\)</span> by factorizing <span class="math notranslate nohighlight">\(\phi(x_j, X_j) = p(X_j|x_j)q'(x_j)\)</span>;</p></li>
+<li><p>assign <span class="math notranslate nohighlight">\(q(x_j) \leftarrow q'(x_j)\)</span> to be the new belief on <span class="math notranslate nohighlight">\(x_j\)</span>.</p></li>
+</ul>
+<p>We first cache all Markov blankets:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">markov_blankets</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">NonlinearFactorGraph</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">size</span><span class="p">()):</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">factor</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">markov_blankets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here are the Markov blankets for <span class="math notranslate nohighlight">\(l_2\)</span> (simple) and <span class="math notranslate nohighlight">\(x_2\)</span> (complex):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show</span><span class="p">(</span><span class="n">markov_blankets</span><span class="p">[</span><span class="n">l2</span><span class="p">],</span> <span class="n">truth</span><span class="p">,</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/PlanarSLAMExample_lbp_11_0.svg" src="_images/PlanarSLAMExample_lbp_11_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show</span><span class="p">(</span><span class="n">markov_blankets</span><span class="p">[</span><span class="n">x2</span><span class="p">],</span> <span class="n">truth</span><span class="p">,</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/PlanarSLAMExample_lbp_12_0.svg" src="_images/PlanarSLAMExample_lbp_12_0.svg" /></div>
+</div>
+<p>The entire LPB code is then:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lbp</span><span class="p">(</span><span class="n">x0</span><span class="p">:</span><span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">,</span> <span class="n">hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform loopy belief propagation with initial estimate x.&quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">HessianFactor</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">g</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])}</span>
+    <span class="n">hook</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">j</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">):</span>
+        <span class="c1"># Get linearized Gaussian Markov blanket and augment with beliefs</span>
+        <span class="n">augmented_graph</span> <span class="o">=</span> <span class="n">markov_blankets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">linearize</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">augmented_keys</span> <span class="o">=</span> <span class="n">augmented_graph</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">augmented_keys</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+                <span class="n">augmented_graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Eliminate with x_j eliminated last:</span>
+            <span class="n">ordering</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Ordering</span><span class="o">.</span><span class="n">ColamdConstrainedLastGaussianFactorGraph</span><span class="p">(</span>
+                <span class="n">augmented_graph</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">gbn</span> <span class="o">=</span> <span class="n">augmented_graph</span><span class="o">.</span><span class="n">eliminateSequential</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
+            <span class="n">q_prime</span> <span class="o">=</span> <span class="n">gbn</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">gbn</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="c1"># move on the manifold</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">q_prime</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">())</span>
+            <span class="n">new_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">q_prime</span><span class="o">.</span><span class="n">information</span><span class="p">())</span>
+            <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">HessianFactor</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,)),</span> <span class="n">P</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_x</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+                    
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="c1"># choose a variable whose belief to update</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
+        <span class="n">new_x</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">new_x</span><span class="p">)</span>
+            <span class="n">hook</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">new_x</span>
+            <span class="k">if</span> <span class="n">error</span> <span class="o">&lt;</span> <span class="mf">1e-1</span><span class="p">:</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We next initialize the belief on the manifold, which we do in <em>information form</em> by using a <code class="docutils literal notranslate"><span class="pre">HessianFactor</span></code>, whose constructor reads as follows:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/** Construct a unary factor.  G is the quadratic term (Hessian matrix), g</span>
+<span class="cm">* the linear term (a vector), and f the constant term.  The quadratic</span>
+<span class="cm">* error is:</span>
+<span class="cm">* 0.5*(f - 2*x&#39;*g + x&#39;*G*x)</span>
+<span class="cm">*/</span><span class="w"></span>
+<span class="n">HessianFactor</span><span class="p">(</span><span class="n">Key</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Matrix</span><span class="o">&amp;</span><span class="w"> </span><span class="n">G</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&amp;</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">f</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We will initialize with an identity Hessian/information matrix <span class="math notranslate nohighlight">\(G\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="n">initial</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">initial</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">()</span>
+    <span class="n">initial</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">3</span><span class="p">,))))</span>
+    <span class="n">initial</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">3</span><span class="p">,))))</span>
+    <span class="n">initial</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span> <span class="n">Pose2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">3</span><span class="p">,))))</span>
+    <span class="n">initial</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">Point2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">2</span><span class="p">,)))</span>
+    <span class="n">initial</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span> <span class="n">Point2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">2</span><span class="p">,)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_hook</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">it</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">it</span><span class="si">=}</span><span class="s2">, initial error is </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">it</span><span class="si">=}</span><span class="s2">, updated </span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="si">}</span><span class="s2">, error now </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">lbp</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">print_hook</span><span class="p">)</span>
+
+<span class="c1"># plot final state</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">information</span><span class="p">())</span>
+    <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">atPose2</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">.</span><span class="n">translation</span><span class="p">(),</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">[</span><span class="mi">3</span><span class="p">:]:</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">information</span><span class="p">())</span>
+    <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">atPoint2</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it=0, initial error is 28739.727972505574
+it=1, updated x1, error now 2172.712772099904
+it=2, updated l1, error now 2148.902547221964
+it=3, updated l1, error now 2242.902395962602
+it=4, updated x3, error now 2461.230108399813
+it=5, updated x3, error now 2387.7091084849326
+it=6, updated l2, error now 2368.772922670549
+it=7, updated x1, error now 2364.567407665353
+it=8, updated l1, error now 2253.1975732854817
+it=9, updated x2, error now 258.17413594697746
+it=10, updated x1, error now 258.17050074643566
+it=11, updated x3, error now 44.554860079567774
+it=12, updated l2, error now 24.990611403796454
+it=13, updated l1, error now 24.247842549054454
+it=14, updated l1, error now 23.619659736153288
+it=15, updated l1, error now 23.605829507051826
+it=16, updated l1, error now 23.605818885628796
+it=17, updated x3, error now 1.9303914297415994
+it=18, updated x1, error now 1.8494706291947223
+it=19, updated l2, error now 1.7972337283877045
+it=20, updated x3, error now 1.7439552488321663
+it=21, updated x3, error now 1.7439548879885585
+it=22, updated x2, error now 1.1223563412735273
+it=23, updated x1, error now 1.121674059206809
+it=24, updated l2, error now 1.1206263028784738
+it=25, updated l1, error now 1.0720527992356343
+it=26, updated l1, error now 1.0719737311698687
+it=27, updated x3, error now 0.14727361719587434
+it=28, updated l2, error now 0.14445713509295852
+it=29, updated x3, error now 0.1442002778153448
+it=30, updated x3, error now 0.1442002694977345
+it=31, updated x3, error now 0.14420026949782477
+it=32, updated x2, error now 0.09116583627253003
+</pre></div>
+</div>
+<img alt="_images/PlanarSLAMExample_lbp_17_1.png" src="_images/PlanarSLAMExample_lbp_17_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_ellipse</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">information</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">{</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">}:</span>
+        <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">atPose2</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">.</span><span class="n">translation</span><span class="p">(),</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">atPoint2</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+        
+<span class="k">def</span> <span class="nf">ellipse_hook</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">it</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span> <span class="n">plot_ellipse</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plot_ellipse</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+        
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">marginals_figure</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">marginals</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">lbp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ellipse_hook</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/PlanarSLAMExample_lbp_18_0.png" src="_images/PlanarSLAMExample_lbp_18_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">show_frame</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">it</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">information</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">x3</span><span class="p">]:</span>
+            <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">atPose2</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">translation</span><span class="p">(),</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">atPoint2</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">lbp</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">(</span><span class="n">initial</span><span class="p">),</span> <span class="n">show_frame</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/PlanarSLAMExample_lbp_19_0.png" src="_images/PlanarSLAMExample_lbp_19_0.png" />
+<img alt="_images/PlanarSLAMExample_lbp_19_1.png" src="_images/PlanarSLAMExample_lbp_19_1.png" />
+<img alt="_images/PlanarSLAMExample_lbp_19_2.png" src="_images/PlanarSLAMExample_lbp_19_2.png" />
+<img alt="_images/PlanarSLAMExample_lbp_19_3.png" src="_images/PlanarSLAMExample_lbp_19_3.png" />
+<img alt="_images/PlanarSLAMExample_lbp_19_4.png" src="_images/PlanarSLAMExample_lbp_19_4.png" />
+<img alt="_images/PlanarSLAMExample_lbp_19_5.png" src="_images/PlanarSLAMExample_lbp_19_5.png" />
+<img alt="_images/PlanarSLAMExample_lbp_19_6.png" src="_images/PlanarSLAMExample_lbp_19_6.png" />
+</div>
+</div>
+</div>
+<div class="section" id="gibbs-sampling">
+<h2><span class="section-number">3.2.3. </span>Gibbs Sampling<a class="headerlink" href="#gibbs-sampling" title="Permalink to this headline">¶</a></h2>
+<p>Gibbs sampling is a variant of Markov Chain Monte Carlo sampling that always accepts any proposal.</p>
+<p>We repeatedly:</p>
+<ul class="simple">
+<li><p>pick a variable <span class="math notranslate nohighlight">\(x_j\)</span> at random;</p></li>
+<li><p>consider the Markov blanket of <span class="math notranslate nohighlight">\(x_j\)</span>, the factor graph fragment <span class="math notranslate nohighlight">\(\phi(x_j, X_j)\)</span> where <span class="math notranslate nohighlight">\(X_j\)</span> is the separator;</p></li>
+<li><p>eliminate the variable <span class="math notranslate nohighlight">\(x_j\)</span> by factorizing <span class="math notranslate nohighlight">\(\phi(x_j, X_j) = p(x_j|X_j)\phi(X_j)\)</span>;</p></li>
+<li><p>sample <span class="math notranslate nohighlight">\(x_j\)</span> <span class="math notranslate nohighlight">\(\phi(x_j, X_j)\)</span>.</p></li>
+</ul>
+<p>We will need:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">plot_sample</span><span class="p">(</span><span class="n">manifold_sample</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+        <span class="n">points</span><span class="p">[:,</span> <span class="n">i</span> <span class="o">-</span>
+               <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifold_sample</span><span class="o">.</span><span class="n">atPose2</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">translation</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+        <span class="n">points</span><span class="p">[:,</span> <span class="n">j</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifold_sample</span><span class="o">.</span><span class="n">atPoint2</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;k.&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">points</span>
+
+
+<span class="k">def</span> <span class="nf">proposal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Propose via Gibbs sampling&quot;&quot;&quot;</span>
+    <span class="c1"># Get linearized Gaussian Markov blanket</span>
+    <span class="n">local_graph</span> <span class="o">=</span> <span class="n">markov_blankets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">linearize</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1"># Eliminate just x_j:</span>
+    <span class="n">ordering</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Ordering</span><span class="p">()</span>
+    <span class="n">ordering</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>  <span class="c1"># eliminate, might fail if singular</span>
+        <span class="n">gbn</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">local_graph</span><span class="o">.</span><span class="n">eliminatePartialSequential</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
+        <span class="c1"># sample x_j and propose a new manifold sample</span>
+        <span class="n">conditional</span> <span class="o">=</span> <span class="n">gbn</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">vvj</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">()</span>
+        <span class="n">vvj</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">sample_conditional</span><span class="p">(</span><span class="n">conditional</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">retract</span><span class="p">(</span><span class="n">vvj</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="c1"># Start with MAP estimate</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">marginals_figure</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">marginals</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="c1"># choose a variable to perturb</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">proposal</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">it</span> <span class="o">&gt;</span> <span class="n">N</span><span class="o">//</span><span class="mi">2</span><span class="p">:</span>
+        <span class="n">plot_sample</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/PlanarSLAMExample_lbp_21_0.png" src="_images/PlanarSLAMExample_lbp_21_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="corrected-gibbs-sampling">
+<h2><span class="section-number">3.2.4. </span>Corrected Gibbs Sampling<a class="headerlink" href="#corrected-gibbs-sampling" title="Permalink to this headline">¶</a></h2>
+<p>Above we pretended elimination yielded the correct conditional on <span class="math notranslate nohighlight">\(x_j\)</span> given its separator.
+Unfortunately, calculating the conditional probability <span class="math notranslate nohighlight">\(P(x_j|X_j)\)</span> exactly is again a hard problem, and sampling from it can be expensive as well. We correct this by rejection a fraction of the proposals, Metropolis style:</p>
+<p>Then we run Metropolis sampler where the proposal randomly picks a variable to perturb, and then uses the local factor graph to calculate the acceptance ratio.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="n">log_a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;calculate acceptance, with some care to avoid overflow.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">log_a</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="n">log_a</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">10</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_a</span><span class="p">)</span>
+
+<span class="c1"># Start with MAP estimate</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">15000</span>
+<span class="n">marginals_figure</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">marginals</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+<span class="n">nr_accepted</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="c1"># choose a variable to perturb</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">proposal</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+    <span class="c1"># calculate local acceptance ratio</span>
+    <span class="n">log_a</span> <span class="o">=</span> <span class="n">markov_blankets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">markov_blankets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">accept</span><span class="p">(</span><span class="n">log_a</span><span class="p">):</span>
+        <span class="n">nr_accepted</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="k">if</span> <span class="n">it</span><span class="o">&gt;</span><span class="n">N</span><span class="o">//</span><span class="mi">2</span><span class="p">:</span>
+            <span class="n">plot_sample</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;nr_accepted=</span><span class="si">{</span><span class="n">nr_accepted</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=8457
+</pre></div>
+</div>
+<img alt="_images/PlanarSLAMExample_lbp_24_1.png" src="_images/PlanarSLAMExample_lbp_24_1.png" />
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="PlanarSLAMExample_sampling.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">3.1. </span>Sampling from the posterior</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="PlanarSLAMExample_gvi.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.3. </span>Variational Bayes Inference</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Frank Dellaert and the GTSAM Community<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
