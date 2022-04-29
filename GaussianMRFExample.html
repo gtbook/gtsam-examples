@@ -1,0 +1,648 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1.3. Gaussian Markov Random Fields &#8212; GTSAM by Example</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1.4. Gaussian Loopy Belief Propagation" href="GaussianMRFExample_lbp.html" />
+    <link rel="prev" title="1.2. Advanced Kalman Smoothing" href="KalmanSmootherExample2.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">GTSAM by Example</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   GTSAM by Example
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="gaussian.html">
+   1. Gaussian Inference
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample.html">
+     1.1. Kalman Smoother
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample2.html">
+     1.2. Advanced Kalman Smoothing
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     1.3. Gaussian Markov Random Fields
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMRFExample_lbp.html">
+     1.4. Gaussian Loopy Belief Propagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="slam.html">
+   2. SLAM
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample.html">
+     2.1. Pose2 SLAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2ISAM2Example.html">
+     2.2. Pose2 iSAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+     2.3. Pose2 SLAM with g2o Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample.html">
+     2.4. Planar SLAM
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="advanced.html">
+   3. Advanced Inference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+     3.1. Sampling from the posterior
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_lbp.html">
+     3.2. Loopy Belief Propagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+     3.3. Variational Bayes Inference
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   4. Structure from Motion
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample.html">
+     4.1. Structure from Motion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample_bal.html">
+     4.2. SFM with BAL Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="StereoVOExample_large.html">
+     4.3. Stereo Visual Odometry
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/GaussianMRFExample.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/gtbook/gtsam-examples"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/gtbook/gtsam-examples/issues/new?title=Issue%20on%20page%20%2FGaussianMRFExample.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gtbook/gtsam-examples/main?urlpath=tree/GaussianMRFExample.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-small-image-mrf">
+   1.3.1. A Small “Image” MRF
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inference-using-a-direct-solver">
+   1.3.2. Inference using a Direct Solver
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#discussion">
+   1.3.3. Discussion
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Gaussian Markov Random Fields</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-small-image-mrf">
+   1.3.1. A Small “Image” MRF
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inference-using-a-direct-solver">
+   1.3.2. Inference using a Direct Solver
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#discussion">
+   1.3.3. Discussion
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/GaussianMRFExample.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="gaussian-markov-random-fields">
+<h1><span class="section-number">1.3. </span>Gaussian Markov Random Fields<a class="headerlink" href="#gaussian-markov-random-fields" title="Permalink to this headline">¶</a></h1>
+<p>A Markov random field or MRF is an <em>undirected</em> graphical model where the energy is given by the som of unary and multi-variable potentials <span class="math notranslate nohighlight">\(\psi\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+E(X) = \sum_j \psi_j(x_j) + \sum_c \psi_c(X_c)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(j\)</span> ranges over the variable nodes <span class="math notranslate nohighlight">\(x_j\)</span> and <span class="math notranslate nohighlight">\(c\)</span> indexes over cliques in the graph of variables. We use <span class="math notranslate nohighlight">\(X_c\)</span> to denote all variables associated with clique <span class="math notranslate nohighlight">\(c\)</span>. A typical case is a pairwise Gaussian MRF, where</p>
+<ul class="simple">
+<li><p>the <span class="math notranslate nohighlight">\(\psi_j(x_j)\)</span> are quadratic potentials <span class="math notranslate nohighlight">\(\|A_j x_j-b_j\|^2_{R_j}\)</span> associated with measurements <span class="math notranslate nohighlight">\(b_j\)</span>.</p></li>
+<li><p>the <span class="math notranslate nohighlight">\(\psi_c(X_c)=\psi_c(x_{j_1},x_{j_2})\)</span> are pairwise potentials <span class="math notranslate nohighlight">\(\|A_{j_1} x_{j_1}+A_{j_2} x_{j_2}-b_c\|^2_{Q_c}\)</span> over pairwise cliques <span class="math notranslate nohighlight">\(X_c=\{x_{j_1},x_{j_2}\}\)</span>, typically enforcing smoothness.</p></li>
+</ul>
+<p>It will not surprise anyone, that Gaussian MRF’s can easily and advantageously be represented using Gaussian factor graphs. Indeed, we can rewrite the energy <span class="math notranslate nohighlight">\(E(X)\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[
+E(X) = \sum_i \phi_i(X_i)
+\]</div>
+<p>where the factors <span class="math notranslate nohighlight">\(\phi_i(X_i)\)</span> encompass both unary and binary factors, and of course we can add arbitrary arity factors as well.</p>
+<p>Below we create a small “image “example, and show how we can solve it the same tools as the ones we used in the Kalman smoothing examples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook  # also installs latest gtsam pre-release
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">gtsam</span>
+<span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="kn">from</span> <span class="nn">gtbook.gaussian</span> <span class="kn">import</span> <span class="n">sample_bayes_net</span>
+<span class="kn">from</span> <span class="nn">gtsam</span> <span class="kn">import</span> <span class="n">noiseModel</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="a-small-image-mrf">
+<h2><span class="section-number">1.3.1. </span>A Small “Image” MRF<a class="headerlink" href="#a-small-image-mrf" title="Permalink to this headline">¶</a></h2>
+<p>We first define the image dimensions and set up some keys referring to rows by a letter and columns by an integer:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span><span class="p">,</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span>  <span class="c1"># try playing with this</span>
+<span class="n">row_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">+</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">)]</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="p">{(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="n">row_symbols</span><span class="p">[</span><span class="n">row</span><span class="p">],</span> <span class="n">col</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+       <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We create random data, and define a noise model for the data with the right  standard deviation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">data_model</span> <span class="o">=</span> <span class="n">noiseModel</span><span class="o">.</span><span class="n">Isotropic</span><span class="o">.</span><span class="n">Sigmas</span><span class="p">([</span><span class="n">sigma</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;data:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">data</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">],</span><span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data_model</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
+ [[ 0.15 -0.52  0.38  0.47]
+ [-0.98 -0.65  0.06 -0.16]
+ [-0.01 -0.43  0.44  0.39]]
+data_model=isotropic dim=1 sigma=0.5
+</pre></div>
+</div>
+</div>
+</div>
+<p>For smoothness, we use a different noise model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">smoothness_sigma</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">smoothness_model</span> <span class="o">=</span> <span class="n">noiseModel</span><span class="o">.</span><span class="n">Isotropic</span><span class="o">.</span><span class="n">Sigmas</span><span class="p">([</span><span class="n">smoothness_sigma</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">smoothness_model</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>smoothness_model=isotropic dim=1 sigma=0.5
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then we create the factor graph:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="c1"># add data terms:</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">)]</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">]),</span> <span class="n">data_model</span><span class="p">)</span>
+        <span class="c1"># add smoothness terms:</span>
+        <span class="k">if</span> <span class="n">col</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">j1</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">j1</span><span class="p">,</span> <span class="o">-</span><span class="n">I</span><span class="p">,</span> <span class="n">zero</span><span class="p">,</span> <span class="n">smoothness_model</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">row</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">j2</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[(</span><span class="n">row</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">col</span><span class="p">)]</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">j2</span><span class="p">,</span> <span class="o">-</span><span class="n">I</span><span class="p">,</span> <span class="n">zero</span><span class="p">,</span> <span class="n">smoothness_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can display the graph, although graphviz (our graph plotting engine) does not respect the “image” nature. Note that we omit the “dot” for binary factors, which both reveals the undirected MRF and is easier on the eye.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">position_hints</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span><span class="nb">float</span><span class="p">(</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row_symbols</span><span class="p">)}</span>
+<span class="n">show</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># you can add hints=position_hints for a different view</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_15_0.svg" src="_images/GaussianMRFExample_15_0.svg" /></div>
+</div>
+</div>
+<div class="section" id="inference-using-a-direct-solver">
+<h2><span class="section-number">1.3.2. </span>Inference using a Direct Solver<a class="headerlink" href="#inference-using-a-direct-solver" title="Permalink to this headline">¶</a></h2>
+<p>As in Kalman smoothing, we can use multi-frontal elimination, using a “nested dissection” ordering:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nested</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Ordering</span><span class="o">.</span><span class="n">MetisGaussianFactorGraph</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+<span class="n">nested_bayes_tree</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">eliminateMultifrontal</span><span class="p">(</span><span class="n">nested</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">nested_bayes_tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_17_0.svg" src="_images/GaussianMRFExample_17_0.svg" /></div>
+</div>
+<p>In this case, the structure of the Bayes tree reveals that (for M=3,N=4) the image is split into three regions that are separately solved.</p>
+<p>Unfortunately, the wrapper does not support easy visualization of the “divide and conquer” approach of nested dissection, but here is an ascii image showing the first “cut”, dividing up the image into regions handled by the left, middle, and right branches, respectively:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
+  <span class="n">_______</span>
+<span class="n">a</span><span class="o">|</span><span class="n">l</span> <span class="n">l</span> <span class="o">*</span> <span class="n">r</span><span class="o">|</span>
+<span class="n">b</span><span class="o">|*</span> <span class="o">*</span> <span class="n">r</span> <span class="n">r</span><span class="o">|</span>
+<span class="n">c</span><span class="o">|</span><span class="n">m</span> <span class="n">m</span> <span class="o">*</span> <span class="n">r</span><span class="o">|</span>
+</pre></div>
+</div>
+<p>The MAP solution is obtained by back-substitution, and can be seen as a smoother version of the data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="o">=</span> <span class="n">nested_bayes_tree</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;data:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">data</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">],</span><span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mean</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">keys</span><span class="p">[(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">)])</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
+ [[ 0.15 -0.52  0.38  0.47]
+ [-0.98 -0.65  0.06 -0.16]
+ [-0.01 -0.43  0.44  0.39]]
+mean:
+[-0.16, -0.22, 0.09, 0.21]
+[-0.41, -0.3, 0.0, 0.06]
+[-0.21, -0.21, 0.11, 0.18]
+</pre></div>
+</div>
+</div>
+</div>
+<p>And of course, now ancestral sampling can also be done in parallel (here in the Bayes net):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gbn</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">eliminateSequential</span><span class="p">(</span><span class="n">nested</span><span class="p">)</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">sample_bayes_net</span><span class="p">(</span><span class="n">gbn</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="n">keys</span><span class="p">[(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">)]],</span><span class="mi">2</span><span class="p">))</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-0.11  0.66 -0.13]] [[ 0.32 -0.34 -0.19]] [[ 0.38 -0.49  0.27]] [[ 0.25 -0.01  0.42]]
+[[-0.4  -0.06 -0.62]] [[-0.23  0.1  -0.72]] [[0.23 0.13 0.08]] [[ 0.22 -0.09  0.43]]
+[[-0.21 -0.33 -0.84]] [[-0.24  0.24  0.06]] [[0.41 0.19 0.53]] [[0.11 0.18 0.23]]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="discussion">
+<h2><span class="section-number">1.3.3. </span>Discussion<a class="headerlink" href="#discussion" title="Permalink to this headline">¶</a></h2>
+<p>Direct (multi-frontal) elimination), as shown above, works like a charm in Gaussian Markov random fields with arbitrary connectivity. However, this will <em>only</em> scale up to large graphs when small “separators” are to be found. In particular, in image applications, the smallest separator that can be found will always be the smallest image dimension, here <span class="math notranslate nohighlight">\(n=\min(M,N)\)</span>, and hence the root clique of the Bayes tree will have that dimension as well. When images are large, this will be prohibitively expensive, as a dense <span class="math notranslate nohighlight">\(n \times n\)</span> matrix will have to be factorized, and we might need to resort to different methods. Still, <span class="math notranslate nohighlight">\(256\times256\)</span> images for example are well within reach for exact inference.</p>
+<p>In the next section we discuss loopy belief propagation and Gibbs sampling as alternatives.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="KalmanSmootherExample2.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">1.2. </span>Advanced Kalman Smoothing</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="GaussianMRFExample_lbp.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">1.4. </span>Gaussian Loopy Belief Propagation</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Frank Dellaert and the GTSAM Community<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
