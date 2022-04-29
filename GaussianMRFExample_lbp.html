@@ -403,23 +403,18 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
-<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">google.colab</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
-    <span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;png&quot;</span>
-
 <span class="kn">import</span> <span class="nn">gtsam</span>
-<span class="kn">import</span> <span class="nn">gtsam.utils.plot</span> <span class="k">as</span> <span class="nn">gtsam_plot</span>
 <span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">show</span>
-<span class="kn">from</span> <span class="nn">gtbook.gaussian</span> <span class="kn">import</span> <span class="n">sample_bayes_net</span><span class="p">,</span> <span class="n">sample_conditional</span>
-<span class="kn">from</span> <span class="nn">gtsam</span> <span class="kn">import</span> <span class="n">Point2</span><span class="p">,</span> <span class="n">noiseModel</span>
+<span class="kn">from</span> <span class="nn">gtsam</span> <span class="kn">import</span> <span class="n">noiseModel</span>
+
+<span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">vv</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">vv</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 </div>
 </div>
@@ -598,9 +593,7 @@ q(X) = \prod_j q(x_j)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it=0, initial error is 12.126645986142575
 it=1000, updated b3, error now 3.144896848932315
 it=2000, updated a4, error now 3.1445374649678706
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it=3000, updated b4, error now 3.1444014545404593
+it=3000, updated b4, error now 3.1444014545404593
 it=4000, updated b3, error now 3.144328703586359
 it=5000, updated b2, error now 3.1442837401118875
 it=6000, updated a2, error now 3.1442495739463423
@@ -659,7 +652,7 @@ direct solver error: 3.1439968801524447
 </div>
 </div>
 </div>
-<p>However, convergence is painfully slow.</p>
+<p>However, convergence is slow.</p>
 </div>
 <div class="section" id="gibbs-sampling">
 <h2><span class="section-number">1.4.3. </span>Gibbs Sampling<a class="headerlink" href="#gibbs-sampling" title="Permalink to this headline">¶</a></h2>
@@ -671,12 +664,10 @@ direct solver error: 3.1439968801524447
 <li><p>eliminate the variable <span class="math notranslate nohighlight">\(x_j\)</span> by factorizing <span class="math notranslate nohighlight">\(\phi(x_j, X_j) = p(x_j|X_j)\phi(X_j)\)</span>;</p></li>
 <li><p>sample <span class="math notranslate nohighlight">\(x_j\)</span> <span class="math notranslate nohighlight">\(\phi(x_j, X_j)\)</span>.</p></li>
 </ul>
-<p>We will need:</p>
+<p>We first compute all conditionals <span class="math notranslate nohighlight">\(p(x_j|X_j)\)</span>, which we can do <em>in advance</em>, as well as the inverse square root covariances <span class="math notranslate nohighlight">\(R_j^{-1}\)</span>, which we need for sampling. An advantage of working in square-root information form (like the entirety of GTSAM) is that less computation is needed <em>and</em> it is numerically more stable:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-
-<span class="c1"># Compute all conditionals, which we can do *in advance*:</span>
 <span class="n">conditionals</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">invR</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">:</span>
@@ -691,6 +682,17 @@ direct solver error: 3.1439968801524447
 </div>
 </div>
 </div>
+<p>The conditional is parameterized by <span class="math notranslate nohighlight">\(R\)</span>, <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(d\)</span> as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+p(x_j|X_j) \propto \exp \{-0.5 \|R x_j + S X_j - d\|^2\}
+\]</div>
+<p>A Gibbs proposal for variable <span class="math notranslate nohighlight">\(j\)</span> then just assembles the separator <span class="math notranslate nohighlight">\(X_j\)</span> and samples from the conditional like so:</p>
+<div class="math notranslate nohighlight">
+\[
+s_j = R_j^{-1} [d - S X_j + u] = \mu(X_j) + R_j^{-1} u
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu(X_j) = R_j^{-1} [d - S X_j]\)</span> is the conditional mean and <span class="math notranslate nohighlight">\(u\)</span> is drawn from a standard zero-mean Gaussian with identity covariance.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
@@ -702,35 +704,44 @@ direct solver error: 3.1439968801524447
     <span class="c1"># sample x_j and propose a new sample</span>
     <span class="n">rhs</span> <span class="o">=</span> <span class="n">conditional</span><span class="o">.</span><span class="n">d</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">parents</span> <span class="o">=</span> <span class="n">conditional</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="n">key</span> <span class="o">==</span> <span class="n">j</span>
     <span class="n">rhs</span> <span class="o">=</span> <span class="n">rhs</span> <span class="o">-</span> <span class="n">conditional</span><span class="o">.</span><span class="n">S</span><span class="p">()</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">])</span>
     <span class="c1"># sample from conditional Gaussian</span>
-    <span class="n">delta</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">()</span>
-    <span class="n">delta</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">invR</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">@</span> <span class="p">(</span><span class="n">rhs</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">()))</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">()</span>
+    <span class="n">sample</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">invR</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">@</span> <span class="p">(</span><span class="n">rhs</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">()))</span>
     <span class="n">new_x</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">new_x</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+    <span class="n">new_x</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">new_x</span>
-
-<span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">vv</span><span class="p">):</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">:</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">vv</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">result</span>
-
-<span class="c1"># Start with MAP estimate</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
-<span class="n">nr_iterations</span> <span class="o">=</span> <span class="mi">10000</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We also create a hook to keep sufficient statistics:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">count</span><span class="p">,</span> <span class="nb">sum</span><span class="p">,</span> <span class="n">sum_squares</span>
 <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="nb">sum</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="o">.</span><span class="n">Zero</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
 <span class="n">sum_squares</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="o">.</span><span class="n">Zero</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">save_stats</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">count</span><span class="p">,</span> <span class="nb">sum</span><span class="p">,</span> <span class="n">sum_squares</span>
+    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="nb">sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">sum_squares</span> <span class="o">=</span> <span class="n">sum_squares</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The Gibbs sampler is then <em>exceedingly simple</em>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run Gibbs sampler</span>
+<span class="n">nr_iterations</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nr_iterations</span><span class="p">):</span>
-    <span class="c1"># choose a variable to perturb</span>
-    <span class="n">j</span> <span class="o">=</span> <span class="n">key_list</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="p">)]</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">key_list</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="p">)]</span> <span class="c1"># choose a variable to perturb</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">proposal</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">it</span> <span class="o">&gt;=</span> <span class="n">nr_iterations</span><span class="o">//</span><span class="mi">2</span><span class="p">:</span>
-        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="nb">sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-        <span class="n">sum_squares</span> <span class="o">=</span> <span class="n">sum_squares</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">it</span> <span class="o">&gt;=</span> <span class="n">nr_iterations</span><span class="o">//</span><span class="mi">2</span><span class="p">:</span> <span class="n">save_stats</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -801,7 +812,7 @@ c4 0.18 +/- 0.33
 <p>Note that</p>
 <ul class="simple">
 <li><p>the standard deviations at the edge are larger.</p></li>
-<li><p>teh LBP approximation is overly confident. This is a well known property of LBP.</p></li>
+<li><p>comparing with LBP, we see that the LBP approximation is overly confident. This is a well known property of LBP.</p></li>
 </ul>
 </div>
 </div>
