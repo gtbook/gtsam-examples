@@ -398,7 +398,6 @@
 <div class="tex2jax_ignore mathjax_ignore section" id="gaussian-loopy-belief-propagation">
 <h1><span class="section-number">1.4. </span>Gaussian Loopy Belief Propagation<a class="headerlink" href="#gaussian-loopy-belief-propagation" title="Permalink to this headline">¶</a></h1>
 <p>We start from the same “image MRF, with unary and pairwise Gaussian factors. We then implement loopy belief propagation.</p>
-<p><strong>Important note Apr 30 2022: this still contains a bug in LBP</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook  # also installs latest gtsam pre-release
@@ -504,17 +503,19 @@ q(X) = \prod_j q(x_j)
 <ul class="simple">
 <li><p>pick a variable <span class="math notranslate nohighlight">\(x_j\)</span> at random;</p></li>
 <li><p>consider the Markov blanket of <span class="math notranslate nohighlight">\(x_j\)</span>, the factor graph fragment <span class="math notranslate nohighlight">\(\phi(x_j, X_j)\)</span> where <span class="math notranslate nohighlight">\(X_j\)</span> is the separator;</p></li>
-<li><p>augment the factor graph fragment with beliefs on all <span class="math notranslate nohighlight">\(x_k\in X_j\)</span>, <em>except</em> <span class="math notranslate nohighlight">\(q(x_j)\)</span>;</p></li>
-<li><p>eliminate the separator <span class="math notranslate nohighlight">\(X_j\)</span> by factorizing <span class="math notranslate nohighlight">\(\phi(x_j, X_j) = p(X_j|x_j)q'(x_j)\)</span>;</p></li>
+<li><p>augment the factor graph fragment with (downdated) beliefs on all <span class="math notranslate nohighlight">\(x_k\in X_j\)</span>, <em>except</em> <span class="math notranslate nohighlight">\(q(x_j)\)</span>;</p></li>
+<li><p>eliminate the separator <span class="math notranslate nohighlight">\(X_j\)</span> by factorizing this graph as <span class="math notranslate nohighlight">\(p(X_j|x_j)q'(x_j)\)</span>;</p></li>
 <li><p>assign <span class="math notranslate nohighlight">\(q(x_j) \leftarrow q'(x_j)\)</span> to be the new belief on <span class="math notranslate nohighlight">\(x_j\)</span>.</p></li>
 </ul>
 <p>We first cache all Markov blankets:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">markov_blankets</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">local_factor_indices</span> <span class="o">=</span>  <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="n">markov_blankets</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">size</span><span class="p">()):</span>
     <span class="n">factor</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">factor</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">local_factor_indices</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="n">markov_blankets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -532,7 +533,7 @@ q(X) = \prod_j q(x_j)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show</span><span class="p">(</span><span class="n">markov_blankets</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]],</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="n">position_hints</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show</span><span class="p">(</span><span class="n">markov_blankets</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]],</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="n">position_hints</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -551,34 +552,52 @@ q(X) = \prod_j q(x_j)
 <p>The entire LPB code is then:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lbp</span><span class="p">(</span><span class="n">x0</span><span class="p">:</span><span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">,</span> <span class="n">hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lbp</span><span class="p">(</span><span class="n">x0</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">,</span> <span class="n">hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Perform loopy belief propagation with initial estimate x.&quot;&quot;&quot;</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">key_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
     <span class="n">error</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1"># Initialize belief and messages</span>
     <span class="n">q</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">HessianFactor</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">g</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
         <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">}</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>  <span class="c1"># messages from factor i to variable j</span>
     <span class="n">hook</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">j</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">):</span>
-        <span class="c1"># Get Markov blanket and augment with beliefs</span>
+    <span class="k">def</span> <span class="nf">get_message</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get message from factor to j&quot;&quot;&quot;</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">factor</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">factor</span>
+        <span class="n">edge_graph</span><span class="p">,</span> <span class="n">ordering</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">(),</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Ordering</span><span class="p">()</span>
+        <span class="n">edge_graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">factor</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">edge_graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">edge_graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">messages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">negate</span><span class="p">())</span>  <span class="c1"># downdates!</span>
+                <span class="n">ordering</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">remaining</span> <span class="o">=</span> <span class="n">edge_graph</span><span class="o">.</span><span class="n">eliminatePartialSequential</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">remaining</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Augment Markov blanket and eliminate to x_j&quot;&quot;&quot;</span>
+        <span class="c1"># Calculate &quot;messages&quot; from all factors in Markov blanket:</span>
         <span class="n">augmented_graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
-        <span class="n">augmented_graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">markov_blankets</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
-        <span class="n">augmented_keys</span> <span class="o">=</span> <span class="n">augmented_graph</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">augmented_keys</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
-                <span class="n">augmented_graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">local_factor_indices</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+            <span class="n">messages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_message</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+            <span class="n">augmented_graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">messages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+
         <span class="c1"># Eliminate with x_j eliminated last:</span>
         <span class="n">ordering</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Ordering</span><span class="o">.</span><span class="n">ColamdConstrainedLastGaussianFactorGraph</span><span class="p">(</span>
             <span class="n">augmented_graph</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span><span class="p">])</span>
         <span class="n">gbn</span> <span class="o">=</span> <span class="n">augmented_graph</span><span class="o">.</span><span class="n">eliminateSequential</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
-        <span class="n">q_prime</span> <span class="o">=</span> <span class="n">gbn</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">gbn</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">delta</span> <span class="o">=</span> <span class="n">q_prime</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">())</span>
-        <span class="n">new_x</span> <span class="o">=</span>  <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">new_x</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="c1"># imperative !</span>
-        <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">q_prime</span>
+        <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">gbn</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">gbn</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># new belief!</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">())</span>
+        <span class="n">new_x</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">new_x</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>  <span class="c1"># imperative !</span>
         <span class="k">return</span> <span class="n">new_x</span>
-                    
+
     <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">error</span> <span class="o">&lt;</span> <span class="mf">1e-1</span><span class="p">:</span>
             <span class="k">break</span>
@@ -616,23 +635,27 @@ q(X) = \prod_j q(x_j)
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">it</span><span class="si">=}</span><span class="s2">, updated </span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="si">}</span><span class="s2">, error now </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">x</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">lbp</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">print_hook</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">lbp</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">print_hook</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it=0, initial error is 12.126645986142575
-it=10, updated a2, error now 8.62418754513938
-it=20, updated b2, error now 8.262282208094271
-it=30, updated b2, error now 4.686908473882617
-it=40, updated b4, error now 3.3327291967899106
-it=50, updated c2, error now 3.2035133931973125
-it=60, updated c1, error now 3.194632239684039
-it=70, updated b2, error now 3.1987824665378035
-it=80, updated c1, error now 3.2002992411865865
-it=90, updated c2, error now 3.1932114728253223
-it=100, updated a2, error now 3.191816049605839
+it=10, updated a2, error now 8.548142818772295
+it=20, updated b2, error now 8.353342362950402
+it=30, updated b2, error now 4.634954578412493
+it=40, updated b4, error now 3.3201819174813973
+it=50, updated c2, error now 3.1730670682297273
+it=60, updated c1, error now 3.146132851392824
+it=70, updated b2, error now 3.1451440300419513
+it=80, updated c1, error now 3.144632390491705
+it=90, updated c2, error now 3.1443168387318106
+it=100, updated a2, error now 3.144109271241281
+it=110, updated c1, error now 3.144059279989692
+it=120, updated a2, error now 3.1440483981301504
+it=130, updated b4, error now 3.1440494393988265
+it=140, updated b2, error now 3.144047062937115
+it=150, updated a1, error now 3.143998782825293
 </pre></div>
 </div>
 </div>
@@ -649,18 +672,18 @@ it=100, updated a2, error now 3.191816049605839
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a1 -0.16 +/- 0.31
-a2 -0.25 +/- 0.28
-a3 0.10 +/- 0.28
-a4 0.23 +/- 0.31
-b1 -0.47 +/- 0.28
-b2 -0.34 +/- 0.25
-b3 -0.00 +/- 0.25
-b4 0.05 +/- 0.28
-c1 -0.21 +/- 0.31
-c2 -0.23 +/- 0.28
-c3 0.12 +/- 0.28
-c4 0.20 +/- 0.31
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a1 -0.16 +/- 0.32
+a2 -0.22 +/- 0.28
+a3 0.09 +/- 0.28
+a4 0.21 +/- 0.32
+b1 -0.41 +/- 0.29
+b2 -0.30 +/- 0.25
+b3 0.00 +/- 0.25
+b4 0.06 +/- 0.29
+c1 -0.21 +/- 0.32
+c2 -0.21 +/- 0.28
+c3 0.11 +/- 0.28
+c4 0.18 +/- 0.32
 </pre></div>
 </div>
 </div>
@@ -698,7 +721,7 @@ direct solver error: 3.1439968801524447
 </div>
 </div>
 </div>
-<p>As you can see, the LBP approximation is overly confident. This is a well known property of LBP. we show the effect side by side again below, with LBP <span class="math notranslate nohighlight">\(\mu/\sigma\)</span> in the top row, and exact <span class="math notranslate nohighlight">\(\mu/\sigma\)</span> in the bottom row.</p>
+<p>As you can see, the LBP approximation is a bit over-confident. This is a well known property of LBP. we show the effect side by side again below, with LBP <span class="math notranslate nohighlight">\(\mu/\sigma\)</span> in the top row, and exact <span class="math notranslate nohighlight">\(\mu/\sigma\)</span> in the bottom row.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">make_subplots</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -714,7 +737,6 @@ direct solver error: 3.1439968801524447
 <img alt="_images/GaussianMRFExample_lbp_24_0.png" src="_images/GaussianMRFExample_lbp_24_0.png" />
 </div>
 </div>
-<p>However, convergence is slow.</p>
 </div>
 <div class="section" id="gibbs-sampling">
 <h2><span class="section-number">1.4.3. </span>Gibbs Sampling<a class="headerlink" href="#gibbs-sampling" title="Permalink to this headline">¶</a></h2>
@@ -797,7 +819,7 @@ s_j = R_j^{-1} [d - S X_j + u] = \mu(X_j) + R_j^{-1} u
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run Gibbs sampler</span>
-<span class="n">nr_iterations</span> <span class="o">=</span> <span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="o">*</span><span class="mi">200</span>
+<span class="n">nr_iterations</span> <span class="o">=</span> <span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="o">*</span><span class="mi">400</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nr_iterations</span><span class="p">):</span>
     <span class="n">j</span> <span class="o">=</span> <span class="n">key_list</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="p">)]</span> <span class="c1"># choose a variable to perturb</span>
@@ -824,20 +846,20 @@ s_j = R_j^{-1} [d - S X_j + u] = \mu(X_j) + R_j^{-1} u
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Marginals computed from 1200 correlated samples:
-a1 -0.17 +/- 0.35
-a2 -0.26 +/- 0.27
-a3 0.13 +/- 0.29
-a4 0.17 +/- 0.34
-b1 -0.37 +/- 0.37
-b2 -0.29 +/- 0.26
-b3 0.04 +/- 0.26
-b4 -0.00 +/- 0.26
-c1 -0.16 +/- 0.41
-c2 -0.22 +/- 0.33
-c3 0.11 +/- 0.27
-c4 0.17 +/- 0.31
-The error at the mean is 3.243985130848141.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Marginals computed from 2400 correlated samples:
+a1 -0.21 +/- 0.34
+a2 -0.23 +/- 0.26
+a3 0.10 +/- 0.30
+a4 0.20 +/- 0.30
+b1 -0.41 +/- 0.27
+b2 -0.30 +/- 0.25
+b3 -0.03 +/- 0.25
+b4 -0.01 +/- 0.27
+c1 -0.19 +/- 0.29
+c2 -0.20 +/- 0.25
+c3 0.09 +/- 0.27
+c4 0.20 +/- 0.27
+The error at the mean is 3.2136604815304604.
 </pre></div>
 </div>
 </div>
@@ -855,7 +877,7 @@ The error at the mean is 3.243985130848141.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GaussianMRFExample_lbp_37_0.png" src="_images/GaussianMRFExample_lbp_37_0.png" />
+<img alt="_images/GaussianMRFExample_lbp_36_0.png" src="_images/GaussianMRFExample_lbp_36_0.png" />
 </div>
 </div>
 </div>
@@ -863,7 +885,6 @@ The error at the mean is 3.243985130848141.
 <h2><span class="section-number">1.4.4. </span>Elimination vs. Message Passing<a class="headerlink" href="#elimination-vs-message-passing" title="Permalink to this headline">¶</a></h2>
 <p>Above we implemented LBP with elimination, where the root of the eliminated graph becomes the new belief <span class="math notranslate nohighlight">\(q_j(x_j)\)</span>. The duality with Gibbs sampling is clear, and it is very natural if you are familiar with the elimination on factor graphs.</p>
 <p>However, LBP is traditionally explained/implemented with a more complex “message passing” algorithm, with two different types of messages (variable to factor, and factor to variable). Are they in fact the same? Using the small example for the top-left pixel below we will show that they are indeed.</p>
-<p><strong>TODO(FD Apr 30, 22): there is probably a bug in augmenting the Markov blanket that over-counts.</strong></p>
 <p>Below we show the Markov blanket for <span class="math notranslate nohighlight">\(a1\)</span>, which has three factors. Let us name the unary factor <span class="math notranslate nohighlight">\(f_{a1}\)</span>, and the binary factors <span class="math notranslate nohighlight">\(f_{a2}\)</span> and <span class="math notranslate nohighlight">\(f_{b1}\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -872,15 +893,15 @@ The error at the mean is 3.243985130848141.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GaussianMRFExample_lbp_39_0.svg" src="_images/GaussianMRFExample_lbp_39_0.svg" /></div>
+<img alt="_images/GaussianMRFExample_lbp_38_0.svg" src="_images/GaussianMRFExample_lbp_38_0.svg" /></div>
 </div>
 <p>On <a class="reference external" href="https://gaussianbp.github.io/">this very cool tutorial from Imperial college</a> the more traditional view is explained beautifully. Three messages would be sent to <span class="math notranslate nohighlight">\(a1\)</span> from the three factors:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
-m_{f_{a1}\rightarrow a1}(a1) &amp;= \psi(a1) \\ 
-m_{f_{a2}\rightarrow a1}(a1) &amp;= \int_{a2} \psi(a1, a2) m_{a2\rightarrow f_{a2}} (a2) \\
-m_{f_{b1}\rightarrow a1}(a1) &amp;= \int_{b1} \psi(a1, b1) m_{b1\rightarrow f_{b1}} (b1)
+m_{f_{a1}\rightarrow a1}(a1) &amp;= \phi(a1) \\ 
+m_{f_{a2}\rightarrow a1}(a1) &amp;= \int_{a2} \phi(a1, a2) m_{a2\rightarrow f_{a2}} (a2) \\
+m_{f_{b1}\rightarrow a1}(a1) &amp;= \int_{b1} \phi(a1, b1) m_{b1\rightarrow f_{b1}} (b1)
 \end{align*}
 \end{split}\]</div>
 <p>which are then combined in the belief update</p>
@@ -890,36 +911,36 @@ q(a1) \leftarrow m_{f_{a2}\rightarrow a1} (a1)~
 m_{f_{b1}\rightarrow a1} (a1)~
 m_{f_{a1}\rightarrow a1} (a1)
 \]</div>
-<p>The variable to factor messages <span class="math notranslate nohighlight">\(m_{x\rightarrow f} (x)\)</span> are calculated as:</p>
+<p>The variable to factor messages <span class="math notranslate nohighlight">\(m_{x\rightarrow f} (x)\)</span> are calculated as the beliefs, down-dated by the last message <span class="math notranslate nohighlight">\(m_{f\rightarrow x} (x)\)</span> from <span class="math notranslate nohighlight">\(f\)</span> to <span class="math notranslate nohighlight">\(x\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
 m_{a2\rightarrow f_{a2}} (a2) &amp;= \frac{q(a2)}{m_{f_{a2}\rightarrow a2} (a2)} \\
-m_{b1\rightarrow f_{b1}} (b1) &amp;= \frac{q(b1)}{m_{f_{b1}\rightarrow b1} (b1)},
+m_{b1\rightarrow f_{b1}} (b1) &amp;= \frac{q(b1)}{m_{f_{b1}\rightarrow b1} (b1)}.
 \end{align*}
 \end{split}\]</div>
-<p>hence the final belief update is</p>
+<p>This is slightly different from the traditional exposition, but equivalent. Hence the final belief update is</p>
 <div class="math notranslate nohighlight">
 \[
 q(a1) \leftarrow 
-\psi(a1)
-\{\int_{a2} \psi(a1, a2) \frac{q(a2)}{m_{f_{a2}\rightarrow a2} (a2)}\}
-\{\int_{b1} \psi(a1, b1) \frac{q(b1)}{m_{f_{b1}\rightarrow b1} (b1)}\}
+\phi(a1)
+\{\int_{a2} \phi(a1, a2) \frac{q(a2)}{m_{f_{a2}\rightarrow a2} (a2)}\}
+\{\int_{b1} \phi(a1, b1) \frac{q(b1)}{m_{f_{b1}\rightarrow b1} (b1)}\}
 \]</div>
-<p>LBP implemented by elimination yields obtains a new belief for <span class="math notranslate nohighlight">\(a1\)</span> by factorizing the Markov blanket, augmented with beliefs <span class="math notranslate nohighlight">\(q(a2)\)</span> and <span class="math notranslate nohighlight">\(q(b1)\)</span>:</p>
+<p>LBP implemented by elimination yields obtains a new belief for <span class="math notranslate nohighlight">\(a1\)</span> by factorizing the Markov blanket, augmented with <em>downdated</em> beliefs <span class="math notranslate nohighlight">\(\frac{q(a2)}{m_{f_{a2}\rightarrow a2} (a2)}\)</span> and <span class="math notranslate nohighlight">\(\frac{q(b1)}{m_{f_{b1}\rightarrow b1} (b1)}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-\psi(a1) \{\psi(a1, a2)q(a2)\} \{\psi(a1,b1)q(b1)\} \propto q(a1) P(a2 | a1) P(b1 | a1),
+\phi(a1) \{\phi(a1, a2)\frac{q(a2)}{m_{f_{a2}\rightarrow a2} (a2)}\} \{\phi(a1,b1)\frac{q(b1)}{m_{f_{b1}\rightarrow b1} (b1)}\} \propto q(a1) P(a2 | a1) P(b1 | a1),
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(q(a1)\)</span> is obtained by marginalizing out <span class="math notranslate nohighlight">\(a2\)</span> and <span class="math notranslate nohighlight">\(b1\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
-q(a1) &amp;= \int_{a2, b1} \psi(a1) \{\psi(a1, a2)q(a2)\} \{\psi(a1,b1)q(b1)\} \\
-&amp;= \psi(a1) \{\int_{a2} \psi(a1, a2)q(a2)\} \{\int_{b1} \psi(a1,b1)q(b1)\}.
+q(a1) &amp;= \int_{a2, b1} \phi(a1) \{\phi(a1, a2)\frac{q(a2)}{m_{f_{a2}\rightarrow a2} (a2)}\} \{\phi(a1,b1)\frac{q(b1)}{m_{f_{b1}\rightarrow b1} (b1)}\} \\
+&amp;= \phi(a1) \{\int_{a2} \phi(a1, a2)\frac{q(a2)}{m_{f_{a2}\rightarrow a2} (a2)}\} \{\int_{b1} \phi(a1,b1)\frac{q(b1)}{m_{f_{b1}\rightarrow b1} (b1)}\}.
 \end{align*}
 \end{split}\]</div>
-<p>This is <em>almost</em> the same but not quite: it seems our code is neglecting to subtract information from <span class="math notranslate nohighlight">\(q(a2)\)</span> and <span class="math notranslate nohighlight">\(q(b1)\)</span> !!!</p>
+<p>This is exactly the same.</p>
 </div>
 </div>
 
