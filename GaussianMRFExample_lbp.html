@@ -340,6 +340,11 @@
    1.4.3. Gibbs Sampling
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#elimination-vs-message-passing">
+   1.4.4. Elimination vs. Message Passing
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -375,6 +380,11 @@
    1.4.3. Gibbs Sampling
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#elimination-vs-message-passing">
+   1.4.4. Elimination vs. Message Passing
+  </a>
+ </li>
 </ul>
 
                         </nav>
@@ -388,6 +398,7 @@
 <div class="tex2jax_ignore mathjax_ignore section" id="gaussian-loopy-belief-propagation">
 <h1><span class="section-number">1.4. </span>Gaussian Loopy Belief Propagation<a class="headerlink" href="#gaussian-loopy-belief-propagation" title="Permalink to this headline">¶</a></h1>
 <p>We start from the same “image MRF, with unary and pairwise Gaussian factors. We then implement loopy belief propagation.</p>
+<p><strong>Important note Apr 30 2022: this still contains a bug in LBP</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook  # also installs latest gtsam pre-release
@@ -405,6 +416,15 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">from</span> <span class="nn">plotly.subplots</span> <span class="kn">import</span> <span class="n">make_subplots</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">google.colab</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+    <span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;png&quot;</span>
 
 <span class="kn">import</span> <span class="nn">gtsam</span>
 <span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">show</span>
@@ -461,6 +481,17 @@
 <div class="cell_output docutils container">
 <img alt="_images/GaussianMRFExample_lbp_6_0.svg" src="_images/GaussianMRFExample_lbp_6_0.svg" /></div>
 </div>
+<p>And the data image is shown here:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">px</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">zmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_lbp_8_0.png" src="_images/GaussianMRFExample_lbp_8_0.png" />
+</div>
+</div>
 </div>
 <div class="section" id="loopy-belief-propagation">
 <h2><span class="section-number">1.4.2. </span>Loopy Belief Propagation<a class="headerlink" href="#loopy-belief-propagation" title="Permalink to this headline">¶</a></h2>
@@ -497,7 +528,7 @@ q(X) = \prod_j q(x_j)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GaussianMRFExample_lbp_10_0.svg" src="_images/GaussianMRFExample_lbp_10_0.svg" /></div>
+<img alt="_images/GaussianMRFExample_lbp_12_0.svg" src="_images/GaussianMRFExample_lbp_12_0.svg" /></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -506,7 +537,7 @@ q(X) = \prod_j q(x_j)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GaussianMRFExample_lbp_11_0.svg" src="_images/GaussianMRFExample_lbp_11_0.svg" /></div>
+<img alt="_images/GaussianMRFExample_lbp_13_0.svg" src="_images/GaussianMRFExample_lbp_13_0.svg" /></div>
 </div>
 <p>We initialize the beliefs in <em>information form</em> by using a <code class="docutils literal notranslate"><span class="pre">HessianFactor</span></code>, whose constructor reads as follows:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/** Construct a unary factor.  G is the quadratic term (Hessian matrix), g</span>
@@ -531,7 +562,8 @@ q(X) = \prod_j q(x_j)
 
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">j</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">):</span>
         <span class="c1"># Get Markov blanket and augment with beliefs</span>
-        <span class="n">augmented_graph</span> <span class="o">=</span> <span class="n">markov_blankets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">augmented_graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
+        <span class="n">augmented_graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">markov_blankets</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
         <span class="n">augmented_keys</span> <span class="o">=</span> <span class="n">augmented_graph</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">augmented_keys</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
@@ -578,29 +610,29 @@ q(X) = \prod_j q(x_j)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_hook</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">it</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">it</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">it</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">it</span><span class="si">=}</span><span class="s2">, initial error is </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">it</span><span class="si">=}</span><span class="s2">, updated </span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="si">}</span><span class="s2">, error now </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">x</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">lbp</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">print_hook</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">lbp</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">print_hook</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it=0, initial error is 12.126645986142575
-it=1000, updated b3, error now 3.144896848932315
-it=2000, updated a4, error now 3.1445374649678706
-it=3000, updated b4, error now 3.1444014545404593
-it=4000, updated b3, error now 3.144328703586359
-it=5000, updated b2, error now 3.1442837401118875
-it=6000, updated a2, error now 3.1442495739463423
-it=7000, updated c3, error now 3.1442256092372447
-it=8000, updated a3, error now 3.144206276187749
-it=9000, updated c2, error now 3.1441907805743736
-it=10000, updated b4, error now 3.144178181883217
+it=10, updated a2, error now 8.62418754513938
+it=20, updated b2, error now 8.262282208094271
+it=30, updated b2, error now 4.686908473882617
+it=40, updated b4, error now 3.3327291967899106
+it=50, updated c2, error now 3.2035133931973125
+it=60, updated c1, error now 3.194632239684039
+it=70, updated b2, error now 3.1987824665378035
+it=80, updated c1, error now 3.2002992411865865
+it=90, updated c2, error now 3.1932114728253223
+it=100, updated a2, error now 3.191816049605839
 </pre></div>
 </div>
 </div>
@@ -608,48 +640,78 @@ it=10000, updated b4, error now 3.144178181883217
 <p>We compare the mean with the exact mean and see that LBP converges to the correct mean value:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">qj</span> <span class="ow">in</span> <span class="n">q</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stddev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="p">,))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">qj</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
     <span class="n">information</span> <span class="o">=</span> <span class="n">qj</span><span class="o">.</span><span class="n">information</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-    <span class="n">stddev</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">information</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">stddev</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">stddev</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">information</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">stddev</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a1 -0.16 +/- 0.29
-a2 -0.22 +/- 0.25
-a3 0.09 +/- 0.25
-a4 0.20 +/- 0.29
-b1 -0.41 +/- 0.25
-b2 -0.30 +/- 0.22
-b3 0.00 +/- 0.22
-b4 0.06 +/- 0.25
-c1 -0.21 +/- 0.29
-c2 -0.21 +/- 0.25
-c3 0.10 +/- 0.25
-c4 0.18 +/- 0.29
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a1 -0.16 +/- 0.31
+a2 -0.25 +/- 0.28
+a3 0.10 +/- 0.28
+a4 0.23 +/- 0.31
+b1 -0.47 +/- 0.28
+b2 -0.34 +/- 0.25
+b3 -0.00 +/- 0.25
+b4 0.05 +/- 0.28
+c1 -0.21 +/- 0.31
+c2 -0.23 +/- 0.28
+c3 0.12 +/- 0.28
+c4 0.20 +/- 0.31
 </pre></div>
 </div>
 </div>
 </div>
+<p>The exact mean is calculated below, as well as the exact standard deviations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;direct solver mean:&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mean</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">keys</span><span class="p">[(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">)])</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;direct solver error: </span><span class="si">{</span><span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<span class="n">bayes_tree</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">eliminateMultifrontal</span><span class="p">()</span>
+<span class="n">exact_mean</span> <span class="o">=</span> <span class="n">bayes_tree</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+<span class="n">exact_stddev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="p">,))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">key_list</span><span class="p">):</span>
+    <span class="n">variance</span> <span class="o">=</span> <span class="n">bayes_tree</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+    <span class="n">exact_stddev</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variance</span><span class="p">)</span>    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">exact_mean</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">exact_stddev</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;direct solver error: </span><span class="si">{</span><span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">exact_mean</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>direct solver mean:
-[-0.16, -0.22, 0.09, 0.21]
-[-0.41, -0.3, 0.0, 0.06]
-[-0.21, -0.21, 0.11, 0.18]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a1 -0.16 +/- 0.33
+a2 -0.22 +/- 0.29
+a3 0.09 +/- 0.29
+a4 0.21 +/- 0.33
+b1 -0.41 +/- 0.29
+b2 -0.30 +/- 0.26
+b3 0.00 +/- 0.26
+b4 0.06 +/- 0.29
+c1 -0.21 +/- 0.33
+c2 -0.21 +/- 0.29
+c3 0.11 +/- 0.29
+c4 0.18 +/- 0.33
 direct solver error: 3.1439968801524447
 </pre></div>
 </div>
+</div>
+</div>
+<p>As you can see, the LBP approximation is overly confident. This is a well known property of LBP. we show the effect side by side again below, with LBP <span class="math notranslate nohighlight">\(\mu/\sigma\)</span> in the top row, and exact <span class="math notranslate nohighlight">\(\mu/\sigma\)</span> in the bottom row.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">make_subplots</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">vector</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">)),</span> <span class="n">zmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">exact_mean</span><span class="o">.</span><span class="n">vector</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">)),</span> <span class="n">zmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">stddev</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">)),</span> <span class="n">zmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mf">0.35</span><span class="p">),</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">exact_stddev</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">)),</span> <span class="n">zmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mf">0.35</span><span class="p">),</span> <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_lbp_24_0.png" src="_images/GaussianMRFExample_lbp_24_0.png" />
 </div>
 </div>
 <p>However, convergence is slow.</p>
@@ -667,8 +729,7 @@ direct solver error: 3.1439968801524447
 <p>We first compute all conditionals <span class="math notranslate nohighlight">\(p(x_j|X_j)\)</span>, which we can do <em>in advance</em>, as well as the inverse square root covariances <span class="math notranslate nohighlight">\(R_j^{-1}\)</span>, which we need for sampling. An advantage of working in square-root information form (like the entirety of GTSAM) is that less computation is needed <em>and</em> it is numerically more stable:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-<span class="n">conditionals</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conditionals</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">invR</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">:</span>
     <span class="n">local_graph</span> <span class="o">=</span> <span class="n">markov_blankets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
@@ -736,7 +797,7 @@ s_j = R_j^{-1} [d - S X_j + u] = \mu(X_j) + R_j^{-1} u
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run Gibbs sampler</span>
-<span class="n">nr_iterations</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">nr_iterations</span> <span class="o">=</span> <span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="o">*</span><span class="mi">200</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nr_iterations</span><span class="p">):</span>
     <span class="n">j</span> <span class="o">=</span> <span class="n">key_list</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="p">)]</span> <span class="c1"># choose a variable to perturb</span>
@@ -749,71 +810,115 @@ s_j = R_j^{-1} [d - S X_j + u] = \mu(X_j) + R_j^{-1} u
 <p>Because we kept the sufficient statistics <code class="docutils literal notranslate"><span class="pre">count</span></code>, <code class="docutils literal notranslate"><span class="pre">sum</span></code>, and <code class="docutils literal notranslate"><span class="pre">sum_squares</span></code> we can compute the marginals:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="o">=</span> <span class="nb">sum</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">count</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gibbs_mean</span> <span class="o">=</span> <span class="nb">sum</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">count</span><span class="p">)</span>
 <span class="n">avg_deviation</span> <span class="o">=</span> <span class="n">sum_squares</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">count</span><span class="p">)</span>
-<span class="n">variance</span> <span class="o">=</span> <span class="n">avg_deviation</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="n">mean</span><span class="p">))</span>
+<span class="n">variance</span> <span class="o">=</span> <span class="n">avg_deviation</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="n">gibbs_mean</span><span class="p">))</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Marginals computed from </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> correlated samples:&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">:</span>
-    <span class="n">stddev</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variance</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">mean</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">stddev</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The error at the mean is </span><span class="si">{</span><span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+<span class="n">gibbs_stddev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="p">,))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">key_list</span><span class="p">):</span>
+    <span class="n">gibbs_stddev</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variance</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">gibbs_mean</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">gibbs_stddev</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The error at the mean is </span><span class="si">{</span><span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">gibbs_mean</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Marginals computed from 5000 correlated samples:
-a1 -0.20 +/- 0.31
-a2 -0.27 +/- 0.29
-a3 0.07 +/- 0.28
-a4 0.17 +/- 0.30
-b1 -0.41 +/- 0.29
-b2 -0.31 +/- 0.24
-b3 -0.02 +/- 0.27
-b4 0.01 +/- 0.29
-c1 -0.24 +/- 0.31
-c2 -0.24 +/- 0.24
-c3 0.09 +/- 0.28
-c4 0.16 +/- 0.30
-The error at the mean is 3.1826818315054615.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Marginals computed from 1200 correlated samples:
+a1 -0.17 +/- 0.35
+a2 -0.26 +/- 0.27
+a3 0.13 +/- 0.29
+a4 0.17 +/- 0.34
+b1 -0.37 +/- 0.37
+b2 -0.29 +/- 0.26
+b3 0.04 +/- 0.26
+b4 -0.00 +/- 0.26
+c1 -0.16 +/- 0.41
+c2 -0.22 +/- 0.33
+c3 0.11 +/- 0.27
+c4 0.17 +/- 0.31
+The error at the mean is 3.243985130848142.
 </pre></div>
 </div>
 </div>
 </div>
-<p>Comparing these with the direct solver solution above you can see that the mean converges, <em>as well as the standard deviations</em>. We can print the ground truth standard deviations with the direct solver:</p>
+<p>Comparing these with the direct solver solution above you can see that the mean converges, <em>as well as the standard deviations</em>. We also show this graphically below:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bayes_tree</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">eliminateMultifrontal</span><span class="p">()</span>
-<span class="n">exact_mean</span> <span class="o">=</span> <span class="n">bayes_tree</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">:</span>
-    <span class="n">variance</span> <span class="o">=</span> <span class="n">bayes_tree</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
-    <span class="n">stddev</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variance</span><span class="p">)</span>    
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">exact_mean</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">stddev</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">make_subplots</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">gibbs_mean</span><span class="o">.</span><span class="n">vector</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">)),</span> <span class="n">zmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">exact_mean</span><span class="o">.</span><span class="n">vector</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">)),</span> <span class="n">zmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">gibbs_stddev</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">)),</span> <span class="n">zmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mf">0.35</span><span class="p">),</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">exact_stddev</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">)),</span> <span class="n">zmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mf">0.35</span><span class="p">),</span> <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a1 -0.16 +/- 0.33
-a2 -0.22 +/- 0.29
-a3 0.09 +/- 0.29
-a4 0.21 +/- 0.33
-b1 -0.41 +/- 0.29
-b2 -0.30 +/- 0.26
-b3 0.00 +/- 0.26
-b4 0.06 +/- 0.29
-c1 -0.21 +/- 0.33
-c2 -0.21 +/- 0.29
-c3 0.11 +/- 0.29
-c4 0.18 +/- 0.33
+<img alt="_images/GaussianMRFExample_lbp_37_0.png" src="_images/GaussianMRFExample_lbp_37_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="elimination-vs-message-passing">
+<h2><span class="section-number">1.4.4. </span>Elimination vs. Message Passing<a class="headerlink" href="#elimination-vs-message-passing" title="Permalink to this headline">¶</a></h2>
+<p>Above we implemented LBP with elimination, where the root of the eliminated graph becomes the new belief <span class="math notranslate nohighlight">\(q_j(x_j)\)</span>. The duality with Gibbs sampling is clear, and it is very natural if you are familiar with the elimination on factor graphs.</p>
+<p>However, LBP is traditionally explained/implemented with a more complex “message passing” algorithm, with two different types of messages (variable to factor, and factor to variable). Are they in fact the same? Using the small example for the top-left pixel below we will show that they are indeed.</p>
+<p>Below we show the Markov blanket for <span class="math notranslate nohighlight">\(a1\)</span>, which has three factors. Let us name the unary factor <span class="math notranslate nohighlight">\(f_{a1}, and the binary factors \)</span>f_{a2}<span class="math notranslate nohighlight">\( and \)</span>f_{b1}$:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show</span><span class="p">(</span><span class="n">markov_blankets</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="n">position_hints</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_lbp_39_0.svg" src="_images/GaussianMRFExample_lbp_39_0.svg" /></div>
 </div>
-<p>Note that</p>
-<ul class="simple">
-<li><p>the standard deviations at the edge are larger.</p></li>
-<li><p>comparing with LBP, we see that the LBP approximation is overly confident. This is a well known property of LBP.</p></li>
-</ul>
+<p>On <a class="reference external" href="https://gaussianbp.github.io/">this very cool tutorial from Imperial college</a> the more traditional view is explained beautifully. Three messages would be sent to <span class="math notranslate nohighlight">\(a1\)</span> from the three factors:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+m_{f_{a1}\rightarrow a1}(a1) &amp;= \psi(a1) \\ 
+m_{f_{a2}\rightarrow a1}(a1) &amp;= \int_{a2} \psi(a1, a2) m_{a2\rightarrow f_{a2}} (a2) \\
+m_{f_{b1}\rightarrow a1}(a1) &amp;= \int_{b1} \psi(a1, b1) m_{b1\rightarrow f_{b1}} (b1)
+\end{align*}
+\end{split}\]</div>
+<p>which are then combined in the belief update</p>
+<div class="math notranslate nohighlight">
+\[
+q(a1) \leftarrow m_{f_{a2}\rightarrow a1} (a1)~
+m_{f_{b1}\rightarrow a1} (a1)~
+m_{f_{a1}\rightarrow a1} (a1)
+\]</div>
+<p>The variable to factor messages <span class="math notranslate nohighlight">\(m_{x\rightarrow f} (x)\)</span> are calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+m_{a2\rightarrow f_{a2}} (a2) &amp;= \frac{q(a2)}{m_{f_{a2}\rightarrow a2} (a2)} \\
+m_{b1\rightarrow f_{b1}} (b1) &amp;= \frac{q(b1)}{m_{f_{b1}\rightarrow b1} (b1)},
+\end{align*}
+\end{split}\]</div>
+<p>hence the final belief update is</p>
+<div class="math notranslate nohighlight">
+\[
+q(a1) \leftarrow 
+\psi(a1)
+\{\int_{a2} \psi(a1, a2) \frac{q(a2)}{m_{f_{a2}\rightarrow a2} (a2)}\}
+\{\int_{b1} \psi(a1, b1) \frac{q(b1)}{m_{f_{b1}\rightarrow b1} (b1)}\}
+\]</div>
+<p>LBP implemented by elimination yields obtains a new belief for <span class="math notranslate nohighlight">\(a1\)</span> by factorizing the Markov blanket, augmented with beliefs <span class="math notranslate nohighlight">\(q(a2)\)</span> and <span class="math notranslate nohighlight">\(q(b1)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\psi(a1) \{\psi(a1, a2)q(a2)\} \{\psi(a1,b1)q(b1)\} \propto q(a1) P(a2 | a1) P(b1 | a1),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(q(a1)\)</span> is obtained by marginalizing out <span class="math notranslate nohighlight">\(a2\)</span> and <span class="math notranslate nohighlight">\(b1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+q(a1) &amp;= \int_{a2, b1} \psi(a1) \{\psi(a1, a2)q(a2)\} \{\psi(a1,b1)q(b1)\} \\
+&amp;= \psi(a1) \{\int_{a2} \psi(a1, a2)q(a2)\} \{\int_{b1} \psi(a1,b1)q(b1)\}.
+\end{align*}
+\end{split}\]</div>
+<p>This is <em>almost</em> the same but not quite: it seems our code is neglecting to subtract information from <span class="math notranslate nohighlight">\(q(a2)\)</span> and <span class="math notranslate nohighlight">\(q(b1)\)</span> !!!</p>
 </div>
 </div>
 

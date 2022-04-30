@@ -419,7 +419,13 @@ E(X) = \sum_i \phi_i(X_i)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">google.colab</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+    <span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;png&quot;</span>
+    
 <span class="kn">import</span> <span class="nn">gtsam</span>
 <span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">show</span>
 <span class="kn">from</span> <span class="nn">gtbook.gaussian</span> <span class="kn">import</span> <span class="n">sample_bayes_net</span>
@@ -448,19 +454,16 @@ E(X) = \sum_i \phi_i(X_i)
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">data_model</span> <span class="o">=</span> <span class="n">noiseModel</span><span class="o">.</span><span class="n">Isotropic</span><span class="o">.</span><span class="n">Sigmas</span><span class="p">([</span><span class="n">sigma</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;data:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">data</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">],</span><span class="mi">2</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data_model</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;data_model = </span><span class="si">{</span><span class="n">data_model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">px</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">zmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
- [[ 0.15 -0.52  0.38  0.47]
- [-0.98 -0.65  0.06 -0.16]
- [-0.01 -0.43  0.44  0.39]]
-data_model=isotropic dim=1 sigma=0.5
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data_model = isotropic dim=1 sigma=0.5
 </pre></div>
 </div>
+<img alt="_images/GaussianMRFExample_9_1.png" src="_images/GaussianMRFExample_9_1.png" />
 </div>
 </div>
 <p>For smoothness, we use a different noise model:</p>
@@ -468,12 +471,12 @@ data_model=isotropic dim=1 sigma=0.5
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">smoothness_sigma</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="n">smoothness_model</span> <span class="o">=</span> <span class="n">noiseModel</span><span class="o">.</span><span class="n">Isotropic</span><span class="o">.</span><span class="n">Sigmas</span><span class="p">([</span><span class="n">smoothness_sigma</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">smoothness_model</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;smoothness_model = </span><span class="si">{</span><span class="n">smoothness_model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>smoothness_model=isotropic dim=1 sigma=0.5
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>smoothness_model = isotropic dim=1 sigma=0.5
 </pre></div>
 </div>
 </div>
@@ -539,24 +542,12 @@ data_model=isotropic dim=1 sigma=0.5
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="o">=</span> <span class="n">nested_bayes_tree</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;data:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">data</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">],</span><span class="mi">2</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean:&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mean</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">keys</span><span class="p">[(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">)])</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+<span class="n">px</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">mean</span><span class="o">.</span><span class="n">vector</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">M</span><span class="p">,</span><span class="n">N</span><span class="p">)),</span> <span class="n">zmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
- [[ 0.15 -0.52  0.38  0.47]
- [-0.98 -0.65  0.06 -0.16]
- [-0.01 -0.43  0.44  0.39]]
-mean:
-[-0.16, -0.22, 0.09, 0.21]
-[-0.41, -0.3, 0.0, 0.06]
-[-0.21, -0.21, 0.11, 0.18]
-</pre></div>
-</div>
+<img alt="_images/GaussianMRFExample_20_0.png" src="_images/GaussianMRFExample_20_0.png" />
 </div>
 </div>
 <p>And of course, now ancestral sampling can also be done in parallel (here in the Bayes net):</p>
@@ -570,9 +561,9 @@ mean:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-0.56 -0.74 -0.16]] [[-0.32 -0.27  0.21]] [[ 0.04 -0.22  0.91]] [[ 0.46 -0.05  0.23]]
-[[-0.61 -0.58  0.09]] [[-0.64 -0.28  0.06]] [[0.15 0.11 0.27]] [[0.12 0.19 0.16]]
-[[-0.41 -0.21 -0.  ]] [[-0.71  0.03 -0.11]] [[0.14 0.09 0.4 ]] [[0.16 0.27 0.22]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.47  0.04 -0.01]] [[-0.34  0.12 -0.46]] [[-0.14 -0.17  0.07]] [[-0.34  0.33 -0.18]]
+[[-0.35 -0.19 -0.42]] [[-0.38 -0.16 -0.41]] [[-0.03 -0.25  0.21]] [[-0.36 -0.13  0.06]]
+[[ 0.52 -0.36 -0.36]] [[ 0.13 -0.09 -0.12]] [[ 0.21 -0.37  0.27]] [[-0.64  0.52 -0.01]]
 </pre></div>
 </div>
 </div>
