@@ -540,29 +540,20 @@ q(X) = \prod_j q(x_j)
 <div class="cell_output docutils container">
 <img alt="_images/GaussianMRFExample_lbp_13_0.svg" src="_images/GaussianMRFExample_lbp_13_0.svg" /></div>
 </div>
-<p>We initialize the beliefs in <em>information form</em> by using a <code class="docutils literal notranslate"><span class="pre">HessianFactor</span></code>, whose constructor reads as follows:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/** Construct a unary factor.  G is the quadratic term (Hessian matrix), g</span>
-<span class="cm">* the linear term (a vector), and f the constant term.  The quadratic</span>
-<span class="cm">* error is:</span>
-<span class="cm">* 0.5*(f - 2*x&#39;*g + x&#39;*G*x)</span>
-<span class="cm">*/</span><span class="w"></span>
-<span class="n">HessianFactor</span><span class="p">(</span><span class="n">Key</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Matrix</span><span class="o">&amp;</span><span class="w"> </span><span class="n">G</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&amp;</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">f</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-<p>The entire LPB code is then:</p>
+<p>We store the belief <span class="math notranslate nohighlight">\(q(x)\)</span> as <code class="docutils literal notranslate"><span class="pre">gtsam.GaussianDensity</span></code> instances. The entire LPB code is then:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lbp</span><span class="p">(</span><span class="n">x0</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">,</span> <span class="n">hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lbp</span><span class="p">(</span><span class="n">x0</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">,</span> <span class="n">hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">initial_sigma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Perform loopy belief propagation with initial estimate x.&quot;&quot;&quot;</span>
-    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">key_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="c1"># Initialize belief and messages</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">HessianFactor</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">g</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">}</span>
-    <span class="n">messages</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>  <span class="c1"># messages from factor i to variable j</span>
-    <span class="n">hook</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+
+    <span class="c1"># Initialize belief</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="p">{</span><span class="n">j</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianDensity</span><span class="o">.</span><span class="n">FromMeanAndStddev</span><span class="p">(</span>
+        <span class="n">j</span><span class="p">,</span> <span class="n">x0</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="n">initial_sigma</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">}</span>
+    <span class="n">hook</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+    
+    <span class="c1"># Initialize messages from factor i to variable j</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_message</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get message from factor to j&quot;&quot;&quot;</span>
@@ -580,7 +571,7 @@ q(X) = \prod_j q(x_j)
         <span class="n">_</span><span class="p">,</span> <span class="n">remaining</span> <span class="o">=</span> <span class="n">edge_graph</span><span class="o">.</span><span class="n">eliminatePartialSequential</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">remaining</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Augment Markov blanket and eliminate to x_j&quot;&quot;&quot;</span>
         <span class="c1"># Calculate &quot;messages&quot; from all factors in Markov blanket:</span>
         <span class="n">augmented_graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
@@ -592,23 +583,15 @@ q(X) = \prod_j q(x_j)
         <span class="n">ordering</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Ordering</span><span class="o">.</span><span class="n">ColamdConstrainedLastGaussianFactorGraph</span><span class="p">(</span>
             <span class="n">augmented_graph</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span><span class="p">])</span>
         <span class="n">gbn</span> <span class="o">=</span> <span class="n">augmented_graph</span><span class="o">.</span><span class="n">eliminateSequential</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
-        <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">gbn</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">gbn</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># new belief!</span>
-        <span class="n">delta</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">())</span>
-        <span class="n">new_x</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">new_x</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>  <span class="c1"># imperative !</span>
-        <span class="k">return</span> <span class="n">new_x</span>
+        <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">gbn</span><span class="o">.</span><span class="n">back</span><span class="p">()</span>  <span class="c1"># new belief!</span>
 
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">error</span> <span class="o">&lt;</span> <span class="mf">1e-1</span><span class="p">:</span>
-            <span class="k">break</span>
         <span class="c1"># choose a variable whose belief to update</span>
         <span class="n">j</span> <span class="o">=</span> <span class="n">key_list</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="p">)]</span>
-        <span class="n">new_x</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">new_x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">error</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">new_x</span><span class="p">)</span>
-            <span class="n">hook</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">new_x</span>
-    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span>
+        <span class="n">update</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+        <span class="n">hook</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">q</span>
 </pre></div>
 </div>
 </div>
@@ -628,34 +611,42 @@ q(X) = \prod_j q(x_j)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_hook</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_mean</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate mean of each q[j]&quot;&quot;&quot;</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">qj</span> <span class="ow">in</span> <span class="n">q</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">mean</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">mean</span>
+
+<span class="k">def</span> <span class="nf">print_hook</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">calculate_mean</span><span class="p">(</span><span class="n">q</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">it</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">it</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">it</span><span class="si">=}</span><span class="s2">, initial error is </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">it</span><span class="si">=}</span><span class="s2">, updated </span><span class="si">{</span><span class="n">gtsam</span><span class="o">.</span><span class="n">DefaultKeyFormatter</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="si">}</span><span class="s2">, error now </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">x</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">lbp</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">print_hook</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">lbp</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">print_hook</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it=0, initial error is 12.126645986142575
-it=10, updated a2, error now 8.548142818772295
-it=20, updated b2, error now 8.353342362950402
-it=30, updated b2, error now 4.634954578412493
-it=40, updated b4, error now 3.3201819174813973
-it=50, updated c2, error now 3.1730670682297273
-it=60, updated c1, error now 3.146132851392824
-it=70, updated b2, error now 3.1451440300419513
-it=80, updated c1, error now 3.144632390491705
-it=90, updated c2, error now 3.1443168387318106
-it=100, updated a2, error now 3.144109271241281
-it=110, updated c1, error now 3.144059279989692
-it=120, updated a2, error now 3.1440483981301504
-it=130, updated b4, error now 3.1440494393988265
-it=140, updated b2, error now 3.144047062937115
-it=150, updated a1, error now 3.143998782825293
+it=10, updated a2, error now 9.113900486816643
+it=20, updated b2, error now 8.524714446372975
+it=30, updated b2, error now 4.881997061292955
+it=40, updated b4, error now 3.3732148265768735
+it=50, updated c2, error now 3.191536790242739
+it=60, updated c1, error now 3.147855313649847
+it=70, updated b2, error now 3.1464772839425956
+it=80, updated c1, error now 3.1456805402875254
+it=90, updated c2, error now 3.14452888223852
+it=100, updated a2, error now 3.1442569269735574
+it=110, updated c1, error now 3.1441842205421846
+it=120, updated a2, error now 3.144144868279104
+it=130, updated b4, error now 3.1441466837532785
+it=140, updated b2, error now 3.1441423296105064
+it=150, updated a1, error now 3.144001745678235
 </pre></div>
 </div>
 </div>
@@ -663,7 +654,8 @@ it=150, updated a1, error now 3.143998782825293
 <p>We compare the mean with the exact mean and see that LBP converges to the correct mean value:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stddev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="p">,))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">calculate_mean</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+<span class="n">stddev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="p">,))</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">qj</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
     <span class="n">information</span> <span class="o">=</span> <span class="n">qj</span><span class="o">.</span><span class="n">information</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
     <span class="n">stddev</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">information</span><span class="p">)</span>
@@ -819,7 +811,7 @@ s_j = R_j^{-1} [d - S X_j + u] = \mu(X_j) + R_j^{-1} u
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run Gibbs sampler</span>
-<span class="n">nr_iterations</span> <span class="o">=</span> <span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="o">*</span><span class="mi">400</span>
+<span class="n">nr_iterations</span> <span class="o">=</span> <span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="o">*</span><span class="mi">1000</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">VectorValues</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nr_iterations</span><span class="p">):</span>
     <span class="n">j</span> <span class="o">=</span> <span class="n">key_list</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">M</span><span class="o">*</span><span class="n">N</span><span class="p">)]</span> <span class="c1"># choose a variable to perturb</span>
@@ -846,20 +838,20 @@ s_j = R_j^{-1} [d - S X_j + u] = \mu(X_j) + R_j^{-1} u
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Marginals computed from 2400 correlated samples:
-a1 -0.21 +/- 0.34
-a2 -0.23 +/- 0.26
-a3 0.10 +/- 0.30
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Marginals computed from 6000 correlated samples:
+a1 -0.20 +/- 0.32
+a2 -0.27 +/- 0.29
+a3 0.08 +/- 0.27
 a4 0.20 +/- 0.30
-b1 -0.41 +/- 0.27
-b2 -0.30 +/- 0.25
-b3 -0.03 +/- 0.25
-b4 -0.01 +/- 0.27
-c1 -0.19 +/- 0.29
-c2 -0.20 +/- 0.25
-c3 0.09 +/- 0.27
-c4 0.20 +/- 0.27
-The error at the mean is 3.2136604815304604.
+b1 -0.43 +/- 0.30
+b2 -0.31 +/- 0.24
+b3 0.00 +/- 0.26
+b4 0.06 +/- 0.29
+c1 -0.23 +/- 0.33
+c2 -0.23 +/- 0.26
+c3 0.12 +/- 0.28
+c4 0.21 +/- 0.31
+The error at the mean is 3.167027658827978.
 </pre></div>
 </div>
 </div>
