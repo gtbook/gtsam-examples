@@ -398,7 +398,7 @@
 <div class="tex2jax_ignore mathjax_ignore section" id="gaussian-loopy-belief-propagation">
 <h1><span class="section-number">1.4. </span>Gaussian Loopy Belief Propagation<a class="headerlink" href="#gaussian-loopy-belief-propagation" title="Permalink to this headline">¶</a></h1>
 <p>We start from the same “image MRF, with unary and pairwise Gaussian factors. We then implement loopy belief propagation.</p>
-<p><strong>Important note Apr 20 2022: this still contains a bug in LBP</strong></p>
+<p><strong>Important note Apr 30 2022: this still contains a bug in LBP</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook  # also installs latest gtsam pre-release
@@ -863,7 +863,8 @@ The error at the mean is 3.243985130848141.
 <h2><span class="section-number">1.4.4. </span>Elimination vs. Message Passing<a class="headerlink" href="#elimination-vs-message-passing" title="Permalink to this headline">¶</a></h2>
 <p>Above we implemented LBP with elimination, where the root of the eliminated graph becomes the new belief <span class="math notranslate nohighlight">\(q_j(x_j)\)</span>. The duality with Gibbs sampling is clear, and it is very natural if you are familiar with the elimination on factor graphs.</p>
 <p>However, LBP is traditionally explained/implemented with a more complex “message passing” algorithm, with two different types of messages (variable to factor, and factor to variable). Are they in fact the same? Using the small example for the top-left pixel below we will show that they are indeed.</p>
-<p>Below we show the Markov blanket for <span class="math notranslate nohighlight">\(a1\)</span>, which has three factors. Let us name the unary factor <span class="math notranslate nohighlight">\(f_{a1}, and the binary factors \)</span>f_{a2}<span class="math notranslate nohighlight">\( and \)</span>f_{b1}$:</p>
+<p><strong>TODO(FD Apr 30, 22): there is probably a bug in augmenting the Markov blanket that over-counts.</strong></p>
+<p>Below we show the Markov blanket for <span class="math notranslate nohighlight">\(a1\)</span>, which has three factors. Let us name the unary factor <span class="math notranslate nohighlight">\(f_{a1}\)</span>, and the binary factors <span class="math notranslate nohighlight">\(f_{a2}\)</span> and <span class="math notranslate nohighlight">\(f_{b1}\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show</span><span class="p">(</span><span class="n">markov_blankets</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="n">position_hints</span><span class="p">)</span>
