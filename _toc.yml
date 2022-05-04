@@ -10,6 +10,7 @@ chapters:
   - file: KalmanSmootherExample2.ipynb
   - file: GaussianMRFExample.ipynb
   - file: GaussianMRFExample_lbp.ipynb
+  - file: GaussianMRFExample_cbp.ipynb
 - file: slam.md
   sections:
   - file: Pose2SLAMExample.ipynb
