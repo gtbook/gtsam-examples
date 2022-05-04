@@ -1,0 +1,921 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1.5. Clustered Belief Propagation &#8212; GTSAM by Example</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. SLAM" href="slam.html" />
+    <link rel="prev" title="1.4. Loopy Belief Propagation" href="GaussianMRFExample_lbp.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">GTSAM by Example</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   GTSAM by Example
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="gaussian.html">
+   1. Gaussian Inference
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample.html">
+     1.1. Kalman Smoother
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample2.html">
+     1.2. Advanced Kalman Smoothing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMRFExample.html">
+     1.3. Gaussian Markov Random Fields
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMRFExample_lbp.html">
+     1.4. Loopy Belief Propagation
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     1.5. Clustered Belief Propagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="slam.html">
+   2. SLAM
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample.html">
+     2.1. Pose2 SLAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2ISAM2Example.html">
+     2.2. Pose2 iSAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+     2.3. Pose2 SLAM with g2o Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample.html">
+     2.4. Planar SLAM
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="advanced.html">
+   3. Advanced Inference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+     3.1. Sampling from the posterior
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_lbp.html">
+     3.2. Loopy Belief Propagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+     3.3. Variational Bayes Inference
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   4. Structure from Motion
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample.html">
+     4.1. Structure from Motion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample_bal.html">
+     4.2. SFM with BAL Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="StereoVOExample_large.html">
+     4.3. Stereo Visual Odometry
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/GaussianMRFExample_cbp.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/gtbook/gtsam-examples"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/gtbook/gtsam-examples/issues/new?title=Issue%20on%20page%20%2FGaussianMRFExample_cbp.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gtbook/gtsam-examples/main?urlpath=tree/GaussianMRFExample_cbp.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-linear-slam-example">
+   1.5.1. A Linear SLAM example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cluster-nodes">
+   1.5.2. Cluster Nodes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualizing-the-covariances">
+   1.5.3. Visualizing the Covariances
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#super-factor-nodes">
+   1.5.4. (Super) Factor Nodes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#messages">
+   1.5.5. Messages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cluster-belief-propagation">
+   1.5.6. Cluster Belief Propagation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-cluster-bp">
+   1.5.7. Running Cluster-BP
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#different-initial-beliefs">
+   1.5.8. Different Initial Beliefs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   1.5.9. Summary
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Clustered Belief Propagation</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-linear-slam-example">
+   1.5.1. A Linear SLAM example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cluster-nodes">
+   1.5.2. Cluster Nodes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualizing-the-covariances">
+   1.5.3. Visualizing the Covariances
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#super-factor-nodes">
+   1.5.4. (Super) Factor Nodes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#messages">
+   1.5.5. Messages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cluster-belief-propagation">
+   1.5.6. Cluster Belief Propagation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-cluster-bp">
+   1.5.7. Running Cluster-BP
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#different-initial-beliefs">
+   1.5.8. Different Initial Beliefs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   1.5.9. Summary
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/GaussianMRFExample_lbp.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="clustered-belief-propagation">
+<h1><span class="section-number">1.5. </span>Clustered Belief Propagation<a class="headerlink" href="#clustered-belief-propagation" title="Permalink to this headline">¶</a></h1>
+<p>Instead of “vanilla” loopy belief propagation, we now introduce more a structured approximation. In particular, we could treat a number of variables <span class="math notranslate nohighlight">\(X_c\)</span> as a cluster and use a Gaussian density for the entire cluster. This could easily be implemented using vanilla LBP, by introducing new clustered variables and proceeding as before. However, here we instead adopt a different approximate density as a collection of Bayes trees.</p>
+<p>If we group several variables together, and build a variational mean field approximation on those clusters, we can get much more accurate marginals, much faster. This is because we are making less of an approximation, and because we use the power of GTSAM to optimize over a bunch of variables at the same time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> -q install gtbook  # also installs latest gtsam pre-release
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">FrozenSet</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">import</span> <span class="nn">gtsam</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">gtbook.driving</span> <span class="kn">import</span> <span class="n">planar_example</span><span class="p">,</span> <span class="n">marginals_figure</span>
+<span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="kn">import</span> <span class="nn">gtsam.utils.plot</span> <span class="k">as</span> <span class="nn">gtsam_plot</span>
+
+<span class="n">GaussianPrior</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianDensity</span><span class="o">.</span><span class="n">FromMeanAndStddev</span>
+<span class="n">ConstrainedOrdering</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Ordering</span><span class="o">.</span><span class="n">ColamdConstrainedLastGaussianFactorGraph</span>
+<span class="n">Keys</span> <span class="o">=</span> <span class="n">FrozenSet</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<span class="n">Edge</span> <span class="o">=</span> <span class="n">FrozenSet</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="a-linear-slam-example">
+<h2><span class="section-number">1.5.1. </span>A Linear SLAM example<a class="headerlink" href="#a-linear-slam-example" title="Permalink to this headline">¶</a></h2>
+<p>We use a planar SLAM example that we linearize at the ground truth, in order to illustrate structured LBP.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nonlinear_graph</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">graph_keys</span> <span class="o">=</span> <span class="n">planar_example</span><span class="p">()</span>
+<span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span> <span class="o">=</span> <span class="n">graph_keys</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">nonlinear_graph</span><span class="o">.</span><span class="n">linearize</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">nonlinear_graph</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_cbp_5_0.svg" src="_images/GaussianMRFExample_cbp_5_0.svg" /></div>
+</div>
+<p>The Gaussian marginals around the non-linear solution are shown below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">marginals</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Marginals</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">truth</span><span class="p">)</span>
+<span class="n">marginals_figure</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">marginals</span><span class="p">,</span> <span class="n">graph_keys</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_cbp_7_0.png" src="_images/GaussianMRFExample_cbp_7_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="cluster-nodes">
+<h2><span class="section-number">1.5.2. </span>Cluster Nodes<a class="headerlink" href="#cluster-nodes" title="Permalink to this headline">¶</a></h2>
+<p>In the example below we create three clusters: the Markov chain x1-x2-x3 in one cluster, and the two landmarks l1 and l2 each in their own separate cluster. For each we create an initial belief <em>in the form of a Gaussian Bayes net</em>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">belief0</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span><span class="p">()</span>
+<span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,),</span> <span class="nb">float</span><span class="p">)</span>
+<span class="n">belief0</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">GaussianPrior</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">zero</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span>
+<span class="n">belief0</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">GaussianPrior</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">zero</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span>
+<span class="n">belief0</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">GaussianPrior</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span> <span class="n">zero</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span>
+
+<span class="n">belief1</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span><span class="p">()</span>
+<span class="n">belief1</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">GaussianPrior</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">zero</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="mf">1.5</span><span class="p">))</span>
+
+<span class="n">belief2</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span><span class="p">()</span>
+<span class="n">belief2</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">GaussianPrior</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span> <span class="n">zero</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="mf">1.5</span><span class="p">))</span>
+
+<span class="n">key_sets</span> <span class="o">=</span> <span class="p">[{</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">},</span> <span class="p">{</span><span class="n">l1</span><span class="p">},</span> <span class="p">{</span><span class="n">l2</span><span class="p">}]</span>
+<span class="n">beliefs</span> <span class="o">=</span> <span class="p">[</span><span class="n">belief0</span><span class="p">,</span> <span class="n">belief1</span><span class="p">,</span> <span class="n">belief2</span><span class="p">]</span>
+<span class="n">node_specs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">key_sets</span><span class="p">,</span> <span class="n">beliefs</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s then create a set of <code class="docutils literal notranslate"><span class="pre">Clusters</span></code> that each approximate the density of a cluster:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Cluster</span><span class="p">:</span>
+    <span class="n">keys</span><span class="p">:</span> <span class="n">Keys</span>
+    <span class="n">belief</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span>
+
+<span class="n">variable_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Cluster</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">initial_belief</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">keys</span><span class="p">,</span> <span class="n">initial_belief</span> <span class="ow">in</span> <span class="n">node_specs</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can’t currently update a Bayes tree in python yet, but in C++ we would use a <code class="docutils literal notranslate"><span class="pre">gtsam.BayesTree</span></code> so we can easily get covariances and incrementally update the custer. Soon!</p>
+</div>
+<div class="section" id="visualizing-the-covariances">
+<h2><span class="section-number">1.5.3. </span>Visualizing the Covariances<a class="headerlink" href="#visualizing-the-covariances" title="Permalink to this headline">¶</a></h2>
+<p>For now, we can visualize the covariances by converting to a Bayes tree. Note that we add the linear solution to the non-linear values for visualization purposes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_covariances</span><span class="p">(</span><span class="n">variable_nodes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot all covariances.&quot;&quot;&quot;</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">q_j</span> <span class="ow">in</span> <span class="n">variable_nodes</span><span class="p">:</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">q_j</span><span class="o">.</span><span class="n">belief</span><span class="p">)</span>
+    <span class="n">bt</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">eliminateMultifrontal</span><span class="p">()</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">bt</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+    <span class="n">cov</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">bt</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+           <span class="k">for</span> <span class="n">q_j</span> <span class="ow">in</span> <span class="n">variable_nodes</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">q_j</span><span class="o">.</span><span class="n">keys</span><span class="p">}</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">]:</span>
+        <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">truth</span><span class="o">.</span><span class="n">atPose2</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">translation</span><span class="p">()</span> <span class="o">+</span> <span class="n">mean</span><span class="o">.</span><span class="n">at</span><span class="p">(</span>
+            <span class="n">key</span><span class="p">)[:</span><span class="mi">2</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">bt</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">]:</span>
+        <span class="n">gtsam_plot</span><span class="o">.</span><span class="n">plot_point2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">truth</span><span class="o">.</span><span class="n">atPoint2</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="n">mean</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">,</span>
+                               <span class="n">bt</span><span class="o">.</span><span class="n">marginalCovariance</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
+
+<span class="n">plot_covariances</span><span class="p">(</span><span class="n">variable_nodes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_cbp_13_0.png" src="_images/GaussianMRFExample_cbp_13_0.png" />
+</div>
+</div>
+<p>Note that above all beliefs are just uniform Gaussians with a large standard deviation.</p>
+</div>
+<div class="section" id="super-factor-nodes">
+<h2><span class="section-number">1.5.4. </span>(Super) Factor Nodes<a class="headerlink" href="#super-factor-nodes" title="Permalink to this headline">¶</a></h2>
+<p>We also parse the factor graph in “super-factors” that bridge different cluster nodes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First figure out which nodes every node is connected to.</span>
+<span class="n">factor_indices</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">size</span><span class="p">()):</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">node_specs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">factor_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+
+<span class="c1"># Then store based on those index tuples.</span>
+<span class="n">factor_nodes</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">factor_indices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Invalid interaction between nodes.&quot;</span>
+    <span class="n">factor_nodes</span><span class="p">[</span><span class="nb">frozenset</span><span class="p">(</span><span class="n">edge</span><span class="p">)]</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Every super-factor is really a factor graph. For example, one of the super-factors is intra-cluster:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">edge0</span><span class="p">,</span> <span class="n">edge01</span><span class="p">,</span> <span class="n">edge02</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="mi">0</span><span class="p">}),</span> <span class="nb">frozenset</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">}),</span> <span class="nb">frozenset</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">})</span>
+<span class="n">show</span><span class="p">(</span><span class="n">factor_nodes</span><span class="p">[</span><span class="n">edge0</span><span class="p">],</span> <span class="n">hints</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">},</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_cbp_17_0.svg" src="_images/GaussianMRFExample_cbp_17_0.svg" /></div>
+</div>
+<p>And another one is between cluster 0 and 1:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show</span><span class="p">(</span><span class="n">factor_nodes</span><span class="p">[</span><span class="n">edge01</span><span class="p">],</span> <span class="n">hints</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_cbp_19_0.svg" src="_images/GaussianMRFExample_cbp_19_0.svg" /></div>
+</div>
+</div>
+<div class="section" id="messages">
+<h2><span class="section-number">1.5.5. </span>Messages<a class="headerlink" href="#messages" title="Permalink to this headline">¶</a></h2>
+<p>Finally, as in our vanilla LBP implementation, we only have one type of message, from factors (indexed by <code class="docutils literal notranslate"><span class="pre">frozenset</span></code> edges) to clusters (indexed by int). Again, messages are entire factor <em>graphs</em> now:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Message</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factors</span> <span class="ow">in</span> <span class="n">factor_nodes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">j</span><span class="p">,</span> <span class="o">*</span><span class="n">others</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="n">messages</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span>
+        <span class="k">continue</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">i</span><span class="p">:</span>
+        <span class="n">messages</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Message</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We initialized the messages <span class="math notranslate nohighlight">\(m_{i-&gt;j}\)</span> above to empty, except the ones that correspond to unary “factors”. There is only one here, which is exactly the intra-cluster factor graph from above:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">messages_j</span> <span class="ow">in</span> <span class="n">messages</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">message_ij</span> <span class="ow">in</span> <span class="n">messages_j</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;F_</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2"> -&gt; X_</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">: size = </span><span class="si">{</span><span class="n">message_ij</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>F_[0] -&gt; X_0: size = 3
+F_[0, 1] -&gt; X_0: size = 0
+F_[0, 2] -&gt; X_0: size = 0
+F_[0, 1] -&gt; X_1: size = 0
+F_[0, 2] -&gt; X_2: size = 0
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="cluster-belief-propagation">
+<h2><span class="section-number">1.5.6. </span>Cluster Belief Propagation<a class="headerlink" href="#cluster-belief-propagation" title="Permalink to this headline">¶</a></h2>
+<p>With these three data structures in hand, the code to update the belief of one cluster is easy: just add all “message” factor graphs to a big graph, and then eliminate:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_node</span><span class="p">(</span><span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Update cluster j.&quot;&quot;&quot;</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">size</span><span class="p">()):</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+    <span class="c1"># Eliminate into Bayes net.</span>
+    <span class="n">new_belief</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">eliminateSequential</span><span class="p">(</span><span class="n">gtsam</span><span class="o">.</span><span class="n">Ordering</span><span class="o">.</span><span class="n">OrderingType</span><span class="o">.</span><span class="n">NATURAL</span><span class="p">)</span>
+
+    <span class="n">variable_nodes</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cluster</span><span class="p">(</span><span class="n">variable_nodes</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">new_belief</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For example, updating cluster 0 we get an updated Bayes net on the Markov chain x1-x2-x3, which we show below as a Bayes net (it was eliminated in the x1,x2,x3 order, which is why the past is conditioned on the present), and below that we show the updated covariances:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">update_node</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">variable_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">belief</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_cbp_27_0.svg" src="_images/GaussianMRFExample_cbp_27_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_covariances</span><span class="p">(</span><span class="n">variable_nodes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_cbp_28_0.png" src="_images/GaussianMRFExample_cbp_28_0.png" />
+</div>
+</div>
+<p>Above we see that the Markov chain has been updated in one fell swoop, and has the correct covariance structure. However, we did not use all information: we should have updated the messages using the other cluster’s beliefs first. Let’s correct that now.</p>
+<p>Calculating a new messages <span class="math notranslate nohighlight">\(m_{i\rightarrow j}\)</span> takes the super-factor and adds the belief of the cluster “on the other side” to it, <em>minus</em> the messages that was sent to that other cluster:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_new_message</span><span class="p">(</span><span class="n">factors</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">,</span>
+                          <span class="n">keys</span><span class="p">:</span> <span class="n">Keys</span><span class="p">,</span> <span class="n">belief</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate message from factors and belief for sending node.&quot;&quot;&quot;</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">belief</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
+    <span class="n">ordering</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Ordering</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">ordering</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">remaining</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">eliminatePartialSequential</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">remaining</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>With that, we can write our final iteration code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_messages_and_node</span><span class="p">(</span><span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Update messages into cluster j and calculate belief q(X_j).&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># only update binary messages</span>
+            <span class="n">j1</span><span class="p">,</span> <span class="n">j2</span> <span class="o">=</span> <span class="n">edge</span>
+            <span class="n">other_cluster</span> <span class="o">=</span> <span class="n">variable_nodes</span><span class="p">[</span><span class="n">j2</span> <span class="k">if</span> <span class="n">j1</span> <span class="o">==</span> <span class="n">j</span> <span class="k">else</span> <span class="n">j1</span><span class="p">]</span>
+            <span class="n">messages</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_new_message</span><span class="p">(</span><span class="n">factor_nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">],</span>
+                                                      <span class="n">other_cluster</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span>
+                                                      <span class="n">other_cluster</span><span class="o">.</span><span class="n">belief</span><span class="p">)</span>
+    <span class="n">update_node</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="running-cluster-bp">
+<h2><span class="section-number">1.5.7. </span>Running Cluster-BP<a class="headerlink" href="#running-cluster-bp" title="Permalink to this headline">¶</a></h2>
+<p>Below we run this to convergence, which is very fast.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">update_messages_and_node</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plot_covariances</span><span class="p">(</span><span class="n">variable_nodes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_cbp_34_0.png" src="_images/GaussianMRFExample_cbp_34_0.png" />
+</div>
+</div>
+<p>TODO(frank): not sure why uncertainty can be <em>larger</em>: we should have more information now.</p>
+<p>We update the two other clusters as well:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]:</span>
+    <span class="n">update_messages_and_node</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+<span class="n">plot_covariances</span><span class="p">(</span><span class="n">variable_nodes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_cbp_36_0.png" src="_images/GaussianMRFExample_cbp_36_0.png" />
+</div>
+</div>
+<p>As you can see, these are remarkably close, after <em>one</em> round-robin iteration. Doing a few more rounds does not make a difference, and when overlaid on the <em>true</em> covariances you can hardly see the difference:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="nb">round</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">update_messages_and_node</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+<span class="n">marginals_figure</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">marginals</span><span class="p">,</span> <span class="n">graph_keys</span><span class="p">)</span>
+<span class="n">plot_covariances</span><span class="p">(</span><span class="n">variable_nodes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_cbp_38_0.png" src="_images/GaussianMRFExample_cbp_38_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="different-initial-beliefs">
+<h2><span class="section-number">1.5.8. </span>Different Initial Beliefs<a class="headerlink" href="#different-initial-beliefs" title="Permalink to this headline">¶</a></h2>
+<p>Of course, we started from beliefs that already had the mean correct. But, We get a more interesting animation when we start different points and pretend to be rather confident:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">new_belief0</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span><span class="p">()</span>
+<span class="n">minmax</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">3.0</span>
+<span class="n">new_belief0</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">GaussianPrior</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">*</span><span class="n">minmax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="mf">0.1</span><span class="p">))</span>
+<span class="n">new_belief0</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">GaussianPrior</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">*</span><span class="n">minmax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="mf">0.1</span><span class="p">))</span>
+<span class="n">new_belief0</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">GaussianPrior</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">*</span><span class="n">minmax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="mf">0.1</span><span class="p">))</span>
+
+<span class="n">new_belief1</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span><span class="p">()</span>
+<span class="n">new_belief1</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">GaussianPrior</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">*</span><span class="n">minmax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,)),</span> <span class="mf">0.1</span><span class="p">))</span>
+
+<span class="n">new_belief2</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span><span class="p">()</span>
+<span class="n">new_belief2</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">GaussianPrior</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">*</span><span class="n">minmax</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,)),</span> <span class="mf">0.1</span><span class="p">))</span>
+
+<span class="n">key_sets</span> <span class="o">=</span> <span class="p">[{</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">},</span> <span class="p">{</span><span class="n">l1</span><span class="p">},</span> <span class="p">{</span><span class="n">l2</span><span class="p">}]</span>
+<span class="n">new_beliefs</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_belief0</span><span class="p">,</span> <span class="n">new_belief1</span><span class="p">,</span> <span class="n">new_belief2</span><span class="p">]</span>
+
+<span class="n">new_node_specs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">key_sets</span><span class="p">,</span> <span class="n">new_beliefs</span><span class="p">))</span>
+<span class="n">variable_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Cluster</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">initial_belief</span><span class="p">)</span>
+                  <span class="k">for</span> <span class="n">keys</span><span class="p">,</span> <span class="n">initial_belief</span> <span class="ow">in</span> <span class="n">new_node_specs</span><span class="p">]</span>
+<span class="n">messages</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factors</span> <span class="ow">in</span> <span class="n">factor_nodes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">j</span><span class="p">,</span> <span class="o">*</span><span class="n">others</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="n">messages</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span>
+        <span class="k">continue</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">i</span><span class="p">:</span>
+        <span class="n">messages</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Message</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># marginals_figure(truth, marginals, graph_keys)</span>
+<span class="n">plot_covariances</span><span class="p">(</span><span class="n">variable_nodes</span><span class="p">)</span>
+<span class="k">for</span> <span class="nb">round</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">update_messages_and_node</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+    <span class="n">plot_covariances</span><span class="p">(</span><span class="n">variable_nodes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GaussianMRFExample_cbp_41_0.png" src="_images/GaussianMRFExample_cbp_41_0.png" />
+</div>
+</div>
+<p>Still, for this small graph we converge rather fast.</p>
+</div>
+<div class="section" id="summary">
+<h2><span class="section-number">1.5.9. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>A cluster-based belief propagation approach is still a “mean-field” approximation, but on clusters rather than individual variables. We recover “vanilla” BP if make the clusters contain only one variable, but note that even then these variables are multivariate. Finally, if we use <em>one</em> cluster, because we call sparse factorization (<code class="docutils literal notranslate"><span class="pre">eliminateSequential</span></code>!), we converge to the <em>true</em> posterior density.</p>
+<p>We’ll do a larger example in a non-linear SLAM notebook.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="GaussianMRFExample_lbp.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">1.4. </span>Loopy Belief Propagation</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="slam.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>SLAM</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Frank Dellaert and the GTSAM Community<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

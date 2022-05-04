@@ -57,7 +57,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="1.4. Gaussian Loopy Belief Propagation" href="GaussianMRFExample_lbp.html" />
+    <link rel="next" title="1.4. Loopy Belief Propagation" href="GaussianMRFExample_lbp.html" />
     <link rel="prev" title="1.2. Advanced Kalman Smoothing" href="KalmanSmootherExample2.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -130,7 +130,12 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="GaussianMRFExample_lbp.html">
-     1.4. Gaussian Loopy Belief Propagation
+     1.4. Loopy Belief Propagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMRFExample_cbp.html">
+     1.5. Clustered Belief Propagation
     </a>
    </li>
   </ul>
@@ -506,8 +511,8 @@ E(X) = \sum_i \phi_i(X_i)
 <p>We can display the graph, although graphviz (our graph plotting engine) does not respect the “image” nature. Note that we omit the “dot” for binary factors, which both reveals the undirected MRF and is easier on the eye.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">position_hints</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span><span class="nb">float</span><span class="p">(</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row_symbols</span><span class="p">)}</span>
-<span class="n">show</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># you can add hints=position_hints for a different view</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">position_hints</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span><span class="nb">float</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row_symbols</span><span class="p">)}</span>
+<span class="n">show</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">binary_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="n">position_hints</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -561,9 +566,9 @@ E(X) = \sum_i \phi_i(X_i)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.05 -0.08 -0.61]] [[ 0.01 -0.17 -0.7 ]] [[ 0.99  0.05 -0.09]] [[ 1.04  0.29 -0.25]]
-[[-0.43 -0.35 -0.27]] [[-0.58 -0.22 -0.26]] [[0.63 0.17 0.09]] [[-0.04  0.22  0.07]]
-[[-0.   -0.09 -0.13]] [[-0.17 -0.22  0.17]] [[ 0.02  0.19 -0.04]] [[-0.01  0.46 -0.  ]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.04  0.   -0.39]] [[-0.1   0.35 -0.23]] [[-0.02  0.37 -0.14]] [[ 0.42  0.03 -0.65]]
+[[-0.39 -0.4  -0.19]] [[-0.35  0.21 -0.55]] [[-0.14 -0.01 -0.24]] [[ 0.07  0.09 -0.41]]
+[[ 0.02 -0.19  0.01]] [[-0.35 -0.35 -0.57]] [[ 0.29 -0.25 -0.2 ]] [[ 0.31 -0.06 -0.37]]
 </pre></div>
 </div>
 </div>
@@ -611,7 +616,7 @@ E(X) = \sum_i \phi_i(X_i)
     <a class='right-next' id="next-link" href="GaussianMRFExample_lbp.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">1.4. </span>Gaussian Loopy Belief Propagation</p>
+        <p class="prev-next-title"><span class="section-number">1.4. </span>Loopy Belief Propagation</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

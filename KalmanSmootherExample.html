@@ -130,7 +130,12 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="GaussianMRFExample_lbp.html">
-     1.4. Gaussian Loopy Belief Propagation
+     1.4. Loopy Belief Propagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMRFExample_cbp.html">
+     1.5. Clustered Belief Propagation
     </a>
    </li>
   </ul>
@@ -628,14 +633,14 @@ x3:
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x3:
-[[ 4.37642673  3.34679808  4.55445302  4.45605763  3.99317802]
- [ 0.08580998 -0.51405108 -0.2881573  -0.12702172  0.27523455]]
+[[ 4.24454891  3.87649809  4.07780398  4.21777524  3.4471596 ]
+ [-0.1570935   0.13790074 -0.04163991 -0.18153781  0.29907491]]
 x2:
-[[ 2.34757253  1.28811264  2.60662264  2.44725234  1.89751132]
- [ 0.220887    0.05163039 -0.45696391  0.04952255 -0.13689157]]
+[[ 2.27233647  1.96584056  2.03290986  2.25471917  1.52050748]
+ [-0.03856696 -0.07154979  0.18788519  0.2044148  -0.03183695]]
 x1:
-[[ 0.5543914  -0.63726183  0.60368015  0.43404673 -0.14168213]
- [-0.03196915  0.01841457 -0.43286501 -0.19390003 -0.52799786]]
+[[ 0.19155166  0.02415136  0.0068005   0.36020125 -0.48348781]
+ [-0.31229442 -0.03356504  0.1895035   0.28198945 -0.31209899]]
 </pre></div>
 </div>
 </div>
@@ -649,7 +654,7 @@ x1:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>301 µs ± 1.13 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>302 µs ± 682 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div>
 </div>
 </div>
