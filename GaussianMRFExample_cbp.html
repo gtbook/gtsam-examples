@@ -722,10 +722,10 @@ F_[0, 2] -&gt; X_2: size = 0
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_new_message</span><span class="p">(</span><span class="n">factors</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">,</span>
-                          <span class="n">keys</span><span class="p">:</span> <span class="n">Keys</span><span class="p">,</span> <span class="n">belief</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianBayesNet</span><span class="p">):</span>
+                          <span class="n">keys</span><span class="p">:</span> <span class="n">Keys</span><span class="p">,</span> <span class="n">downdated_belief</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate message from factors and belief for sending node.&quot;&quot;&quot;</span>
     <span class="n">graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
-    <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">belief</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">downdated_belief</span><span class="p">)</span>
     <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
     <span class="n">ordering</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Ordering</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
@@ -744,15 +744,22 @@ F_[0, 2] -&gt; X_2: size = 0
     <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># only update binary messages</span>
             <span class="n">j1</span><span class="p">,</span> <span class="n">j2</span> <span class="o">=</span> <span class="n">edge</span>
-            <span class="n">other_cluster</span> <span class="o">=</span> <span class="n">variable_nodes</span><span class="p">[</span><span class="n">j2</span> <span class="k">if</span> <span class="n">j1</span> <span class="o">==</span> <span class="n">j</span> <span class="k">else</span> <span class="n">j1</span><span class="p">]</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">j2</span> <span class="k">if</span> <span class="n">j1</span> <span class="o">==</span> <span class="n">j</span> <span class="k">else</span> <span class="n">j1</span>
+            <span class="n">other_cluster</span> <span class="o">=</span> <span class="n">variable_nodes</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">downdated_belief</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">GaussianFactorGraph</span><span class="p">()</span>
+            <span class="n">downdated_belief</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">other_cluster</span><span class="o">.</span><span class="n">belief</span><span class="p">)</span>
+            <span class="n">message_to_subtract</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">message_to_subtract</span><span class="o">.</span><span class="n">size</span><span class="p">()):</span>
+                <span class="n">downdated_belief</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">message_to_subtract</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">negate</span><span class="p">())</span>
             <span class="n">messages</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_new_message</span><span class="p">(</span><span class="n">factor_nodes</span><span class="p">[</span><span class="n">edge</span><span class="p">],</span>
                                                       <span class="n">other_cluster</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span>
-                                                      <span class="n">other_cluster</span><span class="o">.</span><span class="n">belief</span><span class="p">)</span>
+                                                      <span class="n">downdated_belief</span><span class="p">)</span>
     <span class="n">update_node</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Note that above we down-date the belief for the “other node” before eliminating the variables associated with it. Otherwise we are double-counting information.</p>
 </div>
 <div class="section" id="running-cluster-bp">
 <h2><span class="section-number">1.5.7. </span>Running Cluster-BP<a class="headerlink" href="#running-cluster-bp" title="Permalink to this headline">¶</a></h2>
@@ -765,7 +772,7 @@ F_[0, 2] -&gt; X_2: size = 0
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GaussianMRFExample_cbp_34_0.png" src="_images/GaussianMRFExample_cbp_34_0.png" />
+<img alt="_images/GaussianMRFExample_cbp_35_0.png" src="_images/GaussianMRFExample_cbp_35_0.png" />
 </div>
 </div>
 <p>TODO(frank): not sure why uncertainty can be <em>larger</em>: we should have more information now.</p>
@@ -779,7 +786,7 @@ F_[0, 2] -&gt; X_2: size = 0
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GaussianMRFExample_cbp_36_0.png" src="_images/GaussianMRFExample_cbp_36_0.png" />
+<img alt="_images/GaussianMRFExample_cbp_37_0.png" src="_images/GaussianMRFExample_cbp_37_0.png" />
 </div>
 </div>
 <p>As you can see, these are remarkably close, after <em>one</em> round-robin iteration. Doing a few more rounds does not make a difference, and when overlaid on the <em>true</em> covariances you can hardly see the difference:</p>
@@ -794,7 +801,7 @@ F_[0, 2] -&gt; X_2: size = 0
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GaussianMRFExample_cbp_38_0.png" src="_images/GaussianMRFExample_cbp_38_0.png" />
+<img alt="_images/GaussianMRFExample_cbp_39_0.png" src="_images/GaussianMRFExample_cbp_39_0.png" />
 </div>
 </div>
 </div>
@@ -846,7 +853,7 @@ F_[0, 2] -&gt; X_2: size = 0
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/GaussianMRFExample_cbp_41_0.png" src="_images/GaussianMRFExample_cbp_41_0.png" />
+<img alt="_images/GaussianMRFExample_cbp_42_0.png" src="_images/GaussianMRFExample_cbp_42_0.png" />
 </div>
 </div>
 <p>Still, for this small graph we converge rather fast.</p>
