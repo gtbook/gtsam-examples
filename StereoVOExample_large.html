@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>4.3. Stereo Visual Odometry &#8212; GTSAM by Example</title>
+    <title>5.3. Stereo Visual Odometry &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -57,7 +57,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="4.2. SFM with BAL Files" href="SFMExample_bal.html" />
+    <link rel="prev" title="5.2. SFM with BAL Files" href="SFMExample_bal.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -198,29 +198,46 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="navigation.html">
+   4. Navigation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ImuFactorExample101.html">
+     4.1. Inertial Estimation with Imu Preintegration
+    </a>
+   </li>
+  </ul>
+ </li>
  <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="sfm.html">
-   4. Structure from Motion
+   5. Structure from Motion
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="SFMExample.html">
-     4.1. Structure from Motion
+     5.1. Structure from Motion
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="SFMExample_bal.html">
-     4.2. SFM with BAL Files
+     5.2. SFM with BAL Files
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     4.3. Stereo Visual Odometry
+     5.3. Stereo Visual Odometry
     </a>
    </li>
   </ul>
@@ -331,22 +348,22 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-stereo-rig-calibration">
-   4.3.1. Load Stereo Rig Calibration
+   5.3.1. Load Stereo Rig Calibration
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-camera-poses">
-   4.3.2. Load Camera Poses
+   5.3.2. Load Camera Poses
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-factor-graph">
-   4.3.3. Create Factor Graph
+   5.3.3. Create Factor Graph
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#batch-optimization">
-   4.3.4. Batch Optimization
+   5.3.4. Batch Optimization
   </a>
  </li>
 </ul>
@@ -371,22 +388,22 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-stereo-rig-calibration">
-   4.3.1. Load Stereo Rig Calibration
+   5.3.1. Load Stereo Rig Calibration
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-camera-poses">
-   4.3.2. Load Camera Poses
+   5.3.2. Load Camera Poses
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-factor-graph">
-   4.3.3. Create Factor Graph
+   5.3.3. Create Factor Graph
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#batch-optimization">
-   4.3.4. Batch Optimization
+   5.3.4. Batch Optimization
   </a>
  </li>
 </ul>
@@ -400,7 +417,7 @@
                 
   <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/StereoVOExample_large_.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <div class="tex2jax_ignore mathjax_ignore section" id="stereo-visual-odometry">
-<h1><span class="section-number">4.3. </span>Stereo Visual Odometry<a class="headerlink" href="#stereo-visual-odometry" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">5.3. </span>Stereo Visual Odometry<a class="headerlink" href="#stereo-visual-odometry" title="Permalink to this headline">¶</a></h1>
 <p>A 3D stereo visual odometry example.</p>
 <ul class="simple">
 <li><p>robot starts at origin</p></li>
@@ -433,7 +450,7 @@
 </div>
 </div>
 <div class="section" id="load-stereo-rig-calibration">
-<h2><span class="section-number">4.3.1. </span>Load Stereo Rig Calibration<a class="headerlink" href="#load-stereo-rig-calibration" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.3.1. </span>Load Stereo Rig Calibration<a class="headerlink" href="#load-stereo-rig-calibration" title="Permalink to this headline">¶</a></h2>
 <p>Just a regular pinhole calibration, plus a baseline, which in this case is 54 cm.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -456,7 +473,7 @@
 </div>
 </div>
 <div class="section" id="load-camera-poses">
-<h2><span class="section-number">4.3.2. </span>Load Camera Poses<a class="headerlink" href="#load-camera-poses" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.3.2. </span>Load Camera Poses<a class="headerlink" href="#load-camera-poses" title="Permalink to this headline">¶</a></h2>
 <p>We already have a very good initial estimate on file…</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -471,7 +488,7 @@
 </div>
 </div>
 <div class="section" id="create-factor-graph">
-<h2><span class="section-number">4.3.3. </span>Create Factor Graph<a class="headerlink" href="#create-factor-graph" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.3.3. </span>Create Factor Graph<a class="headerlink" href="#create-factor-graph" title="Permalink to this headline">¶</a></h2>
 <p>We have about 8000 measurements, specified in a file as 8 numbers per row:</p>
 <ul class="simple">
 <li><p>i, j: pose and landmark indices</p></li>
@@ -502,7 +519,7 @@
 </div>
 </div>
 <div class="section" id="batch-optimization">
-<h2><span class="section-number">4.3.4. </span>Batch Optimization<a class="headerlink" href="#batch-optimization" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">5.3.4. </span>Batch Optimization<a class="headerlink" href="#batch-optimization" title="Permalink to this headline">¶</a></h2>
 <p>We constrain the first pose such that it cannot change from its original value during optimization.
 NOTE: NonlinearEquality forces the optimizer to use QR rather than Cholesky QR is much slower than Cholesky, but numerically more stable.</p>
 <div class="cell docutils container">
@@ -599,7 +616,7 @@ t: 0.00112241 0.00989265     1.9179
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">4.2. </span>SFM with BAL Files</p>
+            <p class="prev-next-title"><span class="section-number">5.2. </span>SFM with BAL Files</p>
         </div>
     </a>
 </div>

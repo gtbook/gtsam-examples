@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>4.1. Structure from Motion &#8212; GTSAM by Example</title>
+    <title>5.1. Structure from Motion &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -55,8 +55,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4.2. SFM with BAL Files" href="SFMExample_bal.html" />
-    <link rel="prev" title="4. Structure from Motion" href="sfm.html" />
+    <link rel="next" title="5.2. SFM with BAL Files" href="SFMExample_bal.html" />
+    <link rel="prev" title="5. Structure from Motion" href="sfm.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -197,29 +197,46 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="navigation.html">
+   4. Navigation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ImuFactorExample101.html">
+     4.1. Inertial Estimation with Imu Preintegration
+    </a>
+   </li>
+  </ul>
+ </li>
  <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="sfm.html">
-   4. Structure from Motion
+   5. Structure from Motion
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul class="current">
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     4.1. Structure from Motion
+     5.1. Structure from Motion
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="SFMExample_bal.html">
-     4.2. SFM with BAL Files
+     5.2. SFM with BAL Files
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="StereoVOExample_large.html">
-     4.3. Stereo Visual Odometry
+     5.3. Stereo Visual Odometry
     </a>
    </li>
   </ul>
@@ -343,7 +360,7 @@
                 
   <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/SFMExample.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <div class="tex2jax_ignore mathjax_ignore section" id="structure-from-motion">
-<h1><span class="section-number">4.1. </span>Structure from Motion<a class="headerlink" href="#structure-from-motion" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">5.1. </span>Structure from Motion<a class="headerlink" href="#structure-from-motion" title="Permalink to this headline">¶</a></h1>
 <p>Structure from Motion (SFM or SfM) is very similar to SLAM, except we are trying to estimate the pose of several cameras observing a set of unknown 3D landmarks.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1275,138 +1292,138 @@ Intentionally initialize the variables off from the ground truth</p>
 Values with 16 values:
 Value l0: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	9.96384401;
-	10.0280682;
-	9.98632203
+	9.83706202;
+	9.97533072;
+	10.036766
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l1: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-10.2457409;
-	9.92130016;
-	9.99992474
+	-9.9679287;
+	9.97707842;
+	10.0219182
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l2: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-9.75892734;
-	-10.2376624;
-	9.99924054
+	-10.0308706;
+	-9.92399276;
+	10.1691842
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l3: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	9.77007179;
-	-9.90908095;
-	9.96977015
+	9.9082168;
+	-10.0185786;
+	9.89825714
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l4: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	10.0584757;
-	9.99528925;
-	-10.1690566
+	10.0585077;
+	10.029473;
+	-9.96401824
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l5: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-10.0168472;
-	10.061801;
-	-10.0052668
+	-10.1681584;
+	10.0224183;
+	-10.0104138
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l6: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	-10.0878654;
-	-10.0516264;
-	-9.92472471
+	-10.1745912;
+	-9.96448838;
+	-9.92036801
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l7: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
-	9.93755435;
-	-10.033025;
-	-9.88707305
+	10.0321411;
+	-10.0044326;
+	-9.81125712
 ]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x0: (gtsam::Pose3)
 R: [
-	0.185392749, 0.0221728956, -0.982414317;
-	0.981014691, -0.0620839557, 0.183727402;
-	-0.0569183984, -0.997824606, -0.0332618515
+	0.0127577705, 0.222850726, -0.974769097;
+	0.993908927, 0.103892907, 0.0367601637;
+	0.109463624, -0.969300685, -0.220167884
 ]
-t:    39.8332518 -0.0928797659    9.94316274
+t:   40.0849272 0.0553535287   10.0319359
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x1: (gtsam::Pose3)
 R: [
-	-0.738161898, 0.184510475, -0.6489013;
-	0.673515199, 0.256671972, -0.693178747;
-	0.0386560369, -0.948723028, -0.31373608
+	-0.801115331, 0.39712662, -0.447777482;
+	0.507328593, 0.0536444538, -0.860081375;
+	-0.317540431, -0.916194696, -0.244449083
 ]
-t: 28.4131446 28.3541525 10.0485006
+t: 28.2119057 28.4147592 10.0358055
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x2: (gtsam::Pose3)
 R: [
-	-0.999327448, -0.0344835681, -0.0124713773;
-	0.00193438095, 0.290054917, -0.957008048;
-	0.0366184365, -0.956388534, -0.289793136
+	-0.976408655, 0.116351437, 0.181902398;
+	-0.143887596, 0.277538728, -0.94987821;
+	-0.161004655, -0.953642804, -0.254249688
 ]
-t: -0.214219192   40.0125619   9.97251615
+t: 0.0437412781    39.876795   10.0112008
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x3: (gtsam::Pose3)
 R: [
-	-0.745117763, -0.108841599, 0.65799166;
-	-0.665806445, 0.178713537, -0.724405446;
-	-0.0387465698, -0.977862453, -0.205630069
+	-0.676078442, -0.172423111, 0.71637156;
+	-0.728067436, 0.00683465278, -0.685471441;
+	0.113294967, -0.984999268, -0.130156414
 ]
-t: -28.200145 28.3686676 9.75117868
+t: -28.3481084   28.295752  10.1001814
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x4: (gtsam::Pose3)
 R: [
-	-0.0706523074, -0.189506019, 0.979334325;
-	-0.997452298, 0.0231238707, -0.0674848129;
-	-0.00985722205, -0.981607231, -0.190656969
+	-0.104480265, -0.222902015, 0.969225756;
+	-0.99449391, 0.0154711613, -0.103646063;
+	0.00810786825, -0.97471808, -0.223291127
 ]
-t: -39.9337923 0.162697558  10.1195753
+t: -39.7366891  0.04598918  10.0412476
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x5: (gtsam::Pose3)
 R: [
-	0.471491687, -0.0612404227, 0.879741553;
-	-0.877191447, -0.135196303, 0.460713712;
-	0.0907235036, -0.988924451, -0.117463508
+	0.515039568, -0.227431424, 0.826443701;
+	-0.857158283, -0.140850599, 0.495419808;
+	0.00373105794, -0.963553868, -0.267488361
 ]
-t: -28.3046845 -28.2836781  9.94584655
+t: -28.4229093 -28.2957277   9.8653828
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x6: (gtsam::Pose3)
 R: [
-	0.999465934, -0.0322359128, 0.00535649669;
-	-0.0128180597, -0.235961189, 0.971677938;
-	-0.030059, -0.971227658, -0.236248373
+	0.998384545, 0.0568138949, -0.000694673819;
+	0.010877166, -0.179114572, 0.983768091;
+	0.0557672707, -0.982186414, -0.179443195
 ]
-t: -0.0303200253   -40.0010476    10.0245514
+t: 0.125419685 -40.0421255  9.96590564
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x7: (gtsam::Pose3)
 R: [
-	0.717787227, -0.1230813, -0.685297373;
-	0.659561775, -0.195136999, 0.725878652;
-	-0.223068961, -0.973022376, -0.0588871245
+	0.676425799, 0.128688927, -0.725180873;
+	0.731465504, -0.00232978498, 0.681874466;
+	0.0860601777, -0.991682274, -0.0957074373
 ]
-t:  28.2448937 -28.4403645  9.80923155
+t:  28.3054785 -28.2091761  10.0298616
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -1431,10 +1448,6 @@ t:  28.2448937 -28.4403645  9.80923155
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimizing:
 converged
-errorThreshold: 5.5251819e-26 &lt;? 0
-absoluteDecrease: 7.08284117903e-12 &lt;? 1e-05
-relativeDecrease: 1 &lt;? 1e-05
-iterations: 5 &gt;? 100
 Final results:
 
 Values with 16 values:
@@ -1494,7 +1507,12 @@ Value l0: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 ]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value l7: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>errorThreshold: 3.84080725e-26 &lt;? 0
+absoluteDecrease: 6.39978420318e-12 &lt;? 1e-05
+relativeDecrease: 1 &lt;? 1e-05
+iterations: 5 &gt;? 100
+
+Value l7: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 [
 	10;
 	-10;
@@ -1504,72 +1522,72 @@ Value l0: (Eigen::Matrix&lt;double, -1, 1, 0, -1, 1&gt;)
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x0: (gtsam::Pose3)
 R: [
-	-1.93785176848e-17, 0.242535625036, -0.970142500145;
-	1, -1.01850180762e-18, 1.4806303267e-17;
-	-1.10921666997e-17, -0.970142500145, -0.242535625036
+	-1.29100138139e-17, 0.242535625036, -0.970142500145;
+	1, -2.78180576083e-17, -1.23552736923e-18;
+	-1.98719275598e-17, -0.970142500145, -0.242535625036
 ]
-t:                 40 -7.63011834196e-21                 10
+t:                 40 -1.15375413362e-20                 10
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x1: (gtsam::Pose3)
 R: [
 	-0.707106781187, 0.171498585143, -0.68599434057;
 	0.707106781187, 0.171498585143, -0.68599434057;
-	-1.06997660982e-17, -0.970142500145, -0.242535625036
+	5.5593917269e-16, -0.970142500145, -0.242535625036
 ]
 t: 28.2842712475 28.2842712475            10
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x2: (gtsam::Pose3)
 R: [
-	-1, -8.96258348184e-18, 7.0880664148e-17;
-	-8.05931095351e-17, 0.242535625036, -0.970142500145;
-	-1.78822324325e-18, -0.970142500145, -0.242535625036
+	-1, 4.96562211033e-18, -3.60300206955e-16;
+	3.75027888927e-16, 0.242535625036, -0.970142500145;
+	1.17973146955e-16, -0.970142500145, -0.242535625036
 ]
-t: -4.91699436273e-16                 40                 10
+t: 1.93200586546e-14                40                10
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x3: (gtsam::Pose3)
 R: [
 	-0.707106781187, -0.171498585143, 0.68599434057;
 	-0.707106781187, 0.171498585143, -0.68599434057;
-	-2.82403168963e-17, -0.970142500145, -0.242535625036
+	-9.67543103987e-17, -0.970142500145, -0.242535625036
 ]
 t: -28.2842712475  28.2842712475             10
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x4: (gtsam::Pose3)
 R: [
-	-2.52538280097e-16, -0.242535625036, 0.970142500145;
-	-1, 9.35428072854e-17, -2.50909826789e-16;
-	-4.1503678564e-17, -0.970142500145, -0.242535625036
+	1.64126013177e-16, -0.242535625036, 0.970142500145;
+	-1, -7.89180440812e-17, 1.43095812885e-16;
+	3.60533411503e-17, -0.970142500145, -0.242535625036
 ]
-t:               -40 1.47896386411e-14                10
+t:                -40 -8.58329670824e-15                 10
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x5: (gtsam::Pose3)
 R: [
 	0.707106781187, -0.171498585143, 0.68599434057;
 	-0.707106781187, -0.171498585143, 0.68599434057;
-	-2.16769879093e-17, -0.970142500145, -0.242535625036
+	2.1752831138e-16, -0.970142500145, -0.242535625036
 ]
 t: -28.2842712475 -28.2842712475             10
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x6: (gtsam::Pose3)
 R: [
-	1, -1.00740677444e-16, 1.07795635915e-16;
-	-1.29545415408e-16, -0.242535625036, 0.970142500145;
-	-6.65049426073e-17, -0.970142500145, -0.242535625036
+	1, 4.60333247236e-17, 3.3736420745e-16;
+	-3.22194073598e-16, -0.242535625036, 0.970142500145;
+	1.24248698773e-16, -0.970142500145, -0.242535625036
 ]
-t: 3.60675046331e-16               -40                10
+t: -1.14741630751e-14                -40                 10
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value x7: (gtsam::Pose3)
 R: [
 	0.707106781187, 0.171498585143, -0.68599434057;
 	0.707106781187, -0.171498585143, 0.68599434057;
-	3.02867127213e-17, -0.970142500145, -0.242535625036
+	3.31327107504e-17, -0.970142500145, -0.242535625036
 ]
 t:  28.2842712475 -28.2842712475             10
 </pre></div>
@@ -1577,8 +1595,8 @@ t:  28.2842712475 -28.2842712475             10
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial error = 2974.6339492509737
-final error = 5.525181900330119e-26
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial error = 2939.989957465973
+final error = 3.8408072547186747e-26
 </pre></div>
 </div>
 </div>
@@ -1628,13 +1646,13 @@ final error = 5.525181900330119e-26
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">4. </span>Structure from Motion</p>
+            <p class="prev-next-title"><span class="section-number">5. </span>Structure from Motion</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="SFMExample_bal.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">4.2. </span>SFM with BAL Files</p>
+        <p class="prev-next-title"><span class="section-number">5.2. </span>SFM with BAL Files</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

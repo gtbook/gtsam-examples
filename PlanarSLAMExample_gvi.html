@@ -57,7 +57,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4. Structure from Motion" href="sfm.html" />
+    <link rel="next" title="4. Navigation" href="navigation.html" />
     <link rel="prev" title="3.2. Loopy Belief Propagation" href="PlanarSLAMExample_lbp.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -200,8 +200,8 @@
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="sfm.html">
-   4. Structure from Motion
+  <a class="reference internal" href="navigation.html">
+   4. Navigation
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
   <label for="toctree-checkbox-4">
@@ -210,18 +210,35 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="ImuFactorExample101.html">
+     4.1. Inertial Estimation with Imu Preintegration
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   5. Structure from Motion
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
     <a class="reference internal" href="SFMExample.html">
-     4.1. Structure from Motion
+     5.1. Structure from Motion
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="SFMExample_bal.html">
-     4.2. SFM with BAL Files
+     5.2. SFM with BAL Files
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="StereoVOExample_large.html">
-     4.3. Stereo Visual Odometry
+     5.3. Stereo Visual Odometry
     </a>
    </li>
   </ul>
@@ -647,11 +664,11 @@ P:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.0457
-it 2, norm of delta: 0.0458
-it 3, norm of delta: 0.0005
-it 4, norm of delta: 0.0013
-it 5, norm of delta: 0.0010
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.0287
+it 2, norm of delta: 0.0285
+it 3, norm of delta: 0.0003
+it 4, norm of delta: 0.0007
+it 5, norm of delta: 0.0007
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_gvi_14_1.png" src="_images/PlanarSLAMExample_gvi_14_1.png" />
@@ -765,23 +782,21 @@ it 5, norm of delta: 0.0010
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.1814
-it 2, norm of delta: 0.1246
-it 3, norm of delta: 0.0304
-it 4, norm of delta: 0.0179
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 1, norm of delta: 0.1761
+it 2, norm of delta: 0.1238
+it 3, norm of delta: 0.0292
+it 4, norm of delta: 0.0166
+it 5, norm of delta: 0.0115
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 5, norm of delta: 0.0123
-it 6, norm of delta: 0.0087
-it 7, norm of delta: 0.0062
-it 8, norm of delta: 0.0042
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 9, norm of delta: 0.0031
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>it 6, norm of delta: 0.0080
+it 7, norm of delta: 0.0055
+it 8, norm of delta: 0.0038
+it 9, norm of delta: 0.0027
 it 10, norm of delta: 0.0021
 </pre></div>
 </div>
-<img alt="_images/PlanarSLAMExample_gvi_21_3.png" src="_images/PlanarSLAMExample_gvi_21_3.png" />
+<img alt="_images/PlanarSLAMExample_gvi_21_2.png" src="_images/PlanarSLAMExample_gvi_21_2.png" />
 </div>
 </div>
 </div>
@@ -851,7 +866,7 @@ it 10, norm of delta: 0.0021
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=15005
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nr_accepted=15302
 </pre></div>
 </div>
 <img alt="_images/PlanarSLAMExample_gvi_23_1.png" src="_images/PlanarSLAMExample_gvi_23_1.png" />
@@ -892,10 +907,10 @@ it 10, norm of delta: 0.0021
             <p class="prev-next-title"><span class="section-number">3.2. </span>Loopy Belief Propagation</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="sfm.html" title="next page">
+    <a class='right-next' id="next-link" href="navigation.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">4. </span>Structure from Motion</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Navigation</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

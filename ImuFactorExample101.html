@@ -1,0 +1,963 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4.1. Inertial Estimation with Imu Preintegration &#8212; GTSAM by Example</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5. Structure from Motion" href="sfm.html" />
+    <link rel="prev" title="4. Navigation" href="navigation.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">GTSAM by Example</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   GTSAM by Example
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="gaussian.html">
+   1. Gaussian Inference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample.html">
+     1.1. Kalman Smoother
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample2.html">
+     1.2. Advanced Kalman Smoothing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMRFExample.html">
+     1.3. Gaussian Markov Random Fields
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMRFExample_lbp.html">
+     1.4. Loopy Belief Propagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMRFExample_cbp.html">
+     1.5. Clustered Belief Propagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="slam.html">
+   2. SLAM
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample.html">
+     2.1. Pose2 SLAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2ISAM2Example.html">
+     2.2. Pose2 iSAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+     2.3. Pose2 SLAM with g2o Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample.html">
+     2.4. Planar SLAM
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="advanced.html">
+   3. Advanced Inference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+     3.1. Sampling from the posterior
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_lbp.html">
+     3.2. Loopy Belief Propagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+     3.3. Variational Bayes Inference
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="navigation.html">
+   4. Navigation
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     4.1. Inertial Estimation with Imu Preintegration
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   5. Structure from Motion
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample.html">
+     5.1. Structure from Motion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample_bal.html">
+     5.2. SFM with BAL Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="StereoVOExample_large.html">
+     5.3. Stereo Visual Odometry
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/ImuFactorExample101.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/gtbook/gtsam-examples"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/gtbook/gtsam-examples/issues/new?title=Issue%20on%20page%20%2FImuFactorExample101.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gtbook/gtsam-examples/main?urlpath=tree/ImuFactorExample101.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#background">
+   4.1.1. Background
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#objectives">
+   4.1.2. Objectives
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-trajectory">
+   4.1.3. Example Trajectory
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#imu-preintegration">
+   4.1.4. IMU Preintegration
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#factor-graph">
+   4.1.5. Factor Graph
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimization">
+   4.1.6. Optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#final-result">
+   4.1.7. Final Result
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#other-scenarios">
+   4.1.8. Other Scenarios
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#standing-scenario">
+     4.1.8.1. Standing Scenario
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#loop-scenario">
+     4.1.8.2. Loop Scenario
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sick-scenario">
+     4.1.8.3. Sick Scenario
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   4.1.9. Conclusion
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Inertial Estimation with Imu Preintegration</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#background">
+   4.1.1. Background
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#objectives">
+   4.1.2. Objectives
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-trajectory">
+   4.1.3. Example Trajectory
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#imu-preintegration">
+   4.1.4. IMU Preintegration
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#factor-graph">
+   4.1.5. Factor Graph
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimization">
+   4.1.6. Optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#final-result">
+   4.1.7. Final Result
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#other-scenarios">
+   4.1.8. Other Scenarios
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#standing-scenario">
+     4.1.8.1. Standing Scenario
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#loop-scenario">
+     4.1.8.2. Loop Scenario
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sick-scenario">
+     4.1.8.3. Sick Scenario
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   4.1.9. Conclusion
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="inertial-estimation-with-imu-preintegration">
+<h1><span class="section-number">4.1. </span>Inertial Estimation with Imu Preintegration<a class="headerlink" href="#inertial-estimation-with-imu-preintegration" title="Permalink to this headline">¶</a></h1>
+<p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/ImuFactorExample101.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<div class="section" id="background">
+<h2><span class="section-number">4.1.1. </span>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>IMUs are powerful sensors capable of providing us with measurements on angular velocity and linear acceleration of the body at high frequencies (~200Hz and above). To estimate the pose of the body at any time, one can simply integrate the angular velocity to get the rotation and double-integrate the linear acceleration to get the velocity and translation.</p>
+<div class="math notranslate nohighlight">
+\[ R^w_b(t_j) = R^w_b(t_i)\int^{t_j}_{t_i} exp(\hat{\omega}(t)) dt \]</div>
+<div class="math notranslate nohighlight">
+\[ v^w(t_j) = v^w(t_i) + \int^{t_j}_{t_i} \hat{a} dt \]</div>
+<div class="math notranslate nohighlight">
+\[ t^w(t_j) = \int^{t_j}_{t_i} \left( v^w(t_i) \int^{t_j}_{t_i} \hat{a}\right) dt \]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{\omega}\)</span> is the measured angular velocity and <span class="math notranslate nohighlight">\(\hat{a}\)</span> is the measured linear acceleration.</p>
+<p>Alas, things are not as straightforward as this. Unless you are using tactical or navigation grade IMUs (which cost $1000s), the sensor measurements will be noisy and affected by sensor bias <span class="math notranslate nohighlight">\((b_{\omega}, b_{a})\)</span> that will cause the estimates to drift away from the true values. To correct for this, we need to optimize with consideration for the noise and bias values as part of our model.</p>
+<p>However, performing optimization at 200 Hz is a bit unrealistic and can quickly overwhelm the system, especially when we only need estimates every, e.g. 50 Hz. Can we instead account for multple measurements between two estimation timestamps as a single binary constraint? The answer is yes and the methodology for that is developed in the <a class="reference external" href="https://ieeexplore.ieee.org/document/5354267">paper by Lupton and Sukkarieh</a> and improved upon <a class="reference external" href="https://arxiv.org/pdf/1512.02363.pdf">by Forster et. al.</a> which is termed as <strong>IMU Preintegration</strong>.</p>
+<p>Luckily for us, GTSAM has the <code class="docutils literal notranslate"><span class="pre">ImuFactor</span></code> which performs IMU preintegration for us in a neatly tied package, such that all we need to consider is the coordinate frame of the sensor with respect to the body, and providing the measurements for preintegration.</p>
+</div>
+<div class="section" id="objectives">
+<h2><span class="section-number">4.1.2. </span>Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">¶</a></h2>
+<p>In this example, we shall examine how to use IMU preintegration for inertial estimation with factor graphs. Given a sequence of measurements, we will construct the factor graph and optimize it in order to get the desired pose estimates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the pre-requisites</span>
+<span class="o">%</span><span class="k">pip</span> -q install gtbook ipympl  # also installs latest gtsam pre-release
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># All the imports we need</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">gtsam</span>
+<span class="kn">from</span> <span class="nn">gtsam.utils.plot</span> <span class="kn">import</span> <span class="n">plot_pose3</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">gtsam.symbol_shorthand</span> <span class="kn">import</span> <span class="n">B</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">X</span>
+<span class="kn">from</span> <span class="nn">gtbook.display</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+
+
+<span class="c1"># For Google Colab</span>
+<span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">output</span>
+<span class="n">output</span><span class="o">.</span><span class="n">enable_custom_widget_manager</span><span class="p">()</span>
+
+<span class="c1"># For interactive plots</span>
+<span class="o">%</span><span class="k">matplotlib</span> widget
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="nn">Input In [2],</span> in <span class="ni">&lt;cell line: 12&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="c1"># For Google Colab</span>
+<span class="ne">---&gt; </span><span class="mi">12</span> <span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">output</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">output</span><span class="o">.</span><span class="n">enable_custom_widget_manager</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="c1"># For interactive plots</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;google&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="example-trajectory">
+<h2><span class="section-number">4.1.3. </span>Example Trajectory<a class="headerlink" href="#example-trajectory" title="Permalink to this headline">¶</a></h2>
+<p>Let’s first generate an example trajectory we wish to estimate, as this will give us a good sense of what we want. We’ll also visualize the trajectory with a little helper function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="mi">12</span>  <span class="c1"># The timespan of our trajectory.</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">1e-2</span>  <span class="c1"># 100 Hz frequency</span>
+<span class="n">velocity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>  <span class="c1"># The velocity we wish to move at.</span>
+
+<span class="n">scenarios</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;zero_twist&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)),</span>  <span class="c1"># Zero motion, stationary trajectory.</span>
+    <span class="s2">&quot;forward_motion&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">velocity</span><span class="p">),</span>  <span class="c1"># Move forward in the x axis at 2 m/s.</span>
+    <span class="s2">&quot;loop&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">velocity</span><span class="p">),</span>  <span class="c1"># A loop-de-loop trajectory.</span>
+    <span class="s2">&quot;sick&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">velocity</span><span class="p">)</span>  <span class="c1"># A spiral trajectory, &quot;sick&quot; in surfer slang.</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">plot_scenario</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span>
+                  <span class="n">T</span><span class="p">,</span>
+                  <span class="n">dt</span><span class="p">,</span>
+                  <span class="n">title</span><span class="o">=</span><span class="s2">&quot;IMU trajectory scenario&quot;</span><span class="p">,</span>
+                  <span class="n">fignum</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                  <span class="n">maxDim</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="n">actualPose</span> <span class="o">=</span> <span class="n">scenario</span><span class="o">.</span><span class="n">pose</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">plot_pose3</span><span class="p">(</span><span class="n">fignum</span><span class="p">,</span> <span class="n">actualPose</span><span class="p">,</span> <span class="n">axis_length</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+        <span class="n">translation</span> <span class="o">=</span> <span class="n">actualPose</span><span class="o">.</span><span class="n">translation</span><span class="p">()</span>
+        <span class="n">maxDim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">translation</span><span class="p">)),</span> <span class="n">maxDim</span><span class="p">])</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim3d</span><span class="p">(</span><span class="o">-</span><span class="n">maxDim</span><span class="p">,</span> <span class="n">maxDim</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim3d</span><span class="p">(</span><span class="o">-</span><span class="n">maxDim</span><span class="p">,</span> <span class="n">maxDim</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_zlim3d</span><span class="p">(</span><span class="o">-</span><span class="n">maxDim</span><span class="p">,</span> <span class="n">maxDim</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now plot the various scenarios, e.g. forward motion.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">scenario_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">scenarios</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+    <span class="n">scenario</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">ConstantTwistScenario</span><span class="p">(</span><span class="o">*</span><span class="n">scenarios</span><span class="p">[</span><span class="n">scenario_name</span><span class="p">])</span>
+    <span class="n">plot_scenario</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">scenario_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s start with a simple trajectory to make understanding easier, so we will pick the <strong>forward motion</strong> trajectory. As you will see later, the same approach works for all trajectories.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scenario</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">ConstantTwistScenario</span><span class="p">(</span><span class="o">*</span><span class="n">scenarios</span><span class="p">[</span><span class="s2">&quot;forward_motion&quot;</span><span class="p">])</span>
+
+<span class="c1"># Let&#39;s visualize it for our understanding</span>
+<span class="n">plot_scenario</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Forward Motion&quot;</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As a  final step in creating the example, we need to define the IMU biases.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">accBias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">gyroBias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">])</span>
+<span class="n">actualBias</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">imuBias</span><span class="o">.</span><span class="n">ConstantBias</span><span class="p">(</span><span class="n">accBias</span><span class="p">,</span> <span class="n">gyroBias</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="imu-preintegration">
+<h2><span class="section-number">4.1.4. </span>IMU Preintegration<a class="headerlink" href="#imu-preintegration" title="Permalink to this headline">¶</a></h2>
+<p>To perform preintegration, GTSAM conveniently provides us with an object called <code class="docutils literal notranslate"><span class="pre">PreintegratedImuMeasurements</span></code>. This object requires various parameters such as the sensor covariances, an initial estimate of the bias, and a potential tranform <code class="docutils literal notranslate"><span class="pre">bodyPsensor</span></code> is the IMU is not coincidental with the body frame.</p>
+<p>We begin with specifying that the IMU has the Z axis pointing up. This is important since reaction to gravity is an acceleration that is measured by the IMU, and making a mistake here can throw our entire system into jeopardy easily. We also specify some nominal covariance values, though these would depend on the IMU itself.</p>
+<p>Also, let’s create a <code class="docutils literal notranslate"><span class="pre">ScenarioRunner</span></code> which is a helper object to get us the measurements as well as other parameters we need during the main data loop.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pim_params</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">PreintegrationParams</span><span class="o">.</span><span class="n">MakeSharedU</span><span class="p">(</span><span class="mf">9.81</span><span class="p">)</span>
+
+<span class="c1"># Some arbitrary noise sigmas</span>
+<span class="n">gyro_sigma</span> <span class="o">=</span> <span class="mf">1e-3</span>
+<span class="n">accel_sigma</span> <span class="o">=</span> <span class="mf">1e-3</span>
+<span class="n">I_3x3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">pim_params</span><span class="o">.</span><span class="n">setGyroscopeCovariance</span><span class="p">(</span><span class="n">gyro_sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">I_3x3</span><span class="p">)</span>
+<span class="n">pim_params</span><span class="o">.</span><span class="n">setAccelerometerCovariance</span><span class="p">(</span><span class="n">accel_sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">I_3x3</span><span class="p">)</span>
+<span class="n">pim_params</span><span class="o">.</span><span class="n">setIntegrationCovariance</span><span class="p">(</span><span class="mf">1e-7</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">I_3x3</span><span class="p">)</span>
+
+<span class="c1"># Define the PreintegratedImuMeasurements object here.</span>
+<span class="n">pim</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">PreintegratedImuMeasurements</span><span class="p">(</span><span class="n">pim_params</span><span class="p">,</span> <span class="n">actualBias</span><span class="p">)</span>
+
+<span class="n">runner</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">ScenarioRunner</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">pim_params</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">actualBias</span><span class="p">)</span>
+<span class="n">plot_scenario</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can define our main loop, where we accept the IMU measurements and create our <code class="docutils literal notranslate"><span class="pre">ImuFactor</span></code>s by preintegrating the measurements.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main_loop</span><span class="p">(</span><span class="n">runner</span><span class="p">,</span> <span class="n">scenario</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+    <span class="c1"># The factor index for the estimation rate</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">)):</span>
+        <span class="c1"># get measurements and add them to PIM</span>
+        <span class="n">measuredOmega</span> <span class="o">=</span> <span class="n">runner</span><span class="o">.</span><span class="n">measuredAngularVelocity</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">measuredAcc</span> <span class="o">=</span> <span class="n">runner</span><span class="o">.</span><span class="n">measuredSpecificForce</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="c1">### This is where all the magic happens!</span>
+        <span class="n">pim</span><span class="o">.</span><span class="n">integrateMeasurement</span><span class="p">(</span><span class="n">measuredAcc</span><span class="p">,</span> <span class="n">measuredOmega</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Create IMU factor every second.</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">ImuFactor</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">V</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">X</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">V</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">B</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">pim</span><span class="p">)</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+
+            <span class="c1"># We have created the binary constraint, so we clear out the preintegration values.</span>
+            <span class="n">pim</span><span class="o">.</span><span class="n">resetIntegration</span><span class="p">()</span>
+
+            <span class="c1"># Get the true state which we will corrupt with some additive noise terms defined below</span>
+            <span class="n">actual_state_i</span> <span class="o">=</span> <span class="n">scenario</span><span class="o">.</span><span class="n">navState</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="n">dt</span><span class="p">)</span>
+
+            <span class="c1"># These are additive noise terms.</span>
+            <span class="n">rotationNoise</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Rot3</span><span class="o">.</span><span class="n">Expmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>
+            <span class="n">translationNoise</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Point3</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">poseNoise</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Pose3</span><span class="p">(</span><span class="n">rotationNoise</span><span class="p">,</span> <span class="n">translationNoise</span><span class="p">)</span>
+
+            <span class="n">noisy_state_i</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">NavState</span><span class="p">(</span>
+                <span class="n">actual_state_i</span><span class="o">.</span><span class="n">pose</span><span class="p">()</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">poseNoise</span><span class="p">),</span>
+                <span class="n">actual_state_i</span><span class="o">.</span><span class="n">velocity</span><span class="p">()</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>
+
+            <span class="n">initial</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">noisy_state_i</span><span class="o">.</span><span class="n">pose</span><span class="p">())</span>
+            <span class="n">initial</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">V</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">noisy_state_i</span><span class="o">.</span><span class="n">velocity</span><span class="p">())</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="factor-graph">
+<h2><span class="section-number">4.1.5. </span>Factor Graph<a class="headerlink" href="#factor-graph" title="Permalink to this headline">¶</a></h2>
+<p>We are now ready to generate our factor graph. The <code class="docutils literal notranslate"><span class="pre">scenario</span></code> object will provide us with the measurements, and we will add a prior on the pose and the velocity to ensure our graph is not singular.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">NonlinearFactorGraph</span><span class="p">()</span>
+<span class="n">initial</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s add in the priors to our graph as well as some initial estimates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_priors</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">):</span>
+    <span class="c1"># Noise models for</span>
+    <span class="n">priorNoise</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">noiseModel</span><span class="o">.</span><span class="n">Isotropic</span><span class="o">.</span><span class="n">Sigma</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">velNoise</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">noiseModel</span><span class="o">.</span><span class="n">Isotropic</span><span class="o">.</span><span class="n">Sigma</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="n">initial_state</span> <span class="o">=</span> <span class="n">scenario</span><span class="o">.</span><span class="n">navState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span>
+        <span class="n">gtsam</span><span class="o">.</span><span class="n">PriorFactorPose3</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">initial_state</span><span class="o">.</span><span class="n">pose</span><span class="p">(),</span> <span class="n">priorNoise</span><span class="p">))</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span>
+        <span class="n">gtsam</span><span class="o">.</span><span class="n">PriorFactorVector</span><span class="p">(</span><span class="n">V</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">initial_state</span><span class="o">.</span><span class="n">velocity</span><span class="p">(),</span> <span class="n">velNoise</span><span class="p">))</span>
+
+    <span class="n">initial</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">actualBias</span><span class="p">)</span>
+    <span class="n">initial</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">initial_state</span><span class="o">.</span><span class="n">pose</span><span class="p">())</span>
+    <span class="n">initial</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">V</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">initial_state</span><span class="o">.</span><span class="n">velocity</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span>
+
+
+<span class="n">graph</span><span class="p">,</span> <span class="n">initial</span> <span class="o">=</span> <span class="n">add_priors</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now with everything set up, we can run our main loop.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">graph</span><span class="p">,</span> <span class="n">initial</span> <span class="o">=</span> <span class="n">main_loop</span><span class="p">(</span><span class="n">runner</span><span class="p">,</span> <span class="n">scenario</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We want to visualize our initial estimates, so let’s create a small function to do so and plot out the initial trajectory based only on pure forward-integration. You will see that the initial estimates don’t look like anything close to the true trajectory!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_trajectory</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">,</span>
+                    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Estimated Trajectory&quot;</span><span class="p">,</span>
+                    <span class="n">fignum</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">values</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="n">i</span><span class="p">)):</span>
+        <span class="n">pose_i</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">atPose3</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="n">plot_pose3</span><span class="p">(</span><span class="n">fignum</span><span class="p">,</span> <span class="n">pose_i</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+    <span class="n">gtsam</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">fignum</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">ioff</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">plot_trajectory</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Initial Trajectory&quot;</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="optimization">
+<h2><span class="section-number">4.1.6. </span>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have a full factor graph and initial estimates, we can optimize for the correct estimates. This is as simple as just initializing an optimizer with the graph and initial values and calling <code class="docutils literal notranslate"><span class="pre">optimize</span></code> on it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lm_params</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">LevenbergMarquardtParams</span><span class="p">()</span>
+<span class="n">lm_params</span><span class="o">.</span><span class="n">setVerbosityLM</span><span class="p">(</span><span class="s2">&quot;SUMMARY&quot;</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">LevenbergMarquardtOptimizer</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">lm_params</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="final-result">
+<h2><span class="section-number">4.1.7. </span>Final Result<a class="headerlink" href="#final-result" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have our final <code class="docutils literal notranslate"><span class="pre">result</span></code> values, we can visualize the result and see that our estimates are actually quite good.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_trajectory</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="other-scenarios">
+<h2><span class="section-number">4.1.8. </span>Other Scenarios<a class="headerlink" href="#other-scenarios" title="Permalink to this headline">¶</a></h2>
+<p>We can similarly run the same code above for other scenarios.</p>
+<div class="section" id="standing-scenario">
+<h3><span class="section-number">4.1.8.1. </span>Standing Scenario<a class="headerlink" href="#standing-scenario" title="Permalink to this headline">¶</a></h3>
+<p>Let’s use the <code class="docutils literal notranslate"><span class="pre">ImuFactorExample</span></code> for all the scenarios, starting with <strong>Standing</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scenario</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">ConstantTwistScenario</span><span class="p">(</span><span class="o">*</span><span class="n">scenarios</span><span class="p">[</span><span class="s2">&quot;zero_twist&quot;</span><span class="p">])</span>
+<span class="n">plot_scenario</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Zero Twist&quot;</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="n">runner</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">ScenarioRunner</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">pim_params</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">actualBias</span><span class="p">)</span>
+
+
+<span class="n">graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">NonlinearFactorGraph</span><span class="p">()</span>
+<span class="n">initial</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">()</span>
+
+<span class="n">graph</span><span class="p">,</span> <span class="n">initial</span> <span class="o">=</span> <span class="n">add_priors</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">)</span>
+<span class="n">graph</span><span class="p">,</span> <span class="n">initial</span> <span class="o">=</span> <span class="n">main_loop</span><span class="p">(</span><span class="n">runner</span><span class="p">,</span> <span class="n">scenario</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">LevenbergMarquardtOptimizer</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">lm_params</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+
+<span class="n">plot_trajectory</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Initial Trajectory&quot;</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plot_trajectory</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="loop-scenario">
+<h3><span class="section-number">4.1.8.2. </span>Loop Scenario<a class="headerlink" href="#loop-scenario" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scenario</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">ConstantTwistScenario</span><span class="p">(</span><span class="o">*</span><span class="n">scenarios</span><span class="p">[</span><span class="s2">&quot;loop&quot;</span><span class="p">])</span>
+<span class="n">plot_scenario</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Loop Scenario&quot;</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">runner</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">ScenarioRunner</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">pim_params</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">actualBias</span><span class="p">)</span>
+
+
+<span class="n">graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">NonlinearFactorGraph</span><span class="p">()</span>
+<span class="n">initial</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">()</span>
+
+<span class="n">graph</span><span class="p">,</span> <span class="n">initial</span> <span class="o">=</span> <span class="n">add_priors</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">)</span>
+<span class="n">graph</span><span class="p">,</span> <span class="n">initial</span> <span class="o">=</span> <span class="n">main_loop</span><span class="p">(</span><span class="n">runner</span><span class="p">,</span> <span class="n">scenario</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">LevenbergMarquardtOptimizer</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">lm_params</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+
+<span class="n">plot_trajectory</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Initial Trajectory&quot;</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plot_trajectory</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="sick-scenario">
+<h3><span class="section-number">4.1.8.3. </span>Sick Scenario<a class="headerlink" href="#sick-scenario" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scenario</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">ConstantTwistScenario</span><span class="p">(</span><span class="o">*</span><span class="n">scenarios</span><span class="p">[</span><span class="s2">&quot;sick&quot;</span><span class="p">])</span>
+<span class="n">plot_scenario</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Sick Scenario&quot;</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+<span class="n">runner</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">ScenarioRunner</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">pim_params</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">actualBias</span><span class="p">)</span>
+
+
+<span class="n">graph</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">NonlinearFactorGraph</span><span class="p">()</span>
+<span class="n">initial</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">Values</span><span class="p">()</span>
+
+<span class="n">graph</span><span class="p">,</span> <span class="n">initial</span> <span class="o">=</span> <span class="n">add_priors</span><span class="p">(</span><span class="n">scenario</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">)</span>
+<span class="n">graph</span><span class="p">,</span> <span class="n">initial</span> <span class="o">=</span> <span class="n">main_loop</span><span class="p">(</span><span class="n">runner</span><span class="p">,</span> <span class="n">scenario</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">gtsam</span><span class="o">.</span><span class="n">LevenbergMarquardtOptimizer</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">lm_params</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+
+<span class="n">plot_trajectory</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Initial Trajectory&quot;</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plot_trajectory</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2><span class="section-number">4.1.9. </span>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>There you have it! Using the <code class="docutils literal notranslate"><span class="pre">PreintegratedImuMeasurements</span></code> object and combining it with the <code class="docutils literal notranslate"><span class="pre">ImuFactor</span></code> gives us a powerful and efficient mechanism for performing inertial estimation. GTSAM gives us useful abstractions for dealing with IMU measurements at much higher rates than the estimation rate, and allows us to optimize for the correct trajectory.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="navigation.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">4. </span>Navigation</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="sfm.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Structure from Motion</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Frank Dellaert and the GTSAM Community<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

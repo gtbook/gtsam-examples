@@ -198,8 +198,8 @@
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="sfm.html">
-   4. Structure from Motion
+  <a class="reference internal" href="navigation.html">
+   4. Navigation
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
   <label for="toctree-checkbox-4">
@@ -208,18 +208,35 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="ImuFactorExample101.html">
+     4.1. Inertial Estimation with Imu Preintegration
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   5. Structure from Motion
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
     <a class="reference internal" href="SFMExample.html">
-     4.1. Structure from Motion
+     5.1. Structure from Motion
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="SFMExample_bal.html">
-     4.2. SFM with BAL Files
+     5.2. SFM with BAL Files
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="StereoVOExample_large.html">
-     4.3. Stereo Visual Odometry
+     5.3. Stereo Visual Odometry
     </a>
    </li>
   </ul>
@@ -584,29 +601,29 @@ Inference after State 5:
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X1 covariance:
-[[9.00000000e-02 5.84532422e-18 1.65122866e-17]
- [5.84532422e-18 9.00000000e-02 1.46099494e-17]
- [1.65122866e-17 1.46099494e-17 7.61543549e-03]]
+[[9.00000000e-02 3.59712260e-18 1.71971279e-17]
+ [3.59712260e-18 9.00000000e-02 2.43499157e-17]
+ [1.71971279e-17 2.43499157e-17 7.61543549e-03]]
 
 X2 covariance:
-[[0.13002318 0.00079826 0.00042013]
- [0.00079826 0.15749189 0.01446937]
- [0.00042013 0.01446937 0.01523087]]
+[[ 0.13076596 -0.00522663 -0.00241518]
+ [-0.00522663  0.16566475  0.01648037]
+ [-0.00241518  0.01648037  0.01523087]]
 
 X3 covariance:
-[[0.30199563 0.02093275 0.04243941]
- [0.02093275 0.17355978 0.00734739]
- [0.04243941 0.00734739 0.02284631]]
+[[0.32906692 0.01095064 0.04947756]
+ [0.01095064 0.16277889 0.00072056]
+ [0.04947756 0.00072056 0.02027809]]
 
 X4 covariance:
-[[ 0.32926999 -0.1223185   0.05215316]
- [-0.1223185   0.3876567  -0.05312131]
- [ 0.05215316 -0.05312131  0.03046174]]
+[[ 0.24871146 -0.10409202  0.03706283]
+ [-0.10409202  0.33130738 -0.05204195]
+ [ 0.03706283 -0.05204195  0.02152336]]
 
 X5 covariance:
-[[ 0.34404083  0.0368118  -0.00800433]
- [ 0.0368118   0.35644391 -0.05039808]
- [-0.00800433 -0.05039808  0.03807718]]
+[[ 0.19912539  0.0371076  -0.01585194]
+ [ 0.0371076   0.25227551 -0.04285173]
+ [-0.01585194 -0.04285173  0.02037234]]
 </pre></div>
 </div>
 </div>

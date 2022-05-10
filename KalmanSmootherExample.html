@@ -200,8 +200,8 @@
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="sfm.html">
-   4. Structure from Motion
+  <a class="reference internal" href="navigation.html">
+   4. Navigation
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
   <label for="toctree-checkbox-4">
@@ -210,18 +210,35 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="ImuFactorExample101.html">
+     4.1. Inertial Estimation with Imu Preintegration
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   5. Structure from Motion
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
     <a class="reference internal" href="SFMExample.html">
-     4.1. Structure from Motion
+     5.1. Structure from Motion
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="SFMExample_bal.html">
-     4.2. SFM with BAL Files
+     5.2. SFM with BAL Files
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="StereoVOExample_large.html">
-     4.3. Stereo Visual Odometry
+     5.3. Stereo Visual Odometry
     </a>
    </li>
   </ul>
@@ -633,16 +650,14 @@ x3:
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x3:
-[[ 4.34502419  4.08124665  4.11685249  3.64212457  4.56514894]
- [ 0.20997921 -0.21637353 -0.90417204 -0.39068127  0.02118919]]
+[[4.14872852 4.18403202 4.57330157 4.10275282 3.25917138]
+ [0.17346342 0.42254066 0.2243572  0.15453828 0.01250252]]
 x2:
-[[ 2.28577508e+00  2.05500700e+00  2.09119386e+00  1.74444060e+00
-   2.73011943e+00]
- [ 9.00372225e-02 -3.44043530e-01 -5.52134758e-01 -3.25783233e-01
-  -1.67367976e-03]]
+[[ 2.2519332   2.20760674  2.65610202  2.09048182  1.26272015]
+ [ 0.06459491  0.35243534 -0.20471864  0.29088368  0.01925041]]
 x1:
-[[ 0.29602735  0.10395017  0.20512341 -0.23780466  0.72521604]
- [ 0.21887137 -0.46198742 -0.24782102  0.1025113  -0.10325   ]]
+[[ 0.31864544  0.17006752  0.62608718 -0.0111428  -0.66011665]
+ [ 0.27708526  0.21347267 -0.27348522 -0.02697351  0.25541372]]
 </pre></div>
 </div>
 </div>
@@ -656,7 +671,7 @@ x1:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>394 µs ± 7.8 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>304 µs ± 490 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div>
 </div>
 </div>
