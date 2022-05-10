@@ -22,6 +22,9 @@ chapters:
   - file: PlanarSLAMExample_sampling.ipynb
   - file: PlanarSLAMExample_lbp.ipynb
   - file: PlanarSLAMExample_gvi.ipynb
+- file: navigation.md
+  sections:
+  - file: ImuFactorExample101.ipynb
 - file: sfm.md
   sections:
   - file: SFMExample.ipynb
