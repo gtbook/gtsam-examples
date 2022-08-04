@@ -17,6 +17,8 @@ chapters:
   - file: Pose2ISAM2Example.ipynb
   - file: Pose2SLAMExample_g2o.ipynb
   - file: PlanarSLAMExample.ipynb
+  - file: RangeISAMExample_plaza2.ipynb
+  - file: TimeOfArrivalExample.ipynb
 - file: advanced.md
   sections:
   - file: PlanarSLAMExample_sampling.ipynb
