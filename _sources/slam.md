@@ -8,5 +8,6 @@ The following examples are provided
 - Pose2ISAM2Example: an incremental pose-SLAM example, using the iSAM2 algorithm.
 - Pose2SLAMExample_g2o: SLAM: a larger 2D SLAM example showing off how to read g2o files.
 - PlanarSLAMExample: 2D SLAM with bearing-range measurements to 2D landmarks
-
+- RangeISAMExample_plaza2: incremental SAM with range-only measurements
+- TimeOfArrivalExample: dealing with time-of-arrival measurements, as in microphone arrays.
 

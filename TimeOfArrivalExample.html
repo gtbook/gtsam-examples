@@ -1,0 +1,907 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2.10. Localization with time of arrival measurements &#8212; GTSAM by Example</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3. Advanced Inference" href="advanced.html" />
+    <link rel="prev" title="2.5. ISAM with Range Measurements" href="RangeISAMExample_plaza2.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">GTSAM by Example</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   GTSAM by Example
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="gaussian.html">
+   1. Gaussian Inference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample.html">
+     1.1. Kalman Smoother
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="KalmanSmootherExample2.html">
+     1.2. Advanced Kalman Smoothing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMRFExample.html">
+     1.3. Gaussian Markov Random Fields
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMRFExample_lbp.html">
+     1.4. Loopy Belief Propagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMRFExample_cbp.html">
+     1.5. Clustered Belief Propagation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="slam.html">
+   2. SLAM
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample.html">
+     2.1. Pose2 SLAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2ISAM2Example.html">
+     2.2. Pose2 iSAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pose2SLAMExample_g2o.html">
+     2.3. Pose2 SLAM with g2o Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample.html">
+     2.4. Planar SLAM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="RangeISAMExample_plaza2.html">
+     2.5. ISAM with Range Measurements
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     2.10. Localization with time of arrival measurements
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="advanced.html">
+   3. Advanced Inference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_sampling.html">
+     3.1. Sampling from the posterior
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_lbp.html">
+     3.2. Loopy Belief Propagation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PlanarSLAMExample_gvi.html">
+     3.3. Variational Bayes Inference
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="navigation.html">
+   4. Navigation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ImuFactorExample101.html">
+     4.1. Inertial Estimation with Imu Preintegration
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="sfm.html">
+   5. Structure from Motion
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample.html">
+     5.1. Structure from Motion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SFMExample_bal.html">
+     5.2. SFM with BAL Files
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="StereoVOExample_large.html">
+     5.3. Stereo Visual Odometry
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/TimeOfArrivalExample.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/gtbook/gtsam-examples"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/gtbook/gtsam-examples/issues/new?title=Issue%20on%20page%20%2FTimeOfArrivalExample.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gtbook/gtsam-examples/main?urlpath=tree/TimeOfArrivalExample.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   2.10. Localization with time of arrival measurements
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-trajectory">
+   2.11. Example trajectory
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#creation-of-the-nonlinear-factor-graph">
+   2.12. Creation of the nonlinear factor graph
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimization-and-results">
+     2.12.1. Optimization and results
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Localization with time of arrival measurements</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   2.10. Localization with time of arrival measurements
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-trajectory">
+   2.11. Example trajectory
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#creation-of-the-nonlinear-factor-graph">
+   2.12. Creation of the nonlinear factor graph
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimization-and-results">
+     2.12.1. Optimization and results
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="localization-with-time-of-arrival-measurements">
+<h1><span class="section-number">2.10. </span>Localization with time of arrival measurements<a class="headerlink" href="#localization-with-time-of-arrival-measurements" title="Permalink to this headline">¶</a></h1>
+<p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/TimeOfArrivalExample.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<p>Acoustic sensors can be used as a mean to track a moving object. Typically, acoustic measurements are characteristic of the distance between the receiver and an acoustic source. Hence, they convey information on the position of the latter, which can be leveraged for localization. In the next, we will see how gtsam can be used in such a scenario.</p>
+<p>The following example considers an omnidirectional sound source that periodically emits an acoustic signal while moving. The signals are received by a fixed array of microphones that can synchronously record the signals from which Time of Arrival (ToA) measurements are extracted. The objective is to recover, from the ToA measurements, the trajectory of the moving agent. In this simple example, no odometry information is used, but odometry factors can seamlessly be integrated.</p>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="example-trajectory">
+<h1><span class="section-number">2.11. </span>Example trajectory<a class="headerlink" href="#example-trajectory" title="Permalink to this headline">¶</a></h1>
+<p>We start by defining the microphones position and create the ground truth trajectory along with sound events. We first define useful units.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MS</span> <span class="o">=</span> <span class="mf">1e-3</span> <span class="c1"># 1 millisecond in s</span>
+<span class="n">CM</span> <span class="o">=</span> <span class="mf">1e-2</span> <span class="c1"># 1 centimeter in m</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we istantiate a functor with a value <span class="math notranslate nohighlight">\(v = 330 m.s^{-1}\)</span> for the speed of sound.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TIME_OF_ARRIVAL</span> <span class="o">=</span> <span class="n">TimeOfArrival</span><span class="p">(</span><span class="mi">330</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We define the positions of four microphones that we constrain to lie in a horizontal plane (<em>i.e</em> with constant <span class="math notranslate nohighlight">\(z\)</span> coordinate).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">height</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">microphones</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">microphones</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
+<span class="n">microphones</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point3</span><span class="p">(</span><span class="mi">403</span> <span class="o">*</span> <span class="n">CM</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
+<span class="n">microphones</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point3</span><span class="p">(</span><span class="mi">403</span> <span class="o">*</span> <span class="n">CM</span><span class="p">,</span> <span class="mi">403</span> <span class="o">*</span> <span class="n">CM</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
+<span class="n">microphones</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">403</span> <span class="o">*</span> <span class="n">CM</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">height</span><span class="p">))</span>
+
+<span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">microphones</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mic </span><span class="si">{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">microphones</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mic 0 = [0.  0.  0.5]
+mic 1 = [4.03 0.   0.5 ]
+mic 2 = [4.03 4.03 0.5 ]
+mic 3 = [0.   4.03 1.  ]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We subsequently create a ground truth trajectory for the moving sound emitter which follows a straight line, and specify the times at which a sound is emitted.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">groundTruth</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">timeOfEvent</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># simulate emitting a sound every second while moving on straight line</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">groundTruth</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">Event</span><span class="p">(</span><span class="n">timeOfEvent</span><span class="p">,</span> <span class="mi">245</span> <span class="o">*</span> <span class="n">CM</span> <span class="o">+</span> <span class="n">key</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">201.5</span> <span class="o">*</span> <span class="n">CM</span><span class="p">,</span> <span class="p">(</span><span class="mi">212</span> <span class="o">-</span> <span class="mi">45</span><span class="p">)</span> <span class="o">*</span> <span class="n">CM</span><span class="p">))</span>
+    <span class="n">timeOfEvent</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+<span class="c1">#for event in groundTruth:</span>
+<span class="c1">#    event.print()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For visualization, we display the agent positions corresponding to an excitation event, along with the microphone array.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">mic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">mic</span> <span class="ow">in</span> <span class="n">microphones</span><span class="p">],</span> <span class="p">[</span><span class="n">mic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">mic</span> <span class="ow">in</span> <span class="n">microphones</span><span class="p">],</span> <span class="s2">&quot;b.&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Microphones&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">ev</span><span class="o">.</span><span class="n">location</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">ev</span> <span class="ow">in</span> <span class="n">groundTruth</span><span class="p">],</span> <span class="p">[</span><span class="n">ev</span><span class="o">.</span><span class="n">location</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">ev</span> <span class="ow">in</span> <span class="n">groundTruth</span><span class="p">],</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Source positions&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x [m]&quot;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;y [m]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span> <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/TimeOfArrivalExample_13_0.png" src="_images/TimeOfArrivalExample_13_0.png" />
+</div>
+</div>
+<p>We can now simulate the time of arrival measurements based on the distance between each microphone and the moving sound source. To determine the (noise-free) ToA between microphone <span class="math notranslate nohighlight">\(j\)</span> for the <span class="math notranslate nohighlight">\(i\)</span>-th source position, one may simply use the formula:</p>
+<div class="math notranslate nohighlight">
+\[ z_{i, j} = \frac{d_{i, j}}{v}, \]</div>
+<p>where <span class="math notranslate nohighlight">\(d_{i, j}\)</span> is the distance between them. Otherwise, the function TIME_OF_ARRIVAL.measure can take care of it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simulate_one_toa</span><span class="p">(</span><span class="n">microphones</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simulate time-of-arrival measurements for a single event.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">TIME_OF_ARRIVAL</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">microphones</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">microphones</span><span class="p">))]</span>
+
+<span class="n">simulatedTOA</span> <span class="o">=</span> <span class="p">[</span><span class="n">simulate_one_toa</span><span class="p">(</span><span class="n">microphones</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">groundTruth</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;z_</span><span class="si">{}{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2"> ms&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">simulatedTOA</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">MS</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>z_00 = 10010.245662478956 ms
+z_01 = 10008.531002716338 ms
+z_02 = 10008.531002716338 ms
+z_03 = 10009.824738271 ms
+z_10 = 11012.615535847513 ms
+z_11 = 11007.276214441754 ms
+z_12 = 11007.276214441754 ms
+z_13 = 11012.276140565378 ms
+z_20 = 12015.22154271807 ms
+z_21 = 12007.174542408371 ms
+z_22 = 12007.174542408371 ms
+z_23 = 12014.941460610633 ms
+z_30 = 13017.961192990088 ms
+z_31 = 13008.268633130547 ms
+z_32 = 13008.268633130547 ms
+z_33 = 13017.724455875657 ms
+z_40 = 14020.78169909914 ms
+z_41 = 14010.17998044382 ms
+z_42 = 14010.17998044382 ms
+z_43 = 14020.577436670008 ms
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="creation-of-the-nonlinear-factor-graph">
+<h1><span class="section-number">2.12. </span>Creation of the nonlinear factor graph<a class="headerlink" href="#creation-of-the-nonlinear-factor-graph" title="Permalink to this headline">¶</a></h1>
+<p>As always, we create a factor graph to solve the problem at hand.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">NonlinearFactorGraph</span><span class="p">()</span>
+
+<span class="c1"># Create a noise model for the TOA error</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">noiseModel</span><span class="o">.</span><span class="n">Isotropic</span><span class="o">.</span><span class="n">Sigma</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">MS</span><span class="p">)</span>
+
+<span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">microphones</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">toa</span> <span class="ow">in</span> <span class="n">simulatedTOA</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="n">TOAFactor</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">microphones</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">toa</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">model</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+<span class="nb">print</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  keys = { 0 }
+isotropic dim=1 sigma=0.0005
+ExpressionFactor with measurement:  10.0102
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="optimization-and-results">
+<h2><span class="section-number">2.12.1. </span>Optimization and results<a class="headerlink" href="#optimization-and-results" title="Permalink to this headline">¶</a></h2>
+<p>The optimizer needs to be provided an initial trajectory estimate.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">initial_estimate</span> <span class="o">=</span> <span class="n">Values</span><span class="p">()</span>
+<span class="n">zero</span> <span class="o">=</span> <span class="n">Event</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">TOAFactor</span><span class="o">.</span><span class="n">InsertEvent</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">zero</span><span class="p">,</span> <span class="n">initial_estimate</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">initial_estimate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Values with 5 values:
+Value 0: (gtsam::Event)
+{&#39;time&#39;:0, &#39;location&#39;: 0 0 0}
+Value 1: (gtsam::Event)
+{&#39;time&#39;:0, &#39;location&#39;: 0 0 0}
+Value 2: (gtsam::Event)
+{&#39;time&#39;:0, &#39;location&#39;: 0 0 0}
+Value 3: (gtsam::Event)
+{&#39;time&#39;:0, &#39;location&#39;: 0 0 0}
+Value 4: (gtsam::Event)
+{&#39;time&#39;:0, &#39;location&#39;: 0 0 0}
+</pre></div>
+</div>
+</div>
+</div>
+<p>The graph is optimized using the Levenberg-Marquardt optimizer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">LevenbergMarquardtParams</span><span class="p">()</span>
+<span class="n">params</span><span class="o">.</span><span class="n">setAbsoluteErrorTol</span><span class="p">(</span><span class="mf">1e-10</span><span class="p">)</span>
+<span class="n">params</span><span class="o">.</span><span class="n">setVerbosityLM</span><span class="p">(</span><span class="s2">&quot;SUMMARY&quot;</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">LevenbergMarquardtOptimizer</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">initial_estimate</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final Result:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initial error: 5.84103e+09, values: 5
+iter      cost      cost_change    lambda  success iter_time
+   0  5.164106e+04    5.84e+09    1.00e-05     1    1.71e-04
+   1  9.877895e+04   -4.71e+04    1.00e-06     1    4.97e-05
+   1  9.877004e+04   -4.71e+04    1.00e-05     1    4.56e-05
+   1  9.868104e+04   -4.70e+04    1.00e-04     1    4.36e-05
+   1  9.780158e+04   -4.62e+04    1.00e-03     1    4.48e-05
+   1  8.987462e+04   -3.82e+04    1.00e-02     1    4.45e-05
+   1  4.707280e+04    4.57e+03    1.00e-01     1    4.30e-05
+   2  2.678423e+02    4.68e+04    1.00e-02     1    4.26e-05
+   3  2.184513e+03   -1.92e+03    1.00e-03     1    4.26e-05
+   3  2.754496e+00    2.65e+02    1.00e-02     1    4.37e-05
+   4  3.952703e+03   -3.95e+03    1.00e-03     1    4.44e-05
+   4  2.626570e+00    1.28e-01    1.00e-02     1    4.28e-05
+   5  9.504650e+03   -9.50e+03    1.00e-03     1    4.26e-05
+   5  2.999944e+00   -3.73e-01    1.00e-02     1    4.22e-05
+   5  2.590684e+00    3.59e-02    1.00e-01     1    4.37e-05
+   6  3.343468e+00   -7.53e-01    1.00e-02     1    4.44e-05
+   6  2.575458e+00    1.52e-02    1.00e-01     1    4.29e-05
+   7  4.061605e+00   -1.49e+00    1.00e-02     1    4.24e-05
+   7  2.557734e+00    1.77e-02    1.00e-01     1    4.35e-05
+   8  5.529765e+00   -2.97e+00    1.00e-02     1    4.38e-05
+   8  2.536729e+00    2.10e-02    1.00e-01     1    4.32e-05
+   9  8.525429e+00   -5.99e+00    1.00e-02     1    4.24e-05
+   9  2.511344e+00    2.54e-02    1.00e-01     1    4.40e-05
+  10  1.420894e+01   -1.17e+01    1.00e-02     1    4.36e-05
+  10  2.480107e+00    3.12e-02    1.00e-01     1    4.40e-05
+  11  2.262388e+01   -2.01e+01    1.00e-02     1    4.39e-05
+  11  2.441486e+00    3.86e-02    1.00e-01     1    6.03e-05
+  12  2.819573e+01   -2.58e+01    1.00e-02     1    4.27e-05
+  12  2.395791e+00    4.57e-02    1.00e-01     1    4.24e-05
+  13  2.161321e+01   -1.92e+01    1.00e-02     1    4.39e-05
+  13  2.350357e+00    4.54e-02    1.00e-01     1    4.39e-05
+  14  8.893437e+00   -6.54e+00    1.00e-02     1    4.25e-05
+  14  2.310615e+00    3.97e-02    1.00e-01     1    4.25e-05
+  15  3.335472e+00   -1.02e+00    1.00e-02     1    4.24e-05
+  15  2.245055e+00    6.56e-02    1.00e-01     1    4.37e-05
+  16  2.705415e+00   -4.60e-01    1.00e-02     1    4.38e-05
+  16  2.192382e+00    5.27e-02    1.00e-01     1    4.28e-05
+  17  2.973750e+00   -7.81e-01    1.00e-02     1    4.25e-05
+  17  2.171846e+00    2.05e-02    1.00e-01     1    4.24e-05
+  18  3.481307e+00   -1.31e+00    1.00e-02     1    4.39e-05
+  18  2.155508e+00    1.63e-02    1.00e-01     1    4.50e-05
+  19  4.232390e+00   -2.08e+00    1.00e-02     1    4.28e-05
+  19  2.137254e+00    1.83e-02    1.00e-01     1    4.23e-05
+  20  5.145027e+00   -3.01e+00    1.00e-02     1    4.39e-05
+  20  2.116200e+00    2.11e-02    1.00e-01     1    4.32e-05
+  21  5.827907e+00   -3.71e+00    1.00e-02     1    4.24e-05
+  21  2.092165e+00    2.40e-02    1.00e-01     1    4.40e-05
+  22  5.640956e+00   -3.55e+00    1.00e-02     1    4.38e-05
+  22  2.065760e+00    2.64e-02    1.00e-01     1    4.28e-05
+  23  4.437973e+00   -2.37e+00    1.00e-02     1    4.35e-05
+  23  2.038763e+00    2.70e-02    1.00e-01     1    4.34e-05
+  24  3.085438e+00   -1.05e+00    1.00e-02     1    4.43e-05
+  24  2.013275e+00    2.55e-02    1.00e-01     1    4.25e-05
+  25  2.379401e+00   -3.66e-01    1.00e-02     1    5.26e-05
+  25  1.990791e+00    2.25e-02    1.00e-01     1    4.31e-05
+  26  2.206055e+00   -2.15e-01    1.00e-02     1    4.21e-05
+  26  1.973857e+00    1.69e-02    1.00e-01     1    4.26e-05
+  27  2.203392e+00   -2.30e-01    1.00e-02     1    4.24e-05
+  27  1.962458e+00    1.14e-02    1.00e-01     1    4.20e-05
+  28  2.213889e+00   -2.51e-01    1.00e-02     1    4.34e-05
+  28  1.953351e+00    9.11e-03    1.00e-01     1    4.45e-05
+  29  2.197574e+00   -2.44e-01    1.00e-02     1    1.48e-04
+  29  1.944720e+00    8.63e-03    1.00e-01     1    4.37e-05
+  30  2.147265e+00   -2.03e-01    1.00e-02     1    4.24e-05
+  30  1.936277e+00    8.44e-03    1.00e-01     1    4.34e-05
+  31  2.074180e+00   -1.38e-01    1.00e-02     1    4.34e-05
+  31  1.928275e+00    8.00e-03    1.00e-01     1    4.53e-05
+  32  2.001147e+00   -7.29e-02    1.00e-02     1    4.27e-05
+  32  1.921109e+00    7.17e-03    1.00e-01     1    4.22e-05
+  33  1.947307e+00   -2.62e-02    1.00e-02     1    4.31e-05
+  33  1.915115e+00    5.99e-03    1.00e-01     1    4.37e-05
+  34  1.917141e+00   -2.03e-03    1.00e-02     1    4.22e-05
+  34  1.910425e+00    4.69e-03    1.00e-01     1    4.35e-05
+  35  1.903793e+00    6.63e-03    1.00e-02     1    4.38e-05
+  36  4.515029e+00   -2.61e+00    1.00e-03     1    4.27e-05
+  36  1.894638e+00    9.15e-03    1.00e-02     1    4.25e-05
+  37  2.096397e+00   -2.02e-01    1.00e-03     1    4.34e-05
+  37  1.883310e+00    1.13e-02    1.00e-02     1    4.47e-05
+  38  1.869517e+00    1.38e-02    1.00e-03     1    4.25e-05
+  39  1.865248e+00    4.27e-03    1.00e-04     1    4.21e-05
+  40  3.422928e+01   -3.24e+01    1.00e-05     1    4.35e-05
+  40  1.864472e+00    7.75e-04    1.00e-04     1    4.38e-05
+  41  5.549677e+04   -5.55e+04    1.00e-05     1    4.24e-05
+  41  1.863038e+00    1.43e-03    1.00e-04     1    4.27e-05
+  42  1.078480e+06   -1.08e+06    1.00e-05     1    4.40e-05
+  42  1.944951e+00   -8.19e-02    1.00e-04     1    4.39e-05
+  42  1.861094e+00    1.94e-03    1.00e-03     1    4.38e-05
+  43  2.140040e+00   -2.79e-01    1.00e-04     1    4.24e-05
+  43  1.859993e+00    1.10e-03    1.00e-03     1    4.25e-05
+  44  3.141813e+00   -1.28e+00    1.00e-04     1    4.20e-05
+  44  1.858369e+00    1.62e-03    1.00e-03     1    4.23e-05
+  45  1.473321e+01   -1.29e+01    1.00e-04     1    4.21e-05
+  45  1.855753e+00    2.62e-03    1.00e-03     1    4.20e-05
+  46  1.716507e+03   -1.71e+03    1.00e-04     1    4.19e-05
+  46  1.851031e+00    4.72e-03    1.00e-03     1    4.20e-05
+  47  5.817719e+04   -5.82e+04    1.00e-04     1    4.25e-05
+  47  1.844308e+00    6.72e-03    1.00e-03     1    4.41e-05
+  48  5.798557e+05   -5.80e+05    1.00e-04     1    4.27e-05
+  48  2.868843e+00   -1.02e+00    1.00e-03     1    4.24e-05
+  48  1.831366e+00    1.29e-02    1.00e-02     1    4.25e-05
+  49  6.112849e+00   -4.28e+00    1.00e-03     1    4.23e-05
+  49  1.824859e+00    6.51e-03    1.00e-02     1    4.34e-05
+  50  3.347084e+01   -3.16e+01    1.00e-03     1    4.37e-05
+  50  1.814935e+00    9.92e-03    1.00e-02     1    4.26e-05
+  51  7.356522e+02   -7.34e+02    1.00e-03     1    4.33e-05
+  51  1.798165e+00    1.68e-02    1.00e-02     1    4.34e-05
+  52  1.195310e+04   -1.20e+04    1.00e-03     1    4.38e-05
+  52  1.770356e+00    2.78e-02    1.00e-02     1    4.41e-05
+  53  7.431515e+04   -7.43e+04    1.00e-03     1    4.28e-05
+  53  2.282773e+00   -5.12e-01    1.00e-02     1    4.39e-05
+  53  1.743914e+00    2.64e-02    1.00e-01     1    4.31e-05
+  54  3.079642e+00   -1.34e+00    1.00e-02     1    4.29e-05
+  54  1.730431e+00    1.35e-02    1.00e-01     1    4.38e-05
+  55  5.462330e+00   -3.73e+00    1.00e-02     1    4.33e-05
+  55  1.712739e+00    1.77e-02    1.00e-01     1    4.27e-05
+  56  1.419804e+01   -1.25e+01    1.00e-02     1    4.26e-05
+  56  1.688403e+00    2.43e-02    1.00e-01     1    4.22e-05
+  57  5.623867e+01   -5.46e+01    1.00e-02     1    4.37e-05
+  57  1.652772e+00    3.56e-02    1.00e-01     1    5.68e-05
+  58  3.089692e+02   -3.07e+02    1.00e-02     1    4.46e-05
+  58  1.596572e+00    5.62e-02    1.00e-01     1    4.26e-05
+  59  1.519448e+03   -1.52e+03    1.00e-02     1    4.34e-05
+  59  1.508797e+00    8.78e-02    1.00e-01     1    4.34e-05
+  60  3.865269e+03   -3.86e+03    1.00e-02     1    4.24e-05
+  60  1.683688e+00   -1.75e-01    1.00e-01     1    4.29e-05
+  60  1.449402e+00    5.94e-02    1.00e+00     1    4.22e-05
+  61  1.884185e+00   -4.35e-01    1.00e-01     1    4.23e-05
+  61  1.421809e+00    2.76e-02    1.00e+00     1    4.30e-05
+  62  2.243353e+00   -8.22e-01    1.00e-01     1    4.36e-05
+  62  1.389656e+00    3.22e-02    1.00e+00     1    4.15e-05
+  63  2.883280e+00   -1.49e+00    1.00e-01     1    4.22e-05
+  63  1.351767e+00    3.79e-02    1.00e+00     1    4.11e-05
+  64  4.014127e+00   -2.66e+00    1.00e-01     1    4.26e-05
+  64  1.306576e+00    4.52e-02    1.00e+00     1    4.13e-05
+  65  5.976171e+00   -4.67e+00    1.00e-01     1    4.37e-05
+  65  1.252004e+00    5.46e-02    1.00e+00     1    4.24e-05
+  66  9.237920e+00   -7.99e+00    1.00e-01     1    4.22e-05
+  66  1.185334e+00    6.67e-02    1.00e+00     1    4.13e-05
+  67  1.419267e+01   -1.30e+01    1.00e-01     1    4.22e-05
+  67  1.103185e+00    8.21e-02    1.00e+00     1    4.12e-05
+  68  2.048249e+01   -1.94e+01    1.00e-01     1    4.20e-05
+  68  1.001871e+00    1.01e-01    1.00e+00     1    4.11e-05
+  69  2.594909e+01   -2.49e+01    1.00e-01     1    4.52e-05
+  69  8.787148e-01    1.23e-01    1.00e+00     1    4.13e-05
+  70  2.683782e+01   -2.60e+01    1.00e-01     1    4.22e-05
+  70  7.348708e-01    1.44e-01    1.00e+00     1    4.11e-05
+  71  2.132277e+01   -2.06e+01    1.00e-01     1    4.21e-05
+  71  5.782224e-01    1.57e-01    1.00e+00     1    4.14e-05
+  72  1.273288e+01   -1.22e+01    1.00e-01     1    4.20e-05
+  72  4.221483e-01    1.56e-01    1.00e+00     1    4.13e-05
+  73  5.940392e+00   -5.52e+00    1.00e-01     1    4.22e-05
+  73  2.824307e-01    1.40e-01    1.00e+00     1    4.24e-05
+  74  2.362726e+00   -2.08e+00    1.00e-01     1    4.37e-05
+  74  1.750511e-01    1.07e-01    1.00e+00     1    4.16e-05
+  75  8.786118e-01   -7.04e-01    1.00e-01     1    4.22e-05
+  75  1.048692e-01    7.02e-02    1.00e+00     1    4.26e-05
+  76  3.256411e-01   -2.21e-01    1.00e-01     1    4.38e-05
+  76  6.314866e-02    4.17e-02    1.00e+00     1    4.19e-05
+  77  1.243516e-01   -6.12e-02    1.00e-01     1    4.23e-05
+  77  3.883707e-02    2.43e-02    1.00e+00     1    4.25e-05
+  78  4.962699e-02   -1.08e-02    1.00e-01     1    4.39e-05
+  78  2.442829e-02    1.44e-02    1.00e+00     1    4.30e-05
+  79  2.081541e-02    3.61e-03    1.00e-01     1    4.25e-05
+  80  6.679197e-04    2.01e-02    1.00e-02     1    4.28e-05
+  81  1.545700e-08    6.68e-04    1.00e-03     1    4.20e-05
+  82  1.499863e-16    1.55e-08    1.00e-04     1    4.34e-05
+  83  1.262177e-23    1.50e-16    1.00e-05     1    4.40e-05
+Final Result:
+ Values with 5 values:
+Value 0: (gtsam::Event)
+{&#39;time&#39;:10, &#39;location&#39;:  2.45 2.015  1.67}
+Value 1: (gtsam::Event)
+{&#39;time&#39;:11, &#39;location&#39;:  3.45 2.015  1.67}
+Value 2: (gtsam::Event)
+{&#39;time&#39;:12, &#39;location&#39;:  4.45 2.015  1.67}
+Value 3: (gtsam::Event)
+{&#39;time&#39;:13, &#39;location&#39;:  5.45 2.015  1.67}
+Value 4: (gtsam::Event)
+{&#39;time&#39;:14, &#39;location&#39;:  6.45 2.015  1.67}
+</pre></div>
+</div>
+</div>
+</div>
+<p>The visual representation of the result shows the excelent matching between estimated and ground truth positions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># parsing the result to retrieve the estimated locations</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">);</span> <span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="n">L</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">),</span> <span class="mi">2</span><span class="p">)]</span>
+<span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">L</span><span class="p">]</span>
+<span class="n">estimated_trajectory</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">coord</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">l</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">L</span><span class="p">]</span>
+
+<span class="c1"># Display</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">mic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">mic</span> <span class="ow">in</span> <span class="n">microphones</span><span class="p">],</span> <span class="p">[</span><span class="n">mic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">mic</span> <span class="ow">in</span> <span class="n">microphones</span><span class="p">],</span> <span class="s2">&quot;b.&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Microphones&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">ev</span><span class="o">.</span><span class="n">location</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">ev</span> <span class="ow">in</span> <span class="n">groundTruth</span><span class="p">],</span> <span class="p">[</span><span class="n">ev</span><span class="o">.</span><span class="n">location</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">ev</span> <span class="ow">in</span> <span class="n">groundTruth</span><span class="p">],</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Source positions&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">estimated_trajectory</span><span class="p">],</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">estimated_trajectory</span><span class="p">],</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Estimated positions&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x [m]&quot;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;y [m]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span> <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/TimeOfArrivalExample_23_0.png" src="_images/TimeOfArrivalExample_23_0.png" />
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="RangeISAMExample_plaza2.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">2.5. </span>ISAM with Range Measurements</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="advanced.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Advanced Inference</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Frank Dellaert and the GTSAM Community<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
