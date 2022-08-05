@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2.10. Localization with time of arrival measurements &#8212; GTSAM by Example</title>
+    <title>2.6. Localization with time of arrival measurements &#8212; GTSAM by Example</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -179,7 +179,7 @@
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     2.10. Localization with time of arrival measurements
+     2.6. Localization with time of arrival measurements
     </a>
    </li>
   </ul>
@@ -359,27 +359,25 @@
             </div>
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   2.10. Localization with time of arrival measurements
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   2.6.1. Introduction
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#example-trajectory">
-   2.11. Example trajectory
+   2.6.2. Example trajectory
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#creation-of-the-nonlinear-factor-graph">
-   2.12. Creation of the nonlinear factor graph
+   2.6.3. Creation of the nonlinear factor graph
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#optimization-and-results">
-     2.12.1. Optimization and results
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimization-and-results">
+   2.6.4. Optimization and results
+  </a>
  </li>
 </ul>
 
@@ -401,27 +399,25 @@
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   2.10. Localization with time of arrival measurements
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   2.6.1. Introduction
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#example-trajectory">
-   2.11. Example trajectory
+   2.6.2. Example trajectory
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#creation-of-the-nonlinear-factor-graph">
-   2.12. Creation of the nonlinear factor graph
+   2.6.3. Creation of the nonlinear factor graph
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#optimization-and-results">
-     2.12.1. Optimization and results
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimization-and-results">
+   2.6.4. Optimization and results
+  </a>
  </li>
 </ul>
 
@@ -433,13 +429,15 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="localization-with-time-of-arrival-measurements">
-<h1><span class="section-number">2.10. </span>Localization with time of arrival measurements<a class="headerlink" href="#localization-with-time-of-arrival-measurements" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">2.6. </span>Localization with time of arrival measurements<a class="headerlink" href="#localization-with-time-of-arrival-measurements" title="Permalink to this headline">¶</a></h1>
 <p><a href="https://colab.research.google.com/github/gtbook/gtsam-examples/blob/main/TimeOfArrivalExample.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<div class="section" id="introduction">
+<h2><span class="section-number">2.6.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>Acoustic sensors can be used as a mean to track a moving object. Typically, acoustic measurements are characteristic of the distance between the receiver and an acoustic source. Hence, they convey information on the position of the latter, which can be leveraged for localization. In the next, we will see how gtsam can be used in such a scenario.</p>
 <p>The following example considers an omnidirectional sound source that periodically emits an acoustic signal while moving. The signals are received by a fixed array of microphones that can synchronously record the signals from which Time of Arrival (ToA) measurements are extracted. The objective is to recover, from the ToA measurements, the trajectory of the moving agent. In this simple example, no odometry information is used, but odometry factors can seamlessly be integrated.</p>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="example-trajectory">
-<h1><span class="section-number">2.11. </span>Example trajectory<a class="headerlink" href="#example-trajectory" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="example-trajectory">
+<h2><span class="section-number">2.6.2. </span>Example trajectory<a class="headerlink" href="#example-trajectory" title="Permalink to this headline">¶</a></h2>
 <p>We start by defining the microphones position and create the ground truth trajectory along with sound events. We first define useful units.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -562,8 +560,8 @@ z_43 = 14020.577436670008 ms
 </div>
 </div>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="creation-of-the-nonlinear-factor-graph">
-<h1><span class="section-number">2.12. </span>Creation of the nonlinear factor graph<a class="headerlink" href="#creation-of-the-nonlinear-factor-graph" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="creation-of-the-nonlinear-factor-graph">
+<h2><span class="section-number">2.6.3. </span>Creation of the nonlinear factor graph<a class="headerlink" href="#creation-of-the-nonlinear-factor-graph" title="Permalink to this headline">¶</a></h2>
 <p>As always, we create a factor graph to solve the problem at hand.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -592,8 +590,9 @@ ExpressionFactor with measurement:  10.0102
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="optimization-and-results">
-<h2><span class="section-number">2.12.1. </span>Optimization and results<a class="headerlink" href="#optimization-and-results" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.6.4. </span>Optimization and results<a class="headerlink" href="#optimization-and-results" title="Permalink to this headline">¶</a></h2>
 <p>The optimizer needs to be provided an initial trajectory estimate.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -635,174 +634,6 @@ Value 4: (gtsam::Event)
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initial error: 5.84103e+09, values: 5
-iter      cost      cost_change    lambda  success iter_time
-   0  5.164106e+04    5.84e+09    1.00e-05     1    1.71e-04
-   1  9.877895e+04   -4.71e+04    1.00e-06     1    4.97e-05
-   1  9.877004e+04   -4.71e+04    1.00e-05     1    4.56e-05
-   1  9.868104e+04   -4.70e+04    1.00e-04     1    4.36e-05
-   1  9.780158e+04   -4.62e+04    1.00e-03     1    4.48e-05
-   1  8.987462e+04   -3.82e+04    1.00e-02     1    4.45e-05
-   1  4.707280e+04    4.57e+03    1.00e-01     1    4.30e-05
-   2  2.678423e+02    4.68e+04    1.00e-02     1    4.26e-05
-   3  2.184513e+03   -1.92e+03    1.00e-03     1    4.26e-05
-   3  2.754496e+00    2.65e+02    1.00e-02     1    4.37e-05
-   4  3.952703e+03   -3.95e+03    1.00e-03     1    4.44e-05
-   4  2.626570e+00    1.28e-01    1.00e-02     1    4.28e-05
-   5  9.504650e+03   -9.50e+03    1.00e-03     1    4.26e-05
-   5  2.999944e+00   -3.73e-01    1.00e-02     1    4.22e-05
-   5  2.590684e+00    3.59e-02    1.00e-01     1    4.37e-05
-   6  3.343468e+00   -7.53e-01    1.00e-02     1    4.44e-05
-   6  2.575458e+00    1.52e-02    1.00e-01     1    4.29e-05
-   7  4.061605e+00   -1.49e+00    1.00e-02     1    4.24e-05
-   7  2.557734e+00    1.77e-02    1.00e-01     1    4.35e-05
-   8  5.529765e+00   -2.97e+00    1.00e-02     1    4.38e-05
-   8  2.536729e+00    2.10e-02    1.00e-01     1    4.32e-05
-   9  8.525429e+00   -5.99e+00    1.00e-02     1    4.24e-05
-   9  2.511344e+00    2.54e-02    1.00e-01     1    4.40e-05
-  10  1.420894e+01   -1.17e+01    1.00e-02     1    4.36e-05
-  10  2.480107e+00    3.12e-02    1.00e-01     1    4.40e-05
-  11  2.262388e+01   -2.01e+01    1.00e-02     1    4.39e-05
-  11  2.441486e+00    3.86e-02    1.00e-01     1    6.03e-05
-  12  2.819573e+01   -2.58e+01    1.00e-02     1    4.27e-05
-  12  2.395791e+00    4.57e-02    1.00e-01     1    4.24e-05
-  13  2.161321e+01   -1.92e+01    1.00e-02     1    4.39e-05
-  13  2.350357e+00    4.54e-02    1.00e-01     1    4.39e-05
-  14  8.893437e+00   -6.54e+00    1.00e-02     1    4.25e-05
-  14  2.310615e+00    3.97e-02    1.00e-01     1    4.25e-05
-  15  3.335472e+00   -1.02e+00    1.00e-02     1    4.24e-05
-  15  2.245055e+00    6.56e-02    1.00e-01     1    4.37e-05
-  16  2.705415e+00   -4.60e-01    1.00e-02     1    4.38e-05
-  16  2.192382e+00    5.27e-02    1.00e-01     1    4.28e-05
-  17  2.973750e+00   -7.81e-01    1.00e-02     1    4.25e-05
-  17  2.171846e+00    2.05e-02    1.00e-01     1    4.24e-05
-  18  3.481307e+00   -1.31e+00    1.00e-02     1    4.39e-05
-  18  2.155508e+00    1.63e-02    1.00e-01     1    4.50e-05
-  19  4.232390e+00   -2.08e+00    1.00e-02     1    4.28e-05
-  19  2.137254e+00    1.83e-02    1.00e-01     1    4.23e-05
-  20  5.145027e+00   -3.01e+00    1.00e-02     1    4.39e-05
-  20  2.116200e+00    2.11e-02    1.00e-01     1    4.32e-05
-  21  5.827907e+00   -3.71e+00    1.00e-02     1    4.24e-05
-  21  2.092165e+00    2.40e-02    1.00e-01     1    4.40e-05
-  22  5.640956e+00   -3.55e+00    1.00e-02     1    4.38e-05
-  22  2.065760e+00    2.64e-02    1.00e-01     1    4.28e-05
-  23  4.437973e+00   -2.37e+00    1.00e-02     1    4.35e-05
-  23  2.038763e+00    2.70e-02    1.00e-01     1    4.34e-05
-  24  3.085438e+00   -1.05e+00    1.00e-02     1    4.43e-05
-  24  2.013275e+00    2.55e-02    1.00e-01     1    4.25e-05
-  25  2.379401e+00   -3.66e-01    1.00e-02     1    5.26e-05
-  25  1.990791e+00    2.25e-02    1.00e-01     1    4.31e-05
-  26  2.206055e+00   -2.15e-01    1.00e-02     1    4.21e-05
-  26  1.973857e+00    1.69e-02    1.00e-01     1    4.26e-05
-  27  2.203392e+00   -2.30e-01    1.00e-02     1    4.24e-05
-  27  1.962458e+00    1.14e-02    1.00e-01     1    4.20e-05
-  28  2.213889e+00   -2.51e-01    1.00e-02     1    4.34e-05
-  28  1.953351e+00    9.11e-03    1.00e-01     1    4.45e-05
-  29  2.197574e+00   -2.44e-01    1.00e-02     1    1.48e-04
-  29  1.944720e+00    8.63e-03    1.00e-01     1    4.37e-05
-  30  2.147265e+00   -2.03e-01    1.00e-02     1    4.24e-05
-  30  1.936277e+00    8.44e-03    1.00e-01     1    4.34e-05
-  31  2.074180e+00   -1.38e-01    1.00e-02     1    4.34e-05
-  31  1.928275e+00    8.00e-03    1.00e-01     1    4.53e-05
-  32  2.001147e+00   -7.29e-02    1.00e-02     1    4.27e-05
-  32  1.921109e+00    7.17e-03    1.00e-01     1    4.22e-05
-  33  1.947307e+00   -2.62e-02    1.00e-02     1    4.31e-05
-  33  1.915115e+00    5.99e-03    1.00e-01     1    4.37e-05
-  34  1.917141e+00   -2.03e-03    1.00e-02     1    4.22e-05
-  34  1.910425e+00    4.69e-03    1.00e-01     1    4.35e-05
-  35  1.903793e+00    6.63e-03    1.00e-02     1    4.38e-05
-  36  4.515029e+00   -2.61e+00    1.00e-03     1    4.27e-05
-  36  1.894638e+00    9.15e-03    1.00e-02     1    4.25e-05
-  37  2.096397e+00   -2.02e-01    1.00e-03     1    4.34e-05
-  37  1.883310e+00    1.13e-02    1.00e-02     1    4.47e-05
-  38  1.869517e+00    1.38e-02    1.00e-03     1    4.25e-05
-  39  1.865248e+00    4.27e-03    1.00e-04     1    4.21e-05
-  40  3.422928e+01   -3.24e+01    1.00e-05     1    4.35e-05
-  40  1.864472e+00    7.75e-04    1.00e-04     1    4.38e-05
-  41  5.549677e+04   -5.55e+04    1.00e-05     1    4.24e-05
-  41  1.863038e+00    1.43e-03    1.00e-04     1    4.27e-05
-  42  1.078480e+06   -1.08e+06    1.00e-05     1    4.40e-05
-  42  1.944951e+00   -8.19e-02    1.00e-04     1    4.39e-05
-  42  1.861094e+00    1.94e-03    1.00e-03     1    4.38e-05
-  43  2.140040e+00   -2.79e-01    1.00e-04     1    4.24e-05
-  43  1.859993e+00    1.10e-03    1.00e-03     1    4.25e-05
-  44  3.141813e+00   -1.28e+00    1.00e-04     1    4.20e-05
-  44  1.858369e+00    1.62e-03    1.00e-03     1    4.23e-05
-  45  1.473321e+01   -1.29e+01    1.00e-04     1    4.21e-05
-  45  1.855753e+00    2.62e-03    1.00e-03     1    4.20e-05
-  46  1.716507e+03   -1.71e+03    1.00e-04     1    4.19e-05
-  46  1.851031e+00    4.72e-03    1.00e-03     1    4.20e-05
-  47  5.817719e+04   -5.82e+04    1.00e-04     1    4.25e-05
-  47  1.844308e+00    6.72e-03    1.00e-03     1    4.41e-05
-  48  5.798557e+05   -5.80e+05    1.00e-04     1    4.27e-05
-  48  2.868843e+00   -1.02e+00    1.00e-03     1    4.24e-05
-  48  1.831366e+00    1.29e-02    1.00e-02     1    4.25e-05
-  49  6.112849e+00   -4.28e+00    1.00e-03     1    4.23e-05
-  49  1.824859e+00    6.51e-03    1.00e-02     1    4.34e-05
-  50  3.347084e+01   -3.16e+01    1.00e-03     1    4.37e-05
-  50  1.814935e+00    9.92e-03    1.00e-02     1    4.26e-05
-  51  7.356522e+02   -7.34e+02    1.00e-03     1    4.33e-05
-  51  1.798165e+00    1.68e-02    1.00e-02     1    4.34e-05
-  52  1.195310e+04   -1.20e+04    1.00e-03     1    4.38e-05
-  52  1.770356e+00    2.78e-02    1.00e-02     1    4.41e-05
-  53  7.431515e+04   -7.43e+04    1.00e-03     1    4.28e-05
-  53  2.282773e+00   -5.12e-01    1.00e-02     1    4.39e-05
-  53  1.743914e+00    2.64e-02    1.00e-01     1    4.31e-05
-  54  3.079642e+00   -1.34e+00    1.00e-02     1    4.29e-05
-  54  1.730431e+00    1.35e-02    1.00e-01     1    4.38e-05
-  55  5.462330e+00   -3.73e+00    1.00e-02     1    4.33e-05
-  55  1.712739e+00    1.77e-02    1.00e-01     1    4.27e-05
-  56  1.419804e+01   -1.25e+01    1.00e-02     1    4.26e-05
-  56  1.688403e+00    2.43e-02    1.00e-01     1    4.22e-05
-  57  5.623867e+01   -5.46e+01    1.00e-02     1    4.37e-05
-  57  1.652772e+00    3.56e-02    1.00e-01     1    5.68e-05
-  58  3.089692e+02   -3.07e+02    1.00e-02     1    4.46e-05
-  58  1.596572e+00    5.62e-02    1.00e-01     1    4.26e-05
-  59  1.519448e+03   -1.52e+03    1.00e-02     1    4.34e-05
-  59  1.508797e+00    8.78e-02    1.00e-01     1    4.34e-05
-  60  3.865269e+03   -3.86e+03    1.00e-02     1    4.24e-05
-  60  1.683688e+00   -1.75e-01    1.00e-01     1    4.29e-05
-  60  1.449402e+00    5.94e-02    1.00e+00     1    4.22e-05
-  61  1.884185e+00   -4.35e-01    1.00e-01     1    4.23e-05
-  61  1.421809e+00    2.76e-02    1.00e+00     1    4.30e-05
-  62  2.243353e+00   -8.22e-01    1.00e-01     1    4.36e-05
-  62  1.389656e+00    3.22e-02    1.00e+00     1    4.15e-05
-  63  2.883280e+00   -1.49e+00    1.00e-01     1    4.22e-05
-  63  1.351767e+00    3.79e-02    1.00e+00     1    4.11e-05
-  64  4.014127e+00   -2.66e+00    1.00e-01     1    4.26e-05
-  64  1.306576e+00    4.52e-02    1.00e+00     1    4.13e-05
-  65  5.976171e+00   -4.67e+00    1.00e-01     1    4.37e-05
-  65  1.252004e+00    5.46e-02    1.00e+00     1    4.24e-05
-  66  9.237920e+00   -7.99e+00    1.00e-01     1    4.22e-05
-  66  1.185334e+00    6.67e-02    1.00e+00     1    4.13e-05
-  67  1.419267e+01   -1.30e+01    1.00e-01     1    4.22e-05
-  67  1.103185e+00    8.21e-02    1.00e+00     1    4.12e-05
-  68  2.048249e+01   -1.94e+01    1.00e-01     1    4.20e-05
-  68  1.001871e+00    1.01e-01    1.00e+00     1    4.11e-05
-  69  2.594909e+01   -2.49e+01    1.00e-01     1    4.52e-05
-  69  8.787148e-01    1.23e-01    1.00e+00     1    4.13e-05
-  70  2.683782e+01   -2.60e+01    1.00e-01     1    4.22e-05
-  70  7.348708e-01    1.44e-01    1.00e+00     1    4.11e-05
-  71  2.132277e+01   -2.06e+01    1.00e-01     1    4.21e-05
-  71  5.782224e-01    1.57e-01    1.00e+00     1    4.14e-05
-  72  1.273288e+01   -1.22e+01    1.00e-01     1    4.20e-05
-  72  4.221483e-01    1.56e-01    1.00e+00     1    4.13e-05
-  73  5.940392e+00   -5.52e+00    1.00e-01     1    4.22e-05
-  73  2.824307e-01    1.40e-01    1.00e+00     1    4.24e-05
-  74  2.362726e+00   -2.08e+00    1.00e-01     1    4.37e-05
-  74  1.750511e-01    1.07e-01    1.00e+00     1    4.16e-05
-  75  8.786118e-01   -7.04e-01    1.00e-01     1    4.22e-05
-  75  1.048692e-01    7.02e-02    1.00e+00     1    4.26e-05
-  76  3.256411e-01   -2.21e-01    1.00e-01     1    4.38e-05
-  76  6.314866e-02    4.17e-02    1.00e+00     1    4.19e-05
-  77  1.243516e-01   -6.12e-02    1.00e-01     1    4.23e-05
-  77  3.883707e-02    2.43e-02    1.00e+00     1    4.25e-05
-  78  4.962699e-02   -1.08e-02    1.00e-01     1    4.39e-05
-  78  2.442829e-02    1.44e-02    1.00e+00     1    4.30e-05
-  79  2.081541e-02    3.61e-03    1.00e-01     1    4.25e-05
-  80  6.679197e-04    2.01e-02    1.00e-02     1    4.28e-05
-  81  1.545700e-08    6.68e-04    1.00e-03     1    4.20e-05
-  82  1.499863e-16    1.55e-08    1.00e-04     1    4.34e-05
-  83  1.262177e-23    1.50e-16    1.00e-05     1    4.40e-05
 Final Result:
  Values with 5 values:
 Value 0: (gtsam::Event)
@@ -815,6 +646,178 @@ Value 3: (gtsam::Event)
 {&#39;time&#39;:13, &#39;location&#39;:  5.45 2.015  1.67}
 Value 4: (gtsam::Event)
 {&#39;time&#39;:14, &#39;location&#39;:  6.45 2.015  1.67}
+
+iter      cost      cost_change    lambda  success iter_time
+   0  5.164106e+04    5.84e+09    1.00e-05     1    1.60e-04
+   1  9.877895e+04   -4.71e+04    1.00e-06     1    4.97e-05
+   1  9.877004e+04   -4.71e+04    1.00e-05     1    4.53e-05
+   1  9.868104e+04   -4.70e+04    1.00e-04     1    4.37e-05
+   1  9.780158e+04   -4.62e+04    1.00e-03     1    6.07e-05
+   1  8.987462e+04   -3.82e+04    1.00e-02     1    4.46e-05
+   1  4.707280e+04    4.57e+03    1.00e-01     1    4.30e-05
+   2  2.678423e+02    4.68e+04    1.00e-02     1    4.27e-05
+   3  2.184513e+03   -1.92e+03    1.00e-03     1    4.24e-05
+   3  2.754496e+00    2.65e+02    1.00e-02     1    4.40e-05
+   4  3.952703e+03   -3.95e+03    1.00e-03     1    4.45e-05
+   4  2.626570e+00    1.28e-01    1.00e-02     1    4.28e-05
+   5  9.504650e+03   -9.50e+03    1.00e-03     1    4.22e-05
+   5  2.999944e+00   -3.73e-01    1.00e-02     1    4.37e-05
+   5  2.590684e+00    3.59e-02    1.00e-01     1    4.36e-05
+   6  3.343468e+00   -7.53e-01    1.00e-02     1    4.24e-05
+   6  2.575458e+00    1.52e-02    1.00e-01     1    4.27e-05
+   7  4.061605e+00   -1.49e+00    1.00e-02     1    4.23e-05
+   7  2.557734e+00    1.77e-02    1.00e-01     1    4.34e-05
+   8  5.529765e+00   -2.97e+00    1.00e-02     1    4.38e-05
+   8  2.536729e+00    2.10e-02    1.00e-01     1    4.25e-05
+   9  8.525429e+00   -5.99e+00    1.00e-02     1    4.27e-05
+   9  2.511344e+00    2.54e-02    1.00e-01     1    4.25e-05
+  10  1.420894e+01   -1.17e+01    1.00e-02     1    4.39e-05
+  10  2.480107e+00    3.12e-02    1.00e-01     1    4.36e-05
+  11  2.262388e+01   -2.01e+01    1.00e-02     1    4.25e-05
+  11  2.441486e+00    3.86e-02    1.00e-01     1    4.21e-05
+  12  2.819573e+01   -2.58e+01    1.00e-02     1    4.35e-05
+  12  2.395791e+00    4.57e-02    1.00e-01     1    4.40e-05
+  13  2.161321e+01   -1.92e+01    1.00e-02     1    4.30e-05
+  13  2.350357e+00    4.54e-02    1.00e-01     1    4.23e-05
+  14  8.893437e+00   -6.54e+00    1.00e-02     1    4.36e-05
+  14  2.310615e+00    3.97e-02    1.00e-01     1    4.34e-05
+  15  3.335472e+00   -1.02e+00    1.00e-02     1    4.39e-05
+  15  2.245055e+00    6.56e-02    1.00e-01     1    4.27e-05
+  16  2.705415e+00   -4.60e-01    1.00e-02     1    4.22e-05
+  16  2.192382e+00    5.27e-02    1.00e-01     1    4.23e-05
+  17  2.973750e+00   -7.81e-01    1.00e-02     1    4.33e-05
+  17  2.171846e+00    2.05e-02    1.00e-01     1    4.29e-05
+  18  3.481307e+00   -1.31e+00    1.00e-02     1    4.25e-05
+  18  2.155508e+00    1.63e-02    1.00e-01     1    4.20e-05
+  19  4.232390e+00   -2.08e+00    1.00e-02     1    4.21e-05
+  19  2.137254e+00    1.83e-02    1.00e-01     1    4.29e-05
+  20  5.145027e+00   -3.01e+00    1.00e-02     1    4.34e-05
+  20  2.116200e+00    2.11e-02    1.00e-01     1    4.24e-05
+  21  5.827907e+00   -3.71e+00    1.00e-02     1    4.22e-05
+  21  2.092165e+00    2.40e-02    1.00e-01     1    4.35e-05
+  22  5.640956e+00   -3.55e+00    1.00e-02     1    4.38e-05
+  22  2.065760e+00    2.64e-02    1.00e-01     1    4.21e-05
+  23  4.437973e+00   -2.37e+00    1.00e-02     1    4.33e-05
+  23  2.038763e+00    2.70e-02    1.00e-01     1    4.32e-05
+  24  3.085438e+00   -1.05e+00    1.00e-02     1    4.38e-05
+  24  2.013275e+00    2.55e-02    1.00e-01     1    4.24e-05
+  25  2.379401e+00   -3.66e-01    1.00e-02     1    4.21e-05
+  25  1.990791e+00    2.25e-02    1.00e-01     1    4.20e-05
+  26  2.206055e+00   -2.15e-01    1.00e-02     1    4.19e-05
+  26  1.973857e+00    1.69e-02    1.00e-01     1    4.30e-05
+  27  2.203392e+00   -2.30e-01    1.00e-02     1    4.43e-05
+  27  1.962458e+00    1.14e-02    1.00e-01     1    4.25e-05
+  28  2.213889e+00   -2.51e-01    1.00e-02     1    4.18e-05
+  28  1.953351e+00    9.11e-03    1.00e-01     1    4.36e-05
+  29  2.197574e+00   -2.44e-01    1.00e-02     1    4.34e-05
+  29  1.944720e+00    8.63e-03    1.00e-01     1    4.48e-05
+  30  2.147265e+00   -2.03e-01    1.00e-02     1    4.22e-05
+  30  1.936277e+00    8.44e-03    1.00e-01     1    4.22e-05
+  31  2.074180e+00   -1.38e-01    1.00e-02     1    4.34e-05
+  31  1.928275e+00    8.00e-03    1.00e-01     1    4.30e-05
+  32  2.001147e+00   -7.29e-02    1.00e-02     1    4.24e-05
+  32  1.921109e+00    7.17e-03    1.00e-01     1    4.29e-05
+  33  1.947307e+00   -2.62e-02    1.00e-02     1    4.35e-05
+  33  1.915115e+00    5.99e-03    1.00e-01     1    4.24e-05
+  34  1.917141e+00   -2.03e-03    1.00e-02     1    5.11e-05
+  34  1.910425e+00    4.69e-03    1.00e-01     1    4.27e-05
+  35  1.903793e+00    6.63e-03    1.00e-02     1    4.34e-05
+  36  4.515029e+00   -2.61e+00    1.00e-03     1    4.35e-05
+  36  1.894638e+00    9.15e-03    1.00e-02     1    4.34e-05
+  37  2.096397e+00   -2.02e-01    1.00e-03     1    4.37e-05
+  37  1.883310e+00    1.13e-02    1.00e-02     1    4.29e-05
+  38  1.869517e+00    1.38e-02    1.00e-03     1    4.26e-05
+  39  1.865248e+00    4.27e-03    1.00e-04     1    4.33e-05
+  40  3.422928e+01   -3.24e+01    1.00e-05     1    4.36e-05
+  40  1.864472e+00    7.75e-04    1.00e-04     1    4.25e-05
+  41  5.549677e+04   -5.55e+04    1.00e-05     1    4.35e-05
+  41  1.863038e+00    1.43e-03    1.00e-04     1    4.35e-05
+  42  1.078480e+06   -1.08e+06    1.00e-05     1    4.27e-05
+  42  1.944951e+00   -8.19e-02    1.00e-04     1    4.21e-05
+  42  1.861094e+00    1.94e-03    1.00e-03     1    4.34e-05
+  43  2.140040e+00   -2.79e-01    1.00e-04     1    4.30e-05
+  43  1.859993e+00    1.10e-03    1.00e-03     1    4.36e-05
+  44  3.141813e+00   -1.28e+00    1.00e-04     1    4.35e-05
+  44  1.858369e+00    1.62e-03    1.00e-03     1    4.26e-05
+  45  1.473321e+01   -1.29e+01    1.00e-04     1    4.23e-05
+  45  1.855753e+00    2.62e-03    1.00e-03     1    4.19e-05
+  46  1.716507e+03   -1.71e+03    1.00e-04     1    4.21e-05
+  46  1.851031e+00    4.72e-03    1.00e-03     1    4.21e-05
+  47  5.817719e+04   -5.82e+04    1.00e-04     1    4.37e-05
+  47  1.844308e+00    6.72e-03    1.00e-03     1    4.35e-05
+  48  5.798557e+05   -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.80e+05    1.00e-04     1    4.39e-05
+  48  2.868843e+00   -1.02e+00    1.00e-03     1    4.29e-05
+  48  1.831366e+00    1.29e-02    1.00e-02     1    4.24e-05
+  49  6.112849e+00   -4.28e+00    1.00e-03     1    4.22e-05
+  49  1.824859e+00    6.51e-03    1.00e-02     1    4.25e-05
+  50  3.347084e+01   -3.16e+01    1.00e-03     1    4.22e-05
+  50  1.814935e+00    9.92e-03    1.00e-02     1    4.34e-05
+  51  7.356522e+02   -7.34e+02    1.00e-03     1    4.40e-05
+  51  1.798165e+00    1.68e-02    1.00e-02     1    4.24e-05
+  52  1.195310e+04   -1.20e+04    1.00e-03     1    4.25e-05
+  52  1.770356e+00    2.78e-02    1.00e-02     1    4.24e-05
+  53  7.431515e+04   -7.43e+04    1.00e-03     1    4.34e-05
+  53  2.282773e+00   -5.12e-01    1.00e-02     1    4.39e-05
+  53  1.743914e+00    2.64e-02    1.00e-01     1    4.33e-05
+  54  3.079642e+00   -1.34e+00    1.00e-02     1    4.32e-05
+  54  1.730431e+00    1.35e-02    1.00e-01     1    4.22e-05
+  55  5.462330e+00   -3.73e+00    1.00e-02     1    4.30e-05
+  55  1.712739e+00    1.77e-02    1.00e-01     1    4.29e-05
+  56  1.419804e+01   -1.25e+01    1.00e-02     1    4.21e-05
+  56  1.688403e+00    2.43e-02    1.00e-01     1    4.22e-05
+  57  5.623867e+01   -5.46e+01    1.00e-02     1    4.18e-05
+  57  1.652772e+00    3.56e-02    1.00e-01     1    4.32e-05
+  58  3.089692e+02   -3.07e+02    1.00e-02     1    4.34e-05
+  58  1.596572e+00    5.62e-02    1.00e-01     1    4.25e-05
+  59  1.519448e+03   -1.52e+03    1.00e-02     1    4.54e-05
+  59  1.508797e+00    8.78e-02    1.00e-01     1    4.21e-05
+  60  3.865269e+03   -3.86e+03    1.00e-02     1    4.31e-05
+  60  1.683688e+00   -1.75e-01    1.00e-01     1    4.33e-05
+  60  1.449402e+00    5.94e-02    1.00e+00     1    4.22e-05
+  61  1.884185e+00   -4.35e-01    1.00e-01     1    4.25e-05
+  61  1.421809e+00    2.76e-02    1.00e+00     1    4.24e-05
+  62  2.243353e+00   -8.22e-01    1.00e-01     1    4.33e-05
+  62  1.389656e+00    3.22e-02    1.00e+00     1    4.18e-05
+  63  2.883280e+00   -1.49e+00    1.00e-01     1    4.20e-05
+  63  1.351767e+00    3.79e-02    1.00e+00     1    4.25e-05
+  64  4.014127e+00   -2.66e+00    1.00e-01     1    4.28e-05
+  64  1.306576e+00    4.52e-02    1.00e+00     1    4.46e-05
+  65  5.976171e+00   -4.67e+00    1.00e-01     1    4.50e-05
+  65  1.252004e+00    5.46e-02    1.00e+00     1    4.18e-05
+  66  9.237920e+00   -7.99e+00    1.00e-01     1    4.23e-05
+  66  1.185334e+00    6.67e-02    1.00e+00     1    4.14e-05
+  67  1.419267e+01   -1.30e+01    1.00e-01     1    4.23e-05
+  67  1.103185e+00    8.21e-02    1.00e+00     1    4.39e-05
+  68  2.048249e+01   -1.94e+01    1.00e-01     1    4.36e-05
+  68  1.001871e+00    1.01e-01    1.00e+00     1    4.29e-05
+  69  2.594909e+01   -2.49e+01    1.00e-01     1    4.40e-05
+  69  8.787148e-01    1.23e-01    1.00e+00     1    4.14e-05
+  70  2.683782e+01   -2.60e+01    1.00e-01     1    4.32e-05
+  70  7.348708e-01    1.44e-01    1.00e+00     1    4.32e-05
+  71  2.132277e+01   -2.06e+01    1.00e-01     1    4.26e-05
+  71  5.782224e-01    1.57e-01    1.00e+00     1    4.13e-05
+  72  1.273288e+01   -1.22e+01    1.00e-01     1    4.22e-05
+  72  4.221483e-01    1.56e-01    1.00e+00     1    4.13e-05
+  73  5.940392e+00   -5.52e+00    1.00e-01     1    4.35e-05
+  73  2.824307e-01    1.40e-01    1.00e+00     1    4.29e-05
+  74  2.362726e+00   -2.08e+00    1.00e-01     1    4.51e-05
+  74  1.750511e-01    1.07e-01    1.00e+00     1    4.26e-05
+  75  8.786118e-01   -7.04e-01    1.00e-01     1    4.22e-05
+  75  1.048692e-01    7.02e-02    1.00e+00     1    4.24e-05
+  76  3.256411e-01   -2.21e-01    1.00e-01     1    4.35e-05
+  76  6.314866e-02    4.17e-02    1.00e+00     1    4.12e-05
+  77  1.243516e-01   -6.12e-02    1.00e-01     1    4.33e-05
+  77  3.883707e-02    2.43e-02    1.00e+00     1    4.21e-05
+  78  4.962699e-02   -1.08e-02    1.00e-01     1    4.22e-05
+  78  2.442829e-02    1.44e-02    1.00e+00     1    4.24e-05
+  79  2.081541e-02    3.61e-03    1.00e-01     1    4.31e-05
+  80  6.679197e-04    2.01e-02    1.00e-02     1    4.22e-05
+  81  1.545700e-08    6.68e-04    1.00e-03     1    4.34e-05
+  82  1.499863e-16    1.55e-08    1.00e-04     1    4.35e-05
+  83  1.262177e-23    1.50e-16    1.00e-05     1    4.24e-05
 </pre></div>
 </div>
 </div>
